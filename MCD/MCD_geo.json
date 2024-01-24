@@ -1,0 +1,29 @@
+{
+  "width": 296,
+  "height": 288,
+  "cx": [
+    [ "MUSIQUES", 54 ],
+    [ "ETRE", 178 ],
+    [ "GENRE", 260 ],
+    [ "COMPOSER", 54 ],
+    [ "INTERPRETER", 178 ],
+    [ "ARTISTES", 54 ]
+  ],
+  "cy": [
+    [ "MUSIQUES", 60 ],
+    [ "ETRE", 60 ],
+    [ "GENRE", 60 ],
+    [ "COMPOSER", 161 ],
+    [ "INTERPRETER", 161 ],
+    [ "ARTISTES", 245 ]
+  ],
+  "shift": [
+    [ "ETRE,GENRE,0", 0 ],
+    [ "ETRE,MUSIQUES,0", 0 ],
+    [ "COMPOSER,ARTISTES,0", 0 ],
+    [ "COMPOSER,MUSIQUES,0", 0 ],
+    [ "INTERPRETER,ARTISTES,0", 0 ],
+    [ "INTERPRETER,MUSIQUES,0", 0 ]
+  ],
+  "ratio": []
+}
