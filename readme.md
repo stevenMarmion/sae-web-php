@@ -1,6 +1,7 @@
-# SA Web PhP - Musics 2024
+# SAE WEB PHP - Musics 2024 
 
-## Présentation
+## Présentation
+
 A partir des données que vous trouverez dans le fichier fixtures.zip dans Celene, il vous est demandé de
 réaliser une application présentant le contenu de cette base d'albums de musique. 
 
