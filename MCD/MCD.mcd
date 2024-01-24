@@ -1,0 +1,21 @@
+UTILISATEUR : idU,isAdmin,pseudo,mdp,adresseMail
+:
+:
+
+FAVORIS, 0N MUSIQUES,0N UTILISATEUR
+:
+:
+
+MUSIQUES : idM,img,dateDeSortie,titre
+ETRE, 11 GENRE, 1N MUSIQUES
+GENRE : idG,nomG
+
+COMPOSER, 1N ARTISTES, 11 MUSIQUES
+INTERPRETER, 1N ARTISTES, 11 MUSIQUES
+
+ARTISTES : idA,nomA
+:
+:
+
+
+
