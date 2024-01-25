@@ -30,7 +30,6 @@ class ConnexionBDD {
         try {
             if (self::$db === null) {
                 self::$db = $this->init_DB();
-                $this->create_tables();
             }
 
         } catch (PDOException $e) {}
@@ -163,6 +162,8 @@ class ConnexionBDD {
     }
 }
 
+// Test de création et d'instanciation
 $instance = new ConnexionBDD();
+$instance->create_tables();
 
 ?>
