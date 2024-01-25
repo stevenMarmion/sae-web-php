@@ -29,7 +29,11 @@ class ConnexionBDD {
         date_default_timezone_set('Europe/Paris');
         try {
             if (self::$db === null) {
+                // Instancie le tableau argv
+                global $argv;
+
                 self::$db = $this->init_DB();
+                $this->init_DB_insertion($argv);
             }
 
         } catch (PDOException $e) {}
@@ -83,6 +87,90 @@ class ConnexionBDD {
         } catch (PDOException $e) {
             echo "Erreur : " . $e->getMessage();
         }
+    }
+
+    /**
+     * Initialise l'insertion de données dans la base de données à partir d'un fichier YAML.
+     *
+     * @global array $argv Tableau contenant les arguments de la ligne de commande.
+     * @return void
+     */
+    function init_DB_insertion($argv) {
+        if (count($argv) < 2) {
+            die("Veuillez fournir le chemin vers le fichier YAML en argument !\n");
+        }
+        $yamlFilePath = $argv[1];
+        if (!file_exists($yamlFilePath)) {
+            die("Le fichier YAML spécifié n'existe pas.\n");
+        }
+        $data = yaml_parse(__DIR__ . '/../DATAS/fixtures/' . $yamlFilePath);
+        if ($data === false) {
+            die("Erreur lors du chargement du fichier YAML.\n");
+        }
+        foreach ($data as $album) {
+            try {
+                // Insérer dans la table ALBUMS
+                $queryAlbums = "INSERT INTO ALBUMS (id, img, dateDeSortie, titre) VALUES (?, ?, ?, ?)";
+                $stmtAlbums = self::$db->prepare($queryAlbums);
+                $stmtAlbums->execute([$album['entryId'], $album['img'], $album['releaseYear'], $album['title']]);
+            } catch (\Throwable $th) {}
+
+            try {
+                // Insérer dans la table ARTISTES
+                $queryArtiste = "INSERT INTO ARTISTES (nomA) VALUES (?)";
+                $stmtArtiste = self::$db->prepare($queryArtiste);
+                $stmtArtiste->execute([$album['by']]);
+            } catch (\Throwable $th) {}
+
+            try {
+                // Récupère l'id de l'artiste fraichement inséré 
+                $queryIdArtiste = "SELECT idA from ARTISTES where nomA = :nomA";
+                $stmtIdArtiste = self::$db->prepare($queryIdArtiste);
+                $stmtIdArtiste->bindParam(':nomA', $album['by'], PDO::PARAM_STR);
+                $stmtIdArtiste->execute();
+                $idArtiste = $stmtIdArtiste->fetchColumn();
+            } catch (\Throwable $th) {}
+
+            // Insérer dans la table GENRE
+            foreach ($album['genre'] as $genre) {
+                try {
+                    $queryGenre = "INSERT INTO GENRE (nomG) VALUES (?)";
+                    $stmtGenre = self::$db->prepare($queryGenre);
+                    $stmtGenre->execute([$genre]);
+                } catch (\Throwable $th) {}
+
+                try {
+                    // Récupère l'id du genre fraichement inséré 
+                    $queryIdGenre = "SELECT idG from GENRE where nomG = :nomG";
+                    $stmtIdGenre = self::$db->prepare($queryIdGenre);
+                    $stmtIdGenre->bindParam(':nomG', $genre, PDO::PARAM_STR);
+                    $stmtIdGenre->execute();
+                    $idGenre = $stmtIdGenre->fetchColumn();
+                } catch (\Throwable $th) {}
+
+                try {
+                    // Insérer dans la table ETRE
+                    $queryEtre = "INSERT INTO ETRE (idAl, idG) VALUES (?, ?)";
+                    $stmtEtre = self::$db->prepare($queryEtre);
+                    $stmtEtre->execute([$album['entryId'], $idGenre]);
+                } catch (\Throwable $th) {}
+            }
+
+            try {
+                // Insérer dans la table COMPOSER
+                $queryComposer = "INSERT INTO COMPOSER (idAl, idA) VALUES (?, ?)";
+                $stmtComposer = self::$db->prepare($queryComposer);
+                $stmtComposer->execute([$album['entryId'], $idArtiste]);
+            } catch (\Throwable $th) {}
+    
+            try {
+                // Insérer dans la table INTERPRETER
+                $queryInterpreter = "INSERT INTO INTERPRETER (idAl, idA) VALUES (?, ?)";
+                $stmtInterpreter = self::$db->prepare($queryInterpreter);
+                $stmtInterpreter->execute([$album['entryId'], $idArtiste]);
+            } catch (\Throwable $th) {}
+        }
+        echo "Importation des données terminée !";
     }
 }
 
