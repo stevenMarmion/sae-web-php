@@ -138,9 +138,9 @@ class User {
     /**
      * Ajouter un élément favori à la liste de l'utilisateur.
      *
-     * @param Musique $favori L'objet Musique à ajouter aux favoris.
+     * @param Album $favori L'objet Album à ajouter aux favoris.
      */
-    public function ajouterFavori(Musique $favori) {
+    public function ajouterFavori(Album $favori) {
         array_push($favoris, $favori);
     }
 }

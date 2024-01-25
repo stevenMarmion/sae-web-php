@@ -8,7 +8,7 @@ use DateTime;
  * Représente une musique avec des informations telles que l'identifiant, la date de sortie, le titre,
  * les artistes compositeur et interprète, le genre, etc.
  */
-class Musique {
+class Album {
 
     /**
      * @var int L'identifiant unique de la musique.
@@ -31,19 +31,19 @@ class Musique {
     private string $title;
 
     /**
-     * @var Artiste L'artiste compositeur de la musique.
+     * @var array La liste de compositeurs de la musique.
      */
-    private Artiste $compositeur;
+    private array $compositeur;
 
     /**
-     * @var Artiste L'artiste interprète de la musique.
+     * @var array La liste d'interprète de la musique.
      */
-    private Artiste $interprete;
+    private array $interprete;
 
     /**
-     * @var Genre Le genre de la musique.
+     * @var array La liste de genre de l'album.
      */
-    private Genre $genre;
+    private array $genre;
 
     /**
      * Constructeur de la classe Musique.
@@ -52,9 +52,9 @@ class Musique {
      * @param int      $idImg         L'identifiant de l'image associée à la musique.
      * @param DateTime $dateDeSortie  La date de sortie de la musique.
      * @param string   $title         Le titre de la musique.
-     * @param Artiste  $compositeur   L'artiste compositeur de la musique.
-     * @param Artiste  $interprete    L'artiste interprète de la musique.
-     * @param Genre    $genre         Le genre de la musique.
+     * @param array    $compositeur   La liste de compositeurs de la musique.
+     * @param array    $interprete    La liste d'interprète de la musique.
+     * @param array    $genre         La liste de genre de l'album.
      */
     public function __construct($idM, $idImg, $dateDeSortie, $title, $compositeur, $interprete, $genre) {
         $this->idM = $idM;
@@ -103,27 +103,27 @@ class Musique {
     }
 
     /**
-     * Obtenir l'artiste compositeur de la musique.
+     * Obtenir la liste des compositeurs de la musique.
      *
-     * @return Artiste L'artiste compositeur.
+     * @return array La liste des compositeurs.
      */
     public function getCompositeur() {
         return $this->compositeur;
     }
 
     /**
-     * Obtenir l'artiste interprète de la musique.
+     * Obtenir la liste d'interprètes de l'album.
      *
-     * @return Artiste L'artiste interprète.
+     * @return array La liste d'interprètes.
      */
     public function getInterprete() {
         return $this->interprete;
     }
 
     /**
-     * Obtenir le genre de la musique.
+     * Obtenir le liste de genre de l'album.
      *
-     * @return Genre Le genre de la musique.
+     * @return array La liste de genre de l'album.
      */
     public function getGenre() {
         return $this->genre;
