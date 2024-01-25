@@ -1,11 +1,11 @@
 <?php
 
-class CrudMusique {
+class CrudAlbum {
 
     private $db;
 
     /**
-     * Constructeur de la classe CrudMusique.
+     * Constructeur de la classe CrudAlbum.
      * Initialise la connexion à la base de données.
      *
      * @param PDO $db La connexion à la base de données.
@@ -15,16 +15,16 @@ class CrudMusique {
     }
 
     /**
-     * Ajoute une nouvelle musique à la base de données.
+     * Ajoute un nouvel album à la base de données.
      *
-     * @param array $musiqueData Les données de la musique à ajouter.
+     * @param array $albumData Les données de l'album à ajouter.
      * @return bool True si l'ajout est réussi, False sinon.
      */
-    public function ajouterMusique(array $musiqueData) {
+    public function ajouterAlbum(array $albumData) {
         try {
-            $query = "INSERT INTO MUSIQUES (img, dateDeSortie, titre, idCompositeur, idInterprete) VALUES (?, ?, ?, ?, ?)";
+            $query = "INSERT INTO ALBUMS (img, dateDeSortie, titre, idCompositeur, idInterprete) VALUES (?, ?, ?, ?, ?)";
             $stmt = $this->db->prepare($query);
-            $stmt->execute([$musiqueData['img'], $musiqueData['dateDeSortie'], $musiqueData['titre'], $musiqueData['idCompositeur'], $musiqueData['idInterprete']]);
+            $stmt->execute([$albumData['img'], $albumData['dateDeSortie'], $albumData['titre'], $albumData['idCompositeur'], $albumData['idInterprete']]);
             return true;
         } catch (PDOException $e) {
             return false;
@@ -32,16 +32,16 @@ class CrudMusique {
     }
 
     /**
-     * Supprime une musique de la base de données en fonction de son ID.
+     * Supprime un album de la base de données en fonction de son ID.
      *
-     * @param int $musiqueId L'ID de la musique à supprimer.
+     * @param int $albumId L'ID de l'album à supprimer.
      * @return bool True si la suppression est réussie, False sinon.
      */
-    public function supprimerMusique(int $musiqueId) {
+    public function supprimerAlbum(int $albumId) {
         try {
-            $query = "DELETE FROM MUSIQUES WHERE id = ?";
+            $query = "DELETE FROM ALBUMS WHERE id = ?";
             $stmt = $this->db->prepare($query);
-            $stmt->execute([$musiqueId]);
+            $stmt->execute([$albumId]);
             return true;
         } catch (PDOException $e) {
             return false;
@@ -49,17 +49,17 @@ class CrudMusique {
     }
 
     /**
-     * Modifie les données d'une musique dans la base de données en fonction de son ID.
+     * Modifie les données d'un album dans la base de données en fonction de son ID.
      *
-     * @param int $musiqueId L'ID de la musique à modifier.
-     * @param array $newMusiqueData Les nouvelles données de la musique.
+     * @param int $albumId L'ID de l'album à modifier.
+     * @param array $newAlbumData Les nouvelles données de l'album.
      * @return bool True si la modification est réussie, False sinon.
      */
-    public function modifierMusique(int $musiqueId, array $newMusiqueData) {
+    public function modifierAlbum(int $albumId, array $newAlbumData) {
         try {
-            $query = "UPDATE MUSIQUES SET img = ?, dateDeSortie = ?, titre = ?, idCompositeur = ?, idInterprete = ? WHERE id = ?";
+            $query = "UPDATE ALBUMS SET img = ?, dateDeSortie = ?, titre = ?, idCompositeur = ?, idInterprete = ? WHERE id = ?";
             $stmt = $this->db->prepare($query);
-            $stmt->execute([$newMusiqueData['img'], $newMusiqueData['dateDeSortie'], $newMusiqueData['titre'], $newMusiqueData['idCompositeur'], $newMusiqueData['idInterprete'], $musiqueId]);
+            $stmt->execute([$newAlbumData['img'], $newAlbumData['dateDeSortie'], $newAlbumData['titre'], $newAlbumData['idCompositeur'], $newAlbumData['idInterprete'], $albumId]);
             return true;
         } catch (PDOException $e) {
             return false;
@@ -67,29 +67,28 @@ class CrudMusique {
     }
 
     /**
-     * Récupère toutes les musiques de la base de données.
+     * Récupère tous les albums de la base de données.
      *
-     * @return array Un tableau contenant toutes les musiques.
+     * @return array Un tableau contenant tous les albums.
      */
-    public function obtenirToutesMusiques() {
-        $query = "SELECT * FROM MUSIQUES";
+    public function obtenirTousAlbums() {
+        $query = "SELECT * FROM ALBUMS";
         $stmt = $this->db->query($query);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     /**
-     * Récupère une musique en fonction de son ID.
+     * Récupère un album en fonction de son ID.
      *
-     * @param int $musiqueId L'ID de la musique à récupérer.
-     * @return array|false Les données de la musique ou False si la musique n'est pas trouvée.
+     * @param int $albumId L'ID de l'album à récupérer.
+     * @return array|false Les données de l'album ou False si l'album n'est pas trouvé.
      */
-    public function obtenirMusiqueParId(int $musiqueId) {
-        $query = "SELECT * FROM MUSIQUES WHERE id = ?";
+    public function obtenirAlbumParId(int $albumId) {
+        $query = "SELECT * FROM ALBUMS WHERE id = ?";
         $stmt = $this->db->prepare($query);
-        $stmt->execute([$musiqueId]);
+        $stmt->execute([$albumId]);
         return $stmt->fetch(PDO::FETCH_ASSOC) ?: false;
     }
 }
-
 
 ?>
