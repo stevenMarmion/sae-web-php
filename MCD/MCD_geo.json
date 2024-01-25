@@ -4,7 +4,7 @@
   "cx": [
     [ "UTILISATEUR", 56 ],
     [ "FAVORIS", 56 ],
-    [ "MUSIQUES", 56 ],
+    [ "ALBUMS", 56 ],
     [ "ETRE", 180 ],
     [ "GENRE", 262 ],
     [ "COMPOSER", 56 ],
@@ -14,7 +14,7 @@
   "cy": [
     [ "UTILISATEUR", 68 ],
     [ "FAVORIS", 177 ],
-    [ "MUSIQUES", 278 ],
+    [ "ALBUMS", 278 ],
     [ "ETRE", 278 ],
     [ "GENRE", 278 ],
     [ "COMPOSER", 379 ],
@@ -22,14 +22,14 @@
     [ "ARTISTES", 463 ]
   ],
   "shift": [
-    [ "FAVORIS,MUSIQUES,0", 0 ],
+    [ "FAVORIS,ALBUMS,0", 0 ],
     [ "FAVORIS,UTILISATEUR,0", 0 ],
     [ "ETRE,GENRE,0", 0 ],
-    [ "ETRE,MUSIQUES,0", 0 ],
+    [ "ETRE,ALBUMS,0", 0 ],
     [ "COMPOSER,ARTISTES,0", 0 ],
-    [ "COMPOSER,MUSIQUES,0", 0 ],
+    [ "COMPOSER,ALBUMS,0", 0 ],
     [ "INTERPRETER,ARTISTES,0", 0 ],
-    [ "INTERPRETER,MUSIQUES,0", 0 ]
+    [ "INTERPRETER,ALBUMS,0", 0 ]
   ],
   "ratio": []
 }
