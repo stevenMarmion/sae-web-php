@@ -1,5 +1,17 @@
 <?php
 
+namespace BDD;
+
+require_once __DIR__.'/../vendor/autoload.php';
+
+use Symfony\Component\Yaml\Yaml;
+
+// Charger le fichier YAML
+$config = Yaml::parseFile(__DIR__ . '/../Datas/fixtures/extrait.yml');
+
+// Utiliser les données du fichier YAML
+var_dump($config);
+
 /**
  * Classe ConnexionBD
  * 
@@ -33,7 +45,7 @@ class ConnexionBDD {
                 global $argv;
 
                 self::$db = $this->init_DB();
-                $this->init_DB_insertion($argv);
+                //$this->init_DB_insertion($argv);
             }
 
         } catch (PDOException $e) {}
@@ -89,10 +101,12 @@ class ConnexionBDD {
         }
     }
 
-    /**
-     * Initialise l'insertion de données dans la base de données à partir d'un fichier YAML.
-     *
-     * @global array $argv Tableau contenant les arguments de la ligne de commande.
+    /**require_once __DIR__.'/vendor/autoload.php';
+
+use Symfony\Component\Yaml\Yaml;
+
+// Charger le fichier YAML
+$config = Yaml::parseFile('config.yml');s arguments de la ligne de commande.
      * @return void
      */
     function init_DB_insertion($argv) {
