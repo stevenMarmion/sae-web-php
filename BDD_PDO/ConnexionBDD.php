@@ -103,15 +103,16 @@ $config = Yaml::parseFile('config.yml');s arguments de la ligne de commande.
      * @return void
      */
     function init_DB_insertion($argv) {
+        var_dump($argv);
         if (count($argv) < 2) {
             die("Veuillez fournir le chemin vers le fichier YAML en argument !\n");
         }
         $yamlFilePath = $argv[1];
-        if (!file_exists($yamlFilePath)) {
+        if (!file_exists(__DIR__ . '/../Datas/fixtures/' . $yamlFilePath)) {
             die("Le fichier YAML spécifié n'existe pas.\n");
         }
         // Charger le fichier YAML
-        $data = Yaml::parseFile(__DIR__ . '/../DATAS/fixtures/' . $yamlFilePath);
+        $data = Yaml::parseFile(__DIR__ . '/../Datas/fixtures/' . $yamlFilePath);
 
         // Utiliser les données du fichier YAML
         var_dump($data);
