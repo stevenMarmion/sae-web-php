@@ -3,13 +3,13 @@
 namespace BDD;
 
 require_once __DIR__ . '/../Autoloader/autoloader.php';
-require_once __DIR__ . '/../Parser/YamlParser.php';
 
 use PDO;
 use PDOException;
 use Parser\YamlParser;
+use Autoload\Autoloader;
 
-\Autoloader::register();
+Autoloader::register();
 
 // Test de création et d'instanciation
 $instance = new ConnexionBDD();
@@ -65,7 +65,7 @@ class ConnexionBDD {
      */
     function init_DB() {
         if (self::$db == null) {
-            $cheminFichierSQLite = __DIR__ . '/../BDD/BD_app_Musique.sqlite3';
+            $cheminFichierSQLite = __DIR__ . '/../SQL/BD_app_Musique.sqlite3';
             self::$db = new PDO('sqlite:' . $cheminFichierSQLite);
             self::$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         }
@@ -79,7 +79,7 @@ class ConnexionBDD {
      */
     public function create_tables(PDO $db, $argv) {
         // Chemin vers le fichier SQL
-        $fichierSQL = __DIR__ . '/../BDD/creation.sql';
+        $fichierSQL = __DIR__ . '/../SQL/creation.sql';
 
         try {
             $sqlScript = file_get_contents($fichierSQL);
