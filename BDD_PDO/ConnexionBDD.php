@@ -2,11 +2,14 @@
 
 namespace BDD;
 
-require_once __DIR__.'/../Parser/YamlParser.php';
+require_once __DIR__ . '/../Autoloader/autoloader.php';
+require_once __DIR__ . '/../Parser/YamlParser.php';
 
 use PDO;
 use PDOException;
 use Parser\YamlParser;
+
+\Autoloader::register();
 
 // Test de création et d'instanciation
 $instance = new ConnexionBDD();

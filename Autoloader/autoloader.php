@@ -30,7 +30,4 @@ class Autoloader
     }
 }
 
-// Enregistrez l'autoloader
-Autoloader::register();
-
 
