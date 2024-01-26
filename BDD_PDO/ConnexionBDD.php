@@ -6,19 +6,12 @@ require_once __DIR__.'/../vendor/autoload.php';
 
 use Symfony\Component\Yaml\Yaml;
 
-// Charger le fichier YAML
-$config = Yaml::parseFile(__DIR__ . '/../Datas/fixtures/extrait.yml');
-
-// Utiliser les données du fichier YAML
-var_dump($config);
-
 /**
  * Classe ConnexionBD
  * 
  * Cette classe représente la connexion à la base de données et contient des méthodes pour initialiser la base de données, 
  * créer les tables, insérer des données et effectuer des requêtes.
  */
-namespace BD;
 
 use PDO;
 use PDOException;
@@ -45,7 +38,7 @@ class ConnexionBDD {
                 global $argv;
 
                 self::$db = $this->init_DB();
-                //$this->init_DB_insertion($argv);
+                $this->init_DB_insertion($argv);
             }
 
         } catch (PDOException $e) {}
@@ -117,7 +110,11 @@ $config = Yaml::parseFile('config.yml');s arguments de la ligne de commande.
         if (!file_exists($yamlFilePath)) {
             die("Le fichier YAML spécifié n'existe pas.\n");
         }
-        $data = yaml_parse(__DIR__ . '/../DATAS/fixtures/' . $yamlFilePath);
+        // Charger le fichier YAML
+        $data = Yaml::parseFile(__DIR__ . '/../DATAS/fixtures/' . $yamlFilePath);
+
+        // Utiliser les données du fichier YAML
+        var_dump($data);
         if ($data === false) {
             die("Erreur lors du chargement du fichier YAML.\n");
         }
