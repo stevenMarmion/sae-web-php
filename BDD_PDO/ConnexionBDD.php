@@ -2,19 +2,15 @@
 
 namespace BDD;
 
-require_once __DIR__.'/../vendor/autoload.php';
-
-use Symfony\Component\Yaml\Yaml;
-
-/**
- * Classe ConnexionBD
- * 
- * Cette classe représente la connexion à la base de données et contient des méthodes pour initialiser la base de données, 
- * créer les tables, insérer des données et effectuer des requêtes.
- */
+require_once __DIR__.'/../Parser/YamlParser.php';
 
 use PDO;
 use PDOException;
+use Parser\YamlParser;
+
+// Test de création et d'instanciation
+$instance = new ConnexionBDD();
+$instance->create_tables($instance::obtenir_connexion(), $argv);
 
 /**
  * Classe ConnexionBDD
@@ -36,9 +32,7 @@ class ConnexionBDD {
             if (self::$db === null) {
                 // Instancie le tableau argv
                 global $argv;
-
                 self::$db = $this->init_DB();
-                $this->init_DB_insertion($argv);
             }
 
         } catch (PDOException $e) {}
@@ -80,13 +74,14 @@ class ConnexionBDD {
      *
      * @param PDO $db L'instance PDO à utiliser.
      */
-    public function create_tables(PDO $db) {
+    public function create_tables(PDO $db, $argv) {
         // Chemin vers le fichier SQL
         $fichierSQL = __DIR__ . '/../BDD/creation.sql';
 
         try {
             $sqlScript = file_get_contents($fichierSQL);
             $db->exec($sqlScript);
+            $this->init_DB_insertion($argv);
 
             echo "Tables créées avec succès.";
         } catch (PDOException $e) {
@@ -94,45 +89,38 @@ class ConnexionBDD {
         }
     }
 
-    /**require_once __DIR__.'/vendor/autoload.php';
-
-use Symfony\Component\Yaml\Yaml;
-
-// Charger le fichier YAML
-$config = Yaml::parseFile('config.yml');s arguments de la ligne de commande.
-     * @return void
-     */
-    function init_DB_insertion($argv) {
+    function recup_argv($argv) {
         var_dump($argv);
         if (count($argv) < 2) {
             die("Veuillez fournir le chemin vers le fichier YAML en argument !\n");
         }
         $yamlFilePath = $argv[1];
-        if (!file_exists(__DIR__ . '/../Datas/fixtures/' . $yamlFilePath)) {
-            die("Le fichier YAML spécifié n'existe pas.\n");
-        }
-        // Charger le fichier YAML
-        $data = Yaml::parseFile(__DIR__ . '/../Datas/fixtures/' . $yamlFilePath);
-
-        // Utiliser les données du fichier YAML
-        var_dump($data);
-        if ($data === false) {
+        $datas = YamlParser::parser($yamlFilePath);
+        if ($datas === false) {
             die("Erreur lors du chargement du fichier YAML.\n");
         }
-        foreach ($data as $album) {
+        return $datas;
+    }
+
+
+    function init_DB_insertion($argv) {
+        $datas = $this->recup_argv($argv);
+        var_dump($datas);
+
+        foreach ($datas as $album) {
             try {
                 // Insérer dans la table ALBUMS
                 $queryAlbums = "INSERT INTO ALBUMS (id, img, dateDeSortie, titre) VALUES (?, ?, ?, ?)";
                 $stmtAlbums = self::$db->prepare($queryAlbums);
                 $stmtAlbums->execute([$album['entryId'], $album['img'], $album['releaseYear'], $album['title']]);
-            } catch (\Throwable $th) {}
+            } catch (\Throwable $th) {var_dump("Il y a une erreur dans la table : ALBUMS");}
 
             try {
                 // Insérer dans la table ARTISTES
                 $queryArtiste = "INSERT INTO ARTISTES (nomA) VALUES (?)";
                 $stmtArtiste = self::$db->prepare($queryArtiste);
                 $stmtArtiste->execute([$album['by']]);
-            } catch (\Throwable $th) {}
+            } catch (\Throwable $th) {var_dump("Il y a une erreur dans la table : ARTISTES");}
 
             try {
                 // Récupère l'id de l'artiste fraichement inséré 
@@ -141,7 +129,7 @@ $config = Yaml::parseFile('config.yml');s arguments de la ligne de commande.
                 $stmtIdArtiste->bindParam(':nomA', $album['by'], PDO::PARAM_STR);
                 $stmtIdArtiste->execute();
                 $idArtiste = $stmtIdArtiste->fetchColumn();
-            } catch (\Throwable $th) {}
+            } catch (\Throwable $th) {var_dump("Il y a une erreur dans la table : ARTISTES");}
 
             // Insérer dans la table GENRE
             foreach ($album['genre'] as $genre) {
@@ -149,7 +137,7 @@ $config = Yaml::parseFile('config.yml');s arguments de la ligne de commande.
                     $queryGenre = "INSERT INTO GENRE (nomG) VALUES (?)";
                     $stmtGenre = self::$db->prepare($queryGenre);
                     $stmtGenre->execute([$genre]);
-                } catch (\Throwable $th) {}
+                } catch (\Throwable $th) {var_dump("Il y a une erreur dans la table : GENRE");}
 
                 try {
                     // Récupère l'id du genre fraichement inséré 
@@ -158,14 +146,14 @@ $config = Yaml::parseFile('config.yml');s arguments de la ligne de commande.
                     $stmtIdGenre->bindParam(':nomG', $genre, PDO::PARAM_STR);
                     $stmtIdGenre->execute();
                     $idGenre = $stmtIdGenre->fetchColumn();
-                } catch (\Throwable $th) {}
+                } catch (\Throwable $th) {var_dump("Il y a une erreur dans la table : GENRE");}
 
                 try {
                     // Insérer dans la table ETRE
                     $queryEtre = "INSERT INTO ETRE (idAl, idG) VALUES (?, ?)";
                     $stmtEtre = self::$db->prepare($queryEtre);
                     $stmtEtre->execute([$album['entryId'], $idGenre]);
-                } catch (\Throwable $th) {}
+                } catch (\Throwable $th) {var_dump("Il y a une erreur dans la table : ETRE");}
             }
 
             try {
@@ -173,21 +161,17 @@ $config = Yaml::parseFile('config.yml');s arguments de la ligne de commande.
                 $queryComposer = "INSERT INTO COMPOSER (idAl, idA) VALUES (?, ?)";
                 $stmtComposer = self::$db->prepare($queryComposer);
                 $stmtComposer->execute([$album['entryId'], $idArtiste]);
-            } catch (\Throwable $th) {}
+            } catch (\Throwable $th) {var_dump("Il y a une erreur dans la table : COMPOSER");}
     
             try {
                 // Insérer dans la table INTERPRETER
                 $queryInterpreter = "INSERT INTO INTERPRETER (idAl, idA) VALUES (?, ?)";
                 $stmtInterpreter = self::$db->prepare($queryInterpreter);
                 $stmtInterpreter->execute([$album['entryId'], $idArtiste]);
-            } catch (\Throwable $th) {}
+            } catch (\Throwable $th) {var_dump("Il y a une erreur dans la table : INTERPRETER");}
         }
         echo "Importation des données terminée !";
     }
 }
-
-// Test de création et d'instanciation
-$instance = new ConnexionBDD();
-$instance->create_tables($instance::obtenir_connexion());
 
 ?>
