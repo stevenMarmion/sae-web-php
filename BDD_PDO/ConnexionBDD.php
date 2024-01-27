@@ -1,6 +1,6 @@
 <?php
 
-namespace BDD;
+namespace BDD_PDO;
 
 require_once __DIR__ . '/../Autoloader/autoloader.php';
 
@@ -54,7 +54,7 @@ class ConnexionBDD {
                 die('Erreur de connexion à la base de données : ' . $e->getMessage());
             }
         }
-        return self::$db;
+        return self::$db; // Ajouter cette ligne pour retourner l'instance PDO
     }
 
     /**
@@ -64,10 +64,14 @@ class ConnexionBDD {
      * @return PDO L'objet PDO représentant la connexion à la base de données.
      */
     function init_DB() {
-        if (self::$db == null) {
-            $cheminFichierSQLite = __DIR__ . '/../SQL/BD_app_Musique.sqlite3';
-            self::$db = new PDO('sqlite:' . $cheminFichierSQLite);
-            self::$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        if (self::$db === null) {
+            try {
+                $cheminFichierSQLite = __DIR__ . '/../SQL/BD_app_Musique.sqlite3';
+                self::$db = new PDO('sqlite:' . $cheminFichierSQLite);
+                self::$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            } catch (PDOException $e) {
+                $e->getMessage();
+            }
         }
         return self::$db;
     }
@@ -86,7 +90,7 @@ class ConnexionBDD {
             $db->exec($sqlScript);
             $this->init_DB_insertion($argv);
 
-            echo "Tables créées avec succès.";
+            echo "\n>> [Tables créées avec succès]\n";
         } catch (PDOException $e) {
             echo "Erreur : " . $e->getMessage();
         }
@@ -173,7 +177,7 @@ class ConnexionBDD {
                 $stmtInterpreter->execute([$album['entryId'], $idArtiste]);
             } catch (\Throwable $th) {var_dump("Il y a une erreur dans la table : INTERPRETER");}
         }
-        echo "Importation des données terminée !";
+        echo "\n>> [Importation des données terminée]\n";
     }
 }
 
