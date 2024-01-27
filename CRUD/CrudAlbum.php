@@ -22,9 +22,9 @@ class CrudAlbum {
      */
     public function ajouterAlbum(array $albumData) {
         try {
-            $query = "INSERT INTO ALBUMS (img, dateDeSortie, titre, idCompositeur, idInterprete) VALUES (?, ?, ?, ?, ?)";
+            $query = "INSERT INTO ALBUMS (img, dateDeSortie, titre) VALUES (?, ?, ?)";
             $stmt = $this->db->prepare($query);
-            $stmt->execute([$albumData['img'], $albumData['dateDeSortie'], $albumData['titre'], $albumData['idCompositeur'], $albumData['idInterprete']]);
+            $stmt->execute([$albumData['img'], $albumData['dateDeSortie'], $albumData['titre']]);
             return true;
         } catch (PDOException $e) {
             return false;
