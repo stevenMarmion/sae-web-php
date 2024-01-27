@@ -1,5 +1,15 @@
 <?php
 
+namespace App\Models\EntityOperations;
+
+require_once __DIR__ . '/../../Autoloader/autoloader.php';
+
+use App\Autoloader\Autoloader;
+use PDO;
+use PDOException;
+
+Autoloader::register();
+
 class CrudAlbum {
 
     private $db;

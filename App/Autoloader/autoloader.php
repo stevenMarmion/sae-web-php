@@ -1,6 +1,6 @@
 <?php
 
-namespace Autoloader;
+namespace App\Autoloader;
 
 /** 
  * Classe Autoloader qui permet de charger automatiquement les classes
