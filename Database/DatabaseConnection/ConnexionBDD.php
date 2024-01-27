@@ -1,13 +1,14 @@
 <?php
 
-namespace BDD_PDO;
+namespace Database\DatabaseConnection;
 
-require_once __DIR__ . '/../Autoloader/autoloader.php';
+require_once __DIR__ . '/../../App/Autoloader/autoloader.php';
 
+use App\Autoloader\Autoloader;
+use App\Parser\YamlParser;
 use PDO;
 use PDOException;
-use Parser\YamlParser;
-use Autoloader\Autoloader;
+use Throwable;
 
 Autoloader::register();
 
@@ -66,7 +67,7 @@ class ConnexionBDD {
     function init_DB() {
         if (self::$db === null) {
             try {
-                $cheminFichierSQLite = __DIR__ . '/../SQL/BD_app_Musique.sqlite3';
+                $cheminFichierSQLite = __DIR__ . '/../DatabaseScripts/BD_app_Musique.sqlite3';
                 self::$db = new PDO('sqlite:' . $cheminFichierSQLite);
                 self::$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             } catch (PDOException $e) {
@@ -83,7 +84,7 @@ class ConnexionBDD {
      */
     public function create_tables(PDO $db, $argv) {
         // Chemin vers le fichier SQL
-        $fichierSQL = __DIR__ . '/../SQL/creation.sql';
+        $fichierSQL = __DIR__ . '/../DatabaseScripts/creation.sql';
 
         try {
             $sqlScript = file_get_contents($fichierSQL);
@@ -119,14 +120,14 @@ class ConnexionBDD {
                 $queryAlbums = "INSERT INTO ALBUMS (id, img, dateDeSortie, titre) VALUES (?, ?, ?, ?)";
                 $stmtAlbums = self::$db->prepare($queryAlbums);
                 $stmtAlbums->execute([$album['entryId'], $album['img'], $album['releaseYear'], $album['title']]);
-            } catch (\Throwable $th) {echo "\n>> [Pas d'insertion, duplication repérée dans la table ALBUMS]\n";}
+            } catch (Throwable $th) {echo "\n>> [Pas d'insertion, duplication repérée dans la table ALBUMS]\n";}
 
             try {
                 // Insérer dans la table ARTISTES
                 $queryArtiste = "INSERT INTO ARTISTES (nomA) VALUES (?)";
                 $stmtArtiste = self::$db->prepare($queryArtiste);
                 $stmtArtiste->execute([$album['by']]);
-            } catch (\Throwable $th) {echo "\n>> [Pas d'insertion, duplication repérée dans la table ARTISTES]\n";}
+            } catch (Throwable $th) {echo "\n>> [Pas d'insertion, duplication repérée dans la table ARTISTES]\n";}
 
             try {
                 // Récupère l'id de l'artiste fraichement inséré 
@@ -135,7 +136,7 @@ class ConnexionBDD {
                 $stmtIdArtiste->bindParam(':nomA', $album['by'], PDO::PARAM_STR);
                 $stmtIdArtiste->execute();
                 $idArtiste = $stmtIdArtiste->fetchColumn();
-            } catch (\Throwable $th) {echo "\n>> [Pas d'insertion, duplication repérée dans la table ARTISTES]\n";}
+            } catch (Throwable $th) {echo "\n>> [Pas d'insertion, duplication repérée dans la table ARTISTES]\n";}
 
             // Insérer dans la table GENRE
             foreach ($album['genre'] as $genre) {
@@ -143,7 +144,7 @@ class ConnexionBDD {
                     $queryGenre = "INSERT INTO GENRE (nomG) VALUES (?)";
                     $stmtGenre = self::$db->prepare($queryGenre);
                     $stmtGenre->execute([$genre]);
-                } catch (\Throwable $th) {echo "\n>> [Pas d'insertion, duplication repérée dans la table GENRE]\n";}
+                } catch (Throwable $th) {echo "\n>> [Pas d'insertion, duplication repérée dans la table GENRE]\n";}
 
                 try {
                     // Récupère l'id du genre fraichement inséré 
@@ -152,14 +153,14 @@ class ConnexionBDD {
                     $stmtIdGenre->bindParam(':nomG', $genre, PDO::PARAM_STR);
                     $stmtIdGenre->execute();
                     $idGenre = $stmtIdGenre->fetchColumn();
-                } catch (\Throwable $th) {echo "\n>> [Pas d'insertion, duplication repérée dans la table GENRE]\n";}
+                } catch (Throwable $th) {echo "\n>> [Pas d'insertion, duplication repérée dans la table GENRE]\n";}
 
                 try {
                     // Insérer dans la table ETRE
                     $queryEtre = "INSERT INTO ETRE (idAl, idG) VALUES (?, ?)";
                     $stmtEtre = self::$db->prepare($queryEtre);
                     $stmtEtre->execute([$album['entryId'], $idGenre]);
-                } catch (\Throwable $th) {echo "\n>> [Pas d'insertion, duplication repérée dans la table ETRE]\n";}
+                } catch (Throwable $th) {echo "\n>> [Pas d'insertion, duplication repérée dans la table ETRE]\n";}
             }
 
             try {
@@ -167,14 +168,14 @@ class ConnexionBDD {
                 $queryComposer = "INSERT INTO COMPOSER (idAl, idA) VALUES (?, ?)";
                 $stmtComposer = self::$db->prepare($queryComposer);
                 $stmtComposer->execute([$album['entryId'], $idArtiste]);
-            } catch (\Throwable $th) {echo "\n>> [Pas d'insertion, duplication repérée dans la table COMPOSER]\n" ;}
+            } catch (Throwable $th) {echo "\n>> [Pas d'insertion, duplication repérée dans la table COMPOSER]\n" ;}
     
             try {
                 // Insérer dans la table INTERPRETER
                 $queryInterpreter = "INSERT INTO INTERPRETER (idAl, idA) VALUES (?, ?)";
                 $stmtInterpreter = self::$db->prepare($queryInterpreter);
                 $stmtInterpreter->execute([$album['entryId'], $idArtiste]);
-            } catch (\Throwable $th) {echo "\n>> [Pas d'insertion, duplication repérée dans la table INTERPRETER]\n" ;}
+            } catch (Throwable $th) {echo "\n>> [Pas d'insertion, duplication repérée dans la table INTERPRETER]\n" ;}
         }
         echo "\n>> [Importation des données terminée]\n";
     }
