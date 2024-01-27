@@ -5,6 +5,7 @@ namespace App\Models\EntityOperations;
 require_once __DIR__ . '/../../Autoloader/autoloader.php';
 
 use App\Autoloader\Autoloader;
+use App\Models\Album;
 use PDO;
 use PDOException;
 
@@ -25,16 +26,33 @@ class CrudAlbum {
     }
 
     /**
-     * Ajoute un nouvel album à la base de données.
+     * Ajoute un nouvel album à la base de données depuis une donnée yml.
      *
      * @param array $albumData Les données de l'album à ajouter.
      * @return bool True si l'ajout est réussi, False sinon.
      */
-    public function ajouterAlbum(array $albumData) {
+    public function ajouterAlbumFromYml(array $albumData) {
         try {
             $query = "INSERT INTO ALBUMS (img, dateDeSortie, titre) VALUES (?, ?, ?)";
             $stmt = $this->db->prepare($query);
             $stmt->execute([$albumData['img'], $albumData['dateDeSortie'], $albumData['titre']]);
+            return true;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    /**
+     * Ajoute un nouvel album à la base de données depuis une donnée Album en objet.
+     *
+     * @param Album $albumData Les données de l'album à ajouter.
+     * @return bool True si l'ajout est réussi, False sinon.
+     */
+    public function ajouterAlbumFromObject(Album $albumData) {
+        try {
+            $query = "INSERT INTO ALBUMS (img, dateDeSortie, titre) VALUES (?, ?, ?)";
+            $stmt = $this->db->prepare($query);
+            $stmt->execute([$albumData->getImg(), $albumData->getDateSortie(), $albumData->getTitre()]);
             return true;
         } catch (PDOException $e) {
             return false;
@@ -62,14 +80,17 @@ class CrudAlbum {
      * Modifie les données d'un album dans la base de données en fonction de son ID.
      *
      * @param int $albumId L'ID de l'album à modifier.
-     * @param array $newAlbumData Les nouvelles données de l'album.
+     * @param Album $newAlbumData Les nouvelles données de l'album.
      * @return bool True si la modification est réussie, False sinon.
      */
-    public function modifierAlbum(int $albumId, array $newAlbumData) {
+    public function modifierAlbum(int $albumId, Album $newAlbumData) {
         try {
-            $query = "UPDATE ALBUMS SET img = ?, dateDeSortie = ?, titre = ?, idCompositeur = ?, idInterprete = ? WHERE id = ?";
+            $query = "UPDATE ALBUMS SET img = ?, dateDeSortie = ?, titre = ? WHERE id = ?";
             $stmt = $this->db->prepare($query);
-            $stmt->execute([$newAlbumData['img'], $newAlbumData['dateDeSortie'], $newAlbumData['titre'], $newAlbumData['idCompositeur'], $newAlbumData['idInterprete'], $albumId]);
+            $stmt->execute([$newAlbumData->getImg(), 
+                            $newAlbumData->getDateSortie(), 
+                            $newAlbumData->getTitre(),
+                            $albumId]);
             return true;
         } catch (PDOException $e) {
             return false;

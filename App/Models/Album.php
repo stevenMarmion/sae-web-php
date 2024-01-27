@@ -25,9 +25,9 @@ class Album {
     private int $idM;
 
     /**
-     * @var int L'identifiant de l'image associée à la musique.
+     * @var string L'identifiant de l'image associée à la musique.
      */
-    private int $idImg;
+    private string $img;
 
     /**
      * @var DateTime La date de sortie de la musique.
@@ -58,16 +58,16 @@ class Album {
      * Constructeur de la classe Musique.
      *
      * @param int      $idM           L'identifiant unique de la musique.
-     * @param int      $idImg         L'identifiant de l'image associée à la musique.
+     * @param int      $img         L'identifiant de l'image associée à la musique.
      * @param DateTime $dateDeSortie  La date de sortie de la musique.
      * @param string   $title         Le titre de la musique.
      * @param array    $compositeur   La liste de compositeurs de la musique.
      * @param array    $interprete    La liste d'interprète de la musique.
      * @param array    $genre         La liste de genre de l'album.
      */
-    public function __construct($idM, $idImg, $dateDeSortie, $title, $compositeur, $interprete, $genre) {
+    public function __construct($idM, $img, $dateDeSortie, $title, $compositeur, $interprete, $genre) {
         $this->idM = $idM;
-        $this->idImg = $idImg;
+        $this->img = $img;
         $this->dateDeSortie = $dateDeSortie;
         $this->title = $title;
         $this->compositeur = $compositeur;
@@ -89,8 +89,8 @@ class Album {
      *
      * @return int L'identifiant de l'image.
      */
-    public function getIdImg() {
-        return $this->idImg;
+    public function getImg() {
+        return $this->img;
     }
 
     /**
@@ -141,10 +141,10 @@ class Album {
     /**
      * Définir l'identifiant de l'image associée à la musique.
      *
-     * @param int $idImg Le nouvel identifiant de l'image.
+     * @param int $img Le nouvel identifiant de l'image.
      */
-    public function setIdImg(int $idImg) {
-        $this->idImg = $idImg;
+    public function setImg(int $img) {
+        $this->img = $img;
     }
 
     /**

@@ -5,6 +5,7 @@ namespace App\Models\EntityOperations;
 require_once __DIR__ . '/../../Autoloader/autoloader.php';
 
 use App\Autoloader\Autoloader;
+use App\Models\User;
 use PDO;
 use PDOException;
 
@@ -25,16 +26,35 @@ class CrudUser {
     }
 
     /**
-     * Ajoute un nouvel utilisateur à la base de données.
+     * Ajoute un nouvel utilisateur à la base de données depuis une donnée yml.
      *
      * @param array $userData Les données de l'utilisateur à ajouter.
      * @return bool True si l'ajout est réussi, False sinon.
      */
-    public function ajouterUtilisateur(array $userData) {
+    public function ajouterUtilisateurFromYml(array $userData) {
         try {
             $query = "INSERT INTO UTILISATEUR (isAdmin, pseudo, mdp, adresseMail) VALUES (?, ?, ?, ?)";
             $stmt = $this->db->prepare($query);
             $stmt->execute([$userData['isAdmin'], $userData['pseudo'], $userData['mdp'], $userData['adresseMail']]);
+            return true;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    /**
+     * Ajoute un nouvel utilisateur à la base de données depuis une donnée objet.
+     *
+     * @param User $userData Les données de l'utilisateur à ajouter.
+     * @return bool True si l'ajout est réussi, False sinon.
+     */
+    public function ajouterUtilisateurFromObject(User $userData) {
+        try {
+            $query = "INSERT INTO UTILISATEUR (0, pseudo, mdp, adresseMail) VALUES (?, ?, ?)";
+            $stmt = $this->db->prepare($query);
+            $stmt->execute([$userData->getPseudo(), 
+                            $userData->getMdp(), 
+                            $userData->getMail()]);
             return true;
         } catch (PDOException $e) {
             return false;
@@ -62,14 +82,22 @@ class CrudUser {
      * Modifie les données d'un utilisateur dans la base de données en fonction de son ID.
      *
      * @param int $userId L'ID de l'utilisateur à modifier.
-     * @param array $newUserData Les nouvelles données de l'utilisateur.
+     * @param User $newUserData Les nouvelles données de l'utilisateur.
      * @return bool True si la modification est réussie, False sinon.
      */
-    public function modifierUtilisateur(int $userId, array $newUserData) {
+    public function modifierUtilisateur(int $userId, User $newUserData) {
         try {
-            $query = "UPDATE UTILISATEUR SET isAdmin = ?, pseudo = ?, mdp = ?, adresseMail = ? WHERE idU = ?";
+            if ($newUserData->isAdmin()) {
+                $query = "UPDATE UTILISATEUR SET isAdmin = 1, pseudo = ?, mdp = ?, adresseMail = ? WHERE idU = ?";   
+            }
+            else {
+                $query = "UPDATE UTILISATEUR SET isAdmin = 0, pseudo = ?, mdp = ?, adresseMail = ? WHERE idU = ?";
+            }
             $stmt = $this->db->prepare($query);
-            $stmt->execute([$newUserData['isAdmin'], $newUserData['pseudo'], $newUserData['mdp'], $newUserData['adresseMail'], $userId]);
+            $stmt->execute([$newUserData->getPseudo(), 
+                            $newUserData->getMdp(), 
+                            $newUserData->getMail(), 
+                            $userId]);
             return true;
         } catch (PDOException $e) {
             return false;
