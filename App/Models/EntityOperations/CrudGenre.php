@@ -5,6 +5,7 @@ namespace App\Models\EntityOperations;
 require_once __DIR__ . '/../../Autoloader/autoloader.php';
 
 use App\Autoloader\Autoloader;
+use App\Models\Genre;
 use PDO;
 use PDOException;
 
@@ -25,16 +26,33 @@ class CrudGenre {
     }
 
     /**
-     * Ajoute un nouveau genre à la base de données.
+     * Ajoute un nouveau genre à la base de données depuis une donnée yml.
      *
      * @param array $genreData Les données du genre à ajouter.
      * @return bool True si l'ajout est réussi, False sinon.
      */
-    public function ajouterGenre(array $genreData) {
+    public function ajouterGenreFromYml(array $genreData) {
         try {
             $query = "INSERT INTO GENRE (nomG) VALUES (?)";
             $stmt = $this->db->prepare($query);
             $stmt->execute([$genreData['nomG']]);
+            return true;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    /**
+     * Ajoute un nouveau genre à la base de données depuis une donnée objet.
+     *
+     * @param Genre $genreData Les données du genre à ajouter.
+     * @return bool True si l'ajout est réussi, False sinon.
+     */
+    public function ajouterGenreFromObject(Genre $genreData) {
+        try {
+            $query = "INSERT INTO GENRE (nomG) VALUES (?)";
+            $stmt = $this->db->prepare($query);
+            $stmt->execute([$genreData->getNomGenre()]);
             return true;
         } catch (PDOException $e) {
             return false;
@@ -62,14 +80,14 @@ class CrudGenre {
      * Modifie les données d'un genre dans la base de données en fonction de son ID.
      *
      * @param int $genreId L'ID du genre à modifier.
-     * @param array $newGenreData Les nouvelles données du genre.
+     * @param Genre $newGenreData Les nouvelles données du genre.
      * @return bool True si la modification est réussie, False sinon.
      */
-    public function modifierGenre(int $genreId, array $newGenreData) {
+    public function modifierGenre(int $genreId, Genre $newGenreData) {
         try {
             $query = "UPDATE GENRE SET nomG = ? WHERE idG = ?";
             $stmt = $this->db->prepare($query);
-            $stmt->execute([$newGenreData['nomG'], $genreId]);
+            $stmt->execute([$newGenreData->getNomGenre(), $genreId]);
             return true;
         } catch (PDOException $e) {
             return false;

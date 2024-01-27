@@ -36,7 +36,7 @@ class User {
     private string $adresseMail;
 
     /**
-     * @var string Le rôle de l'utilisateur, indiquant s'il s'agit d'un administrateur.
+     * @var bool Le rôle de l'utilisateur, indiquant s'il s'agit d'un administrateur.
      */
     private string $isAdmin;
 
@@ -52,7 +52,7 @@ class User {
      * @param string $pseudo      Le nom d'utilisateur choisi par l'utilisateur.
      * @param string $motDePasse  Le mot de passe hashé de l'utilisateur.
      * @param string $adresseMail L'adresse e-mail de l'utilisateur.
-     * @param string $isAdmin     Le rôle de l'utilisateur, indiquant s'il s'agit d'un administrateur.
+     * @param bool   $isAdmin     Le rôle de l'utilisateur, indiquant s'il s'agit d'un administrateurn.
      * @param array  $favoris     Un tableau contenant les éléments favoris de l'utilisateur.
      */
     public function __construct($idU, $pseudo, $motDePasse, $adresseMail, $isAdmin, $favoris) {
@@ -80,6 +80,24 @@ class User {
      */
     public function getPseudo() {
         return $this->pseudo;
+    }
+
+    /**
+     * Obtenir le mot de passe utilisateur choisi par l'utilisateur.
+     *
+     * @return string Le mot de passe de l'utilisateur.
+     */
+    public function getMdp() {
+        return $this->motDePasse;
+    }
+
+    /**
+     * Obtenir le rôle de l'utilisateur.
+     *
+     * @return bool Le rôle de l'utilisateur.
+     */
+    public function isAdmin() {
+        return $this->isAdmin;
     }
 
     /**
