@@ -7,7 +7,7 @@ require_once __DIR__ . '/../Autoloader/autoloader.php';
 use PDO;
 use PDOException;
 use Parser\YamlParser;
-use Autoload\Autoloader;
+use Autoloader\Autoloader;
 
 Autoloader::register();
 
@@ -88,16 +88,16 @@ class ConnexionBDD {
         try {
             $sqlScript = file_get_contents($fichierSQL);
             $db->exec($sqlScript);
-            $this->init_DB_insertion($argv);
-
             echo "\n>> [Tables créées avec succès]\n";
+
+            $this->init_DB_insertion($argv);
         } catch (PDOException $e) {
             echo "Erreur : " . $e->getMessage();
         }
     }
 
     function recup_argv($argv) {
-        var_dump($argv);
+        echo "\n>> [Instanciation de la BDD avec les paramètres d'exécution suivant...\n", print_r($argv), "]\n" ;
         if (count($argv) < 2) {
             die("Veuillez fournir le chemin vers le fichier YAML en argument !\n");
         }
@@ -112,7 +112,6 @@ class ConnexionBDD {
 
     function init_DB_insertion($argv) {
         $datas = $this->recup_argv($argv);
-        var_dump($datas);
 
         foreach ($datas as $album) {
             try {
@@ -120,14 +119,14 @@ class ConnexionBDD {
                 $queryAlbums = "INSERT INTO ALBUMS (id, img, dateDeSortie, titre) VALUES (?, ?, ?, ?)";
                 $stmtAlbums = self::$db->prepare($queryAlbums);
                 $stmtAlbums->execute([$album['entryId'], $album['img'], $album['releaseYear'], $album['title']]);
-            } catch (\Throwable $th) {var_dump("Il y a une erreur dans la table : ALBUMS");}
+            } catch (\Throwable $th) {echo "\n>> [Pas d'insertion, duplication repérée dans la table ALBUMS]\n";}
 
             try {
                 // Insérer dans la table ARTISTES
                 $queryArtiste = "INSERT INTO ARTISTES (nomA) VALUES (?)";
                 $stmtArtiste = self::$db->prepare($queryArtiste);
                 $stmtArtiste->execute([$album['by']]);
-            } catch (\Throwable $th) {var_dump("Il y a une erreur dans la table : ARTISTES");}
+            } catch (\Throwable $th) {echo "\n>> [Pas d'insertion, duplication repérée dans la table ARTISTES]\n";}
 
             try {
                 // Récupère l'id de l'artiste fraichement inséré 
@@ -136,7 +135,7 @@ class ConnexionBDD {
                 $stmtIdArtiste->bindParam(':nomA', $album['by'], PDO::PARAM_STR);
                 $stmtIdArtiste->execute();
                 $idArtiste = $stmtIdArtiste->fetchColumn();
-            } catch (\Throwable $th) {var_dump("Il y a une erreur dans la table : ARTISTES");}
+            } catch (\Throwable $th) {echo "\n>> [Pas d'insertion, duplication repérée dans la table ARTISTES]\n";}
 
             // Insérer dans la table GENRE
             foreach ($album['genre'] as $genre) {
@@ -144,7 +143,7 @@ class ConnexionBDD {
                     $queryGenre = "INSERT INTO GENRE (nomG) VALUES (?)";
                     $stmtGenre = self::$db->prepare($queryGenre);
                     $stmtGenre->execute([$genre]);
-                } catch (\Throwable $th) {var_dump("Il y a une erreur dans la table : GENRE");}
+                } catch (\Throwable $th) {echo "\n>> [Pas d'insertion, duplication repérée dans la table GENRE]\n";}
 
                 try {
                     // Récupère l'id du genre fraichement inséré 
@@ -153,14 +152,14 @@ class ConnexionBDD {
                     $stmtIdGenre->bindParam(':nomG', $genre, PDO::PARAM_STR);
                     $stmtIdGenre->execute();
                     $idGenre = $stmtIdGenre->fetchColumn();
-                } catch (\Throwable $th) {var_dump("Il y a une erreur dans la table : GENRE");}
+                } catch (\Throwable $th) {echo "\n>> [Pas d'insertion, duplication repérée dans la table GENRE]\n";}
 
                 try {
                     // Insérer dans la table ETRE
                     $queryEtre = "INSERT INTO ETRE (idAl, idG) VALUES (?, ?)";
                     $stmtEtre = self::$db->prepare($queryEtre);
                     $stmtEtre->execute([$album['entryId'], $idGenre]);
-                } catch (\Throwable $th) {var_dump("Il y a une erreur dans la table : ETRE");}
+                } catch (\Throwable $th) {echo "\n>> [Pas d'insertion, duplication repérée dans la table ETRE]\n";}
             }
 
             try {
@@ -168,14 +167,14 @@ class ConnexionBDD {
                 $queryComposer = "INSERT INTO COMPOSER (idAl, idA) VALUES (?, ?)";
                 $stmtComposer = self::$db->prepare($queryComposer);
                 $stmtComposer->execute([$album['entryId'], $idArtiste]);
-            } catch (\Throwable $th) {var_dump("Il y a une erreur dans la table : COMPOSER");}
+            } catch (\Throwable $th) {echo "\n>> [Pas d'insertion, duplication repérée dans la table COMPOSER]\n" ;}
     
             try {
                 // Insérer dans la table INTERPRETER
                 $queryInterpreter = "INSERT INTO INTERPRETER (idAl, idA) VALUES (?, ?)";
                 $stmtInterpreter = self::$db->prepare($queryInterpreter);
                 $stmtInterpreter->execute([$album['entryId'], $idArtiste]);
-            } catch (\Throwable $th) {var_dump("Il y a une erreur dans la table : INTERPRETER");}
+            } catch (\Throwable $th) {echo "\n>> [Pas d'insertion, duplication repérée dans la table INTERPRETER]\n" ;}
         }
         echo "\n>> [Importation des données terminée]\n";
     }
