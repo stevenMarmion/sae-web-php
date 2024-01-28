@@ -1,19 +1,25 @@
 {
-  "width": 298,
+  "width": 379,
   "height": 506,
   "cx": [
-    [ "UTILISATEUR", 56 ],
-    [ "FAVORIS", 56 ],
-    [ "ALBUMS", 56 ],
-    [ "ETRE", 180 ],
-    [ "GENRE", 262 ],
-    [ "COMPOSER", 56 ],
-    [ "INTERPRETER", 180 ],
-    [ "ARTISTES", 56 ]
+    [ "UTILISATEUR", 124 ],
+    [ "PLAYLIST", 330 ],
+    [ "NOTE", 33 ],
+    [ "FAVORIS", 124 ],
+    [ "CONTENIR", 248 ],
+    [ "ALBUMS", 124 ],
+    [ "ETRE", 248 ],
+    [ "GENRE", 330 ],
+    [ "COMPOSER", 124 ],
+    [ "INTERPRETER", 248 ],
+    [ "ARTISTES", 124 ]
   ],
   "cy": [
     [ "UTILISATEUR", 68 ],
+    [ "PLAYLIST", 68 ],
+    [ "NOTE", 177 ],
     [ "FAVORIS", 177 ],
+    [ "CONTENIR", 177 ],
     [ "ALBUMS", 278 ],
     [ "ETRE", 278 ],
     [ "GENRE", 278 ],
@@ -22,8 +28,12 @@
     [ "ARTISTES", 463 ]
   ],
   "shift": [
+    [ "NOTE,ALBUMS,0", 0 ],
+    [ "NOTE,UTILISATEUR,0", 0 ],
     [ "FAVORIS,ALBUMS,0", 0 ],
     [ "FAVORIS,UTILISATEUR,0", 0 ],
+    [ "CONTENIR,ALBUMS,0", 0 ],
+    [ "CONTENIR,PLAYLIST,0", 0 ],
     [ "ETRE,GENRE,0", 0 ],
     [ "ETRE,ALBUMS,0", 0 ],
     [ "COMPOSER,ARTISTES,0", 0 ],
