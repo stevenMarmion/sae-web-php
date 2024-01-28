@@ -21,7 +21,7 @@ $instance->create_tables($instance::obtenir_connexion(), $argv);
  * 
  * Cette classe représente la connexion à la base de données.
  * Elle initialise la base de données, crée les tables nécessaires,
- * insère les données de quiz, questions, réponses et choix, si la base de données est vide.
+ * insère les données utilisateurs, genres, albums, etc ...
  */
 class ConnexionBDD {
     private static $db = null;
@@ -84,12 +84,17 @@ class ConnexionBDD {
      */
     public function create_tables(PDO $db, $argv) {
         // Chemin vers le fichier SQL
-        $fichierSQL = __DIR__ . '/../DatabaseScripts/creation.sql';
+        $fichierSQLCreate = __DIR__ . '/../DatabaseScripts/creation.sql';
+        $fichierSQLInsert = __DIR__ . '/../DatabaseScripts/insertion.sql';
 
         try {
-            $sqlScript = file_get_contents($fichierSQL);
+            $sqlScript = file_get_contents($fichierSQLCreate);
             $db->exec($sqlScript);
             echo "\n>> [Tables créées avec succès]\n";
+
+            $sqlScript = file_get_contents($fichierSQLInsert);
+            $db->exec($sqlScript);
+            echo "\n>> [Insert ADMIN intégré avec succès]\n";
 
             $this->init_DB_insertion($argv);
         } catch (PDOException $e) {
