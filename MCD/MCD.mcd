@@ -1,0 +1,21 @@
+UTILISATEUR : idU,isAdmin,pseudo,mdp,adresseMail
+:
+:
+
+FAVORIS, 0N ALBUMS,0N UTILISATEUR
+:
+:
+
+ALBUMS : id,img,dateDeSortie,titre
+ETRE, 11 GENRE, 1N ALBUMS
+GENRE : idG,nomG
+
+COMPOSER, 1N ARTISTES, 11 ALBUMS
+INTERPRETER, 1N ARTISTES, 11 ALBUMS
+
+ARTISTES : idA,nomA
+:
+:
+
+
+
