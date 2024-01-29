@@ -61,3 +61,29 @@ CREATE TABLE "FAVORIS" (
 	PRIMARY KEY("idU","idAl")
 );
 
+-- Table PLAYLIST
+CREATE TABLE PLAYLIST (
+    "idPlaylist" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "idU" INTEGER NOT NULL,
+    "nomPlaylist" TEXT NOT NULL,
+    FOREIGN KEY("idU") REFERENCES "UTILISATEUR"("idU")
+);
+
+-- Table NOTE
+CREATE TABLE NOTE (
+    "idAl" INTEGER NOT NULL,
+    "idU" INTEGER NOT NULL,
+    "note" REAL CHECK(note >= 0 AND note <= 5) NOT NULL,
+    FOREIGN KEY("idAl") REFERENCES "ALBUMS"("id"),
+    FOREIGN KEY("idU") REFERENCES "UTILISATEUR"("idU"),
+    PRIMARY KEY("idAl", "idU")
+);
+
+-- Table CONTENIR
+CREATE TABLE CONTENIR (
+    "idPlaylist" INTEGER NOT NULL,
+    "idAl" INTEGER NOT NULL,
+    FOREIGN KEY("idPlaylist") REFERENCES "PLAYLIST"("idPlaylist"),
+    FOREIGN KEY("idAl") REFERENCES "ALBUMS"("id"),
+    PRIMARY KEY("idPlaylist", "idAl")
+);

@@ -5,6 +5,8 @@ PRAGMA foreign_keys = OFF;
 DROP TABLE IF EXISTS "FAVORIS";
 DROP TABLE IF EXISTS "ETRE";
 DROP TABLE IF EXISTS "ALBUMS";
+DROP TABLE IF EXISTS "PLAYLIST"; -- Nouvelle table
+DROP TABLE IF EXISTS "NOTE";     -- Nouvelle table
 
 -- Supprimer les tables sans contraintes de clé étrangère
 DROP TABLE IF EXISTS "ARTISTES";
