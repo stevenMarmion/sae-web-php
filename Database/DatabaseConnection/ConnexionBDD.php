@@ -14,7 +14,7 @@ Autoloader::register();
 
 // Test de création et d'instanciation
 $instance = new ConnexionBDD();
-$instance->create_tables($instance::obtenir_connexion(), $argv);
+//$instance->create_tables($instance::obtenir_connexion(), $argv);
 
 /**
  * Classe ConnexionBDD
@@ -67,7 +67,7 @@ class ConnexionBDD {
     function init_DB() {
         if (self::$db === null) {
             try {
-                $cheminFichierSQLite = __DIR__ . '/../DatabaseScripts/BD_app_Musique.sqlite3';
+                $cheminFichierSQLite = __DIR__ . '/../DatabaseScripts/BDD_ALBUM.sqlite3';
                 self::$db = new PDO('sqlite:' . $cheminFichierSQLite);
                 self::$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             } catch (PDOException $e) {

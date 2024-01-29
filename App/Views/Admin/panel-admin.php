@@ -4,8 +4,16 @@ namespace App\Views\Admin;
 
 require_once __DIR__ . '/../../Autoloader/autoloader.php';
 
+// Tous ces require sont temporaire, comprendre pourquoi l'Autoloader ne fonctionne pas...
+require_once __DIR__ .'/../../../Database/DatabaseConnection/ConnexionBDD.php';
+require_once __DIR__ .'/../../Models/EntityOperations/CrudAlbum.php';
+require_once __DIR__ .'/../../Models/EntityOperations/CrudUser.php';
+require_once __DIR__ .'/../../Models/EntityOperations/CrudFavoris.php';
+require_once __DIR__ .'/../../Models/User.php';
+require_once __DIR__ .'/../../Models/Favori.php';
+
 use App\Autoloader\Autoloader;
-use Database\DatabaseConnection\ConnexionBDD;
+USE Database\DatabaseConnection\ConnexionBDD;
 use App\Models\EntityOperations\CrudAlbum;
 use App\Models\EntityOperations\CrudUser;
 use App\Models\EntityOperations\CrudFavoris;
@@ -49,10 +57,11 @@ foreach ($allUsers as $user) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Liste des Utilisateurs et leurs Favoris</title>
+    <title>Panel - Admin</title>
 </head>
 
 <body>
+    <h1>Liste de tous les utilisateur</h1>
     <table border='1'>
         <tr>
             <th>ID Utilisateur</th>
@@ -69,7 +78,7 @@ foreach ($allUsers as $user) {
                 <td><?= $user->getPseudo() ?></td>
                 <td><?= $user->getMdp() ?></td>
                 <td><?= $user->getMail() ?></td>
-                <td><?= $user->isAdmin() === 1 ? "Oui" : "Non" ?></td>
+                <td><?= $user->isAdmin() ? "Oui" : "Non" ?></td>
                 <td>
                     <?php foreach ($user->getFavoris() as $favori): ?>
                         ID Album: <?= $favori->getId() ?>, Titre: <?= $favori->getTitre() ?><br>
