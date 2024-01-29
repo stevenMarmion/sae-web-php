@@ -10,12 +10,12 @@ use PDOException;
 
 Autoloader::register();
 
-class EtreCRUD {
+class CrudEtre {
 
     private $db;
 
     /**
-     * Constructeur de la classe EtreCRUD.
+     * Constructeur de la classe CrudEtre.
      * Initialise la connexion à la base de données.
      *
      * @param PDO $db La connexion à la base de données.

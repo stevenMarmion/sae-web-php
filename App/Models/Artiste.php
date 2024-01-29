@@ -46,6 +46,19 @@ class Artiste {
     public function getNomArtiste() {
         return $this->nomA;
     }
+
+    /**
+     * Vérifier l'égalité avec un autre artiste.
+     *
+     * @param Artiste $other L'autre artiste à comparer.
+     *
+     * @return bool Retourne true si les artistes sont égaux, sinon false.
+     */
+    public function equals(Artiste $other)
+    {
+        return $this->idA === $other->idA;
+    }
+
 }
 
 ?>
