@@ -1,11 +1,11 @@
-# SAE WEB PHP - Musics 2024 
+# SAE WEB PHP - Musics 2024
 
 ## Présentation
 
 A partir des données que vous trouverez dans le fichier fixtures.zip dans Celene, il vous est demandé de
-réaliser une application présentant le contenu de cette base d'albums de musique. 
+réaliser une application présentant le contenu de cette base d'albums de musique.
 
-Le fichier fixtures.zip contient quelques albums et artistes avec des pochettes d'albums. 
+Le fichier fixtures.zip contient quelques albums et artistes avec des pochettes d'albums.
 
 ## Fonctionalités attendues
 
@@ -17,6 +17,7 @@ Le fichier fixtures.zip contient quelques albums et artistes avec des pochettes 
 - Recherche un peu plus avancée dans les albums (par artiste, année, genre, etc.)
 
 ## Fonctionalités souhaitées
+
 Edition/Suppression/Update Albums
 
 ## Fonctionnalités possibles
@@ -37,13 +38,26 @@ Edition/Suppression/Update Albums
 - Utilisation d'un autoloader
 - Utilisation de PDO avec base de données sqlite
 
-## Dépôt 
+## Dépôt
 
-- Dépôt gitlab/github obligatoire 
+- Dépôt gitlab/github obligatoire
 - Enseignants SAé à mettre en reporter sur le dépôt
 - Soutenances à définir avec votre chargé de SAé
 
-## Membres du groupe 
+## Membres du groupe
+
 - MARMION Steven
 - SIMON Gael
 - DEPONT Samuel
+
+---
+
+## Execution
+
+Pour exécuter le fichier d'initialisation de la BDD, merci de suivre la commande suivante :
+
+```bash
+php BDD_PDO/ConnexionBDD.php extrait.yml
+```
+
+**SI et SEULEMENT SI le fichier SQL/BD_app_Musique.sqlite3 n'est pas existant**. Si il l'est, c'est que la BDD est déjà instanciée.
