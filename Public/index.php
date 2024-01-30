@@ -1,5 +1,6 @@
 <?php
 
-include __DIR__ . '/../App/Views/Admin/panel-admin.php';
+header('Location: /../App/Views/Auth/UserLogin.php');
+exit();
 
 ?>
