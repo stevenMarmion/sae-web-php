@@ -36,10 +36,11 @@ class InstancesTables {
      */
     public function create_tables(PDO $db, $argv) {
         // Chemin vers le fichier SQL
-        $fichierSQL = __DIR__ . '/../DatabaseScripts/creation.sql';
+        $fichierSQLCreate = __DIR__ . '/../DatabaseScripts/creation.sql';
+        $fichierSQLInsertAdmin = __DIR__ . '/../DatabaseScripts/insertion.sql';
 
         try {
-            if (file_exists($fichierSQL)) {
+            if (file_exists($fichierSQLCreate)) {
 
                 $query = "SELECT COUNT(name) AS tableCount FROM sqlite_master WHERE type='table'";
                 $statement = $db->query($query);
@@ -49,9 +50,13 @@ class InstancesTables {
                     $this->init_DB_insertion($argv);
                 }
                 else {
-                    $sqlScript = file_get_contents($fichierSQL);
+                    $sqlScript = file_get_contents($fichierSQLCreate);
                     $db->exec($sqlScript);
                     echo "\n>> [Tables créées avec succès]\n";
+
+                    $sqlScript = file_get_contents($fichierSQLInsertAdmin);
+                    $db->exec($sqlScript);
+                    echo "\n>> [Insert admin intégrée avec succès]\n";
     
                     $this->init_DB_insertion($argv);
                 }

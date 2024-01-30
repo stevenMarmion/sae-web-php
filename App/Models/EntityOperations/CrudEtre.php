@@ -33,7 +33,7 @@ class CrudEtre {
      */
     public function ajouterRelation(int $idMusique, int $idGenre) {
         try {
-            $query = "INSERT INTO ETRE (idM, idG) VALUES (?, ?)";
+            $query = "INSERT INTO ETRE (idAl, idG) VALUES (?, ?)";
             $stmt = $this->db->prepare($query);
             $stmt->execute([$idMusique, $idGenre]);
             return true;
@@ -51,7 +51,7 @@ class CrudEtre {
      */
     public function supprimerRelation(int $idMusique, int $idGenre) {
         try {
-            $query = "DELETE FROM ETRE WHERE idM = ? AND idG = ?";
+            $query = "DELETE FROM ETRE WHERE idAl = ? AND idG = ?";
             $stmt = $this->db->prepare($query);
             $stmt->execute([$idMusique, $idGenre]);
             return true;
@@ -67,7 +67,7 @@ class CrudEtre {
      * @return array Un tableau contenant les genres associés à la musique.
      */
     public function obtenirGenresParMusique(int $idMusique) {
-        $query = "SELECT * FROM ETRE WHERE idM = ?";
+        $query = "SELECT * FROM ETRE WHERE idAl = ?";
         $stmt = $this->db->prepare($query);
         $stmt->execute([$idMusique]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
