@@ -1,0 +1,70 @@
+- by: The Black Keys
+  entryId: 75420
+  genre: [Blues rock, garage rock]
+  img: The_Black_Keys_Let's_Rock.jpg
+  parent: The Black Keys
+  releaseYear: 2019
+  title: Let's Rock
+- by: Arctic Monkeys
+  entryId: 65128
+  genre: [Indie rock, garage rock]
+  img: Arctic_Monkeys_AM.jpg
+  parent: Arctic Monkeys
+  releaseYear: 2013
+  title: AM
+- by: Tame Impala
+  entryId: 89543
+  genre: [Psychedelic rock, synth-pop]
+  img: Tame_Impala_The_Slow_Rush.jpg
+  parent: Tame Impala
+  releaseYear: 2020
+  title: The Slow Rush
+- by: Florence + The Machine
+  entryId: 57239
+  genre: [Indie pop, baroque pop]
+  img: Florence_and_the_Machine_High_as_Hope.jpg
+  parent: Florence + The Machine
+  releaseYear: 2018
+  title: High as Hope
+- by: The Strokes
+  entryId: 45321
+  genre: [Indie rock, garage rock]
+  img: The_Strokes_The_New_Abnormal.jpg
+  parent: The Strokes
+  releaseYear: 2020
+  title: The New Abnormal
+- by: Hozier
+  entryId: 63254
+  genre: [Indie folk, soul]
+  img: Hozier_Wasteland_Baby!.jpg
+  parent: Hozier
+  releaseYear: 2019
+  title: Wasteland, Baby!
+- by: Vampire Weekend
+  entryId: 74128
+  genre: [Indie pop, rock]
+  img: Vampire_Weekend_Modern_Vampires_of_the_City.jpg
+  parent: Vampire Weekend
+  releaseYear: 2013
+  title: Modern Vampires of the City
+- by: Lana Del Rey
+  entryId: 82436
+  genre: [Indie pop, dream pop]
+  img: Lana_Del_Rey_Norman_Fucking_Rockwell!.jpg
+  parent: Lana Del Rey
+  releaseYear: 2019
+  title: Norman Fucking Rockwell!
+- by: Arcade Fire
+  entryId: 69218
+  genre: [Indie rock, baroque pop]
+  img: Arcade_Fire_The_Suburbs.jpg
+  parent: Arcade Fire
+  releaseYear: 2010
+  title: The Suburbs
+- by: Mumford & Sons
+  entryId: 58921
+  genre: [Folk rock, indie folk]
+  img: Mumford_and_Sons_Sigh_No_More.jpg
+  parent: Mumford & Sons
+  releaseYear: 2009
+  title: Sigh No More
