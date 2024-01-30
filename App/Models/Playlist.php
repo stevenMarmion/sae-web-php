@@ -4,8 +4,8 @@ namespace App\Models;
 
 require_once __DIR__ . '/../Autoloader/autoloader.php';
 
-use App\Autoloader\Autoloader;
-use App\Models\Album;
+use \App\Autoloader\Autoloader;
+use \App\Models\Album;
 
 Autoloader::register();
 
