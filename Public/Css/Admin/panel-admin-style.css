@@ -1,5 +1,5 @@
 body {
-    background-color: #121212;
+    background-color: #e8e8ea;
     color: #fff;
     font-family: 'Arial', sans-serif;
     align-items: center;
@@ -10,7 +10,7 @@ body {
 
 h1 {
     text-align: center;
-    color: #1DB954;
+    color: #282828;
 }
 
 table {
@@ -28,7 +28,7 @@ th, td {
     border: 1px solid #282828;
     padding: 12px;
     text-align: left;
-    color: #fff;
+    color: black;
 }
 
 th {
@@ -37,7 +37,7 @@ th {
 }
 
 td {
-    background-color: #121212;
+    background-color: #f9f9fb;
 }
 
 td.admin-yes {

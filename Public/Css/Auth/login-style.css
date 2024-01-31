@@ -20,7 +20,7 @@ form {
 
 h2 {
     text-align: center;
-    color: #1DB954;
+    color: #1ed760;
 }
 
 label {
@@ -42,7 +42,7 @@ input {
 }
 
 input[type="submit"] {
-    background-color: #0f8e3c; /* Vert plus foncé */
+    background-color: #1ed760; /* Vert plus foncé */
     color: #fff;
     cursor: pointer;
     font-weight: bold;
@@ -50,17 +50,15 @@ input[type="submit"] {
 }
 
 input[type="submit"]:hover {
-    background-color: #0c7334; /* Vert foncé au survol */
+    background-color: #1ed760; /* Vert foncé au survol */
 }
 
 #register-link {
-    display: block;
     text-align: center;
     margin-top: 15px;
-    color: #0f8e3c; /* Vert plus foncé */
-    text-decoration: none;
+    color: #ffffff; /* Vert plus foncé */
 }
 
-#register-link:hover {
-    text-decoration: underline;
+#no-account {
+    color: #9e9e9e;
 }

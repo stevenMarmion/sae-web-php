@@ -27,9 +27,11 @@
         <input type="password" id="confirmer_mdp" name="confirmer_mdp" required>
         <br>
 
-        <input type="submit" value="S'Inscrire">
+        <input type="submit" value="S'inscrire">
 
-        <a id="login-link" href="/App/Views/Auth/UserLogin.php">Déjà inscrit ? Se connecter</a>
+        <p id="account"> Déjà inscrit ? 
+            <a id="login-link" href="/App/Views/Auth/UserLogin.php">Se connecter</a>
+        </p>
     </form>
 
 </body>

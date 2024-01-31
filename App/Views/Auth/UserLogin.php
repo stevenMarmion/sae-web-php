@@ -21,7 +21,9 @@
 
         <input type="submit" value="Se Connecter">
 
-        <a id="register-link" href="/App/Views/Auth/UserRegister.php">Pas de compte ? S'inscrire</a>
+        <p id="no-account"> Vous n'avez pas de compte ? 
+            <a id="register-link" href="/App/Views/Auth/UserRegister.php">S'inscrire gratuitement</a>
+        </p>
     </form>
 
 </body>
