@@ -1,49 +1,49 @@
 body {
-    background-color: #e8e8ea;
+    background-color: #121212;
     color: #fff;
     font-family: 'Arial', sans-serif;
-    align-items: center;
-    justify-content: center;
+    display: flex;
     height: 100vh;
-    margin-top: 20vh;
+    margin: 0;
 }
 
-h1 {
-    text-align: center;
-    color: #282828;
+.navigation-gauche {
+    width: 300px;
+    background-color: #333;
+    padding: 20px;
 }
 
-table {
-    background-color: #282828;
-    border-collapse: collapse;
-    width: 100%;
-    max-width: 800px;
-    margin: auto;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-top: 20px;
-}
-
-th, td {
-    border: 1px solid #282828;
-    padding: 12px;
-    text-align: left;
-    color: black;
-}
-
-th {
-    background-color: #1DB954;
-    color: #121212;
-}
-
-td {
-    background-color: #f9f9fb;
-}
-
-td.admin-yes {
-    color: #0f8e3c;
-}
-
-td.admin-no {
+body > h1 {
+    margin: 6vh auto 6vh auto;
     color: #fff;
+}
+
+nav a {
+    display: block;
+    margin: 10px 0;
+    padding: 15px;
+    background-color: #1DB954;
+    color: #fff;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+}
+
+nav a:hover {
+    background-color: #16843a;
+}
+
+#panel-admin-link {
+    background-color: #1DB954;
+    color: #fff;
+}
+
+#panel-admin-link:hover {
+    background-color: #16843a;
+}
+
+#logo {
+    display: block;
+    margin: auto;
 }

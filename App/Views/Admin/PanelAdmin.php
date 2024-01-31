@@ -1,11 +1,3 @@
-<?php
-
-namespace App\Views\Admin;
-
-require_once __DIR__ . '/../../Autoloader/autoloader.php';
-
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,8 +7,13 @@ require_once __DIR__ . '/../../Autoloader/autoloader.php';
     <title>Panel - Admin</title>
 </head>
 <body>
+    <div class="navigation-gauche">
+        <img id="logo" src="/Public/Images/logo.png" width="200">
+        <nav>
+            <a id="panel-admin-link" href="Details/PanelDetails.php?table=UTILISATEUR">Gérer les utilisateurs</a>
+            <a id="panel-admin-link" href="Details/PanelDetails.php?table=ALBUMS">Gérer les albums</a>
+        </nav>
+    </div>
     <h1>Bienvenue dans le panel admin</h1>
-    <a id="panel-admin-link" href="Details/PanelDetails.php?table=UTILISATEUR">Gérer les utilisateurs</a>
-    <a id="panel-admin-link" href="Details/PanelDetails.php?table=ALBUMS">Gérer les albums</a>
 </body>
 </html>

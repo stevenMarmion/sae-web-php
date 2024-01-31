@@ -7,6 +7,9 @@
     <title>Formulaire d'Inscription</title>
 </head>
 <body>
+    <?php 
+        include __DIR__ . '/../Layout/Auth/NavBar.php';
+    ?>
 
     <h2>Inscription</h2>
 

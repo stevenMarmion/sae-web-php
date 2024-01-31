@@ -112,7 +112,7 @@ class CrudAlbum {
      * Récupère un album en fonction de son ID.
      *
      * @param int $albumId L'ID de l'album à récupérer.
-     * @return Album|false Les données de l'album ou False si l'album n'est pas trouvé.
+     * @return array|false Les données de l'album ou False si l'album n'est pas trouvé.
      */
     public function obtenirAlbumParId(int $albumId) {
         $query = "SELECT * FROM ALBUMS WHERE id = ?";

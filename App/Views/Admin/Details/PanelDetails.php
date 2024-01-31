@@ -40,7 +40,6 @@ Autoloader::register();
 
 $db = new ConnexionBDD();
 
-
 if (isset($_GET['table'])) {
     if ($_GET['table'] == "UTILISATEUR") {
         $crudUser = new CrudUser($db::obtenir_connexion());
@@ -58,7 +57,7 @@ if (isset($_GET['table'])) {
             foreach ($allFavoris as $favori) {
                 $currentFavori = new Favori($favori["idU"], $favori["idAl"]);
                 $currentAlbum = $crudAlbum->obtenirAlbumParId($currentFavori->getIdAlbum());
-                $currentUser->ajouterFavori($currentAlbum);
+                $currentUser->ajouterFavori($currentAlbum["id"]);
             }
             $allUsersObject[] = $currentUser;
         }
@@ -109,7 +108,6 @@ if (isset($_GET['table'])) {
 }
 
 
-
 ?>
 
 <!DOCTYPE html>
@@ -118,11 +116,16 @@ if (isset($_GET['table'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/Public/Css/Admin/panel-admin-style.css">
+    <link rel="stylesheet" href="/Public/Css/Admin/Details/panel-admin-details-style.css">
+    <!-- <script src="/Public/JS/Admin/ActionsDelete.js" defer></script> -->
     <title>Panel - Admin</title>
 </head>
 
 <body>
+    <?php 
+        include __DIR__ . '/../../Layout/Admin/AdminNavBar.php';
+    ?>
+
     <?php if (isset($_GET['table']) && ($_GET['table'] == "UTILISATEUR")) : ?>
     <section>
         <h1>Liste de tous les utilisateurs</h1>
@@ -134,6 +137,7 @@ if (isset($_GET['table'])) {
                 <th>Adresse Mail</th>
                 <th>Admin</th>
                 <th>Favoris</th>
+                <th>Actions</th>
             </tr>
 
             <?php foreach ($allUsersObject as $user): ?>
@@ -148,6 +152,18 @@ if (isset($_GET['table'])) {
                             ID Album: <?= $favori->getId() ?>, Titre: <?= $favori->getTitre() ?><br>
                         <?php endforeach; ?>
                     </td>
+                    <td>
+                        <div class="form-inline">
+                            <form action="PanelUpdateUser.php?update=UTILISATEUR" method="post">
+                                <input type="hidden" name="user_id" value="<?= $user->getId() ?>">
+                                <input type="submit" class="custom-update-submit-button">
+                            </form>
+                            <form action="/App/Controllers/Admin/AdminDeleteController.php?delete=UTILISATEUR" method="post">
+                                <input type="hidden" name="user_id" value="<?= $user->getId() ?>">
+                                <input type="submit" class="custom-delete-submit-button">
+                            </form>
+                        </div>
+                    </td>
                 </tr>
             <?php endforeach; ?>
 
@@ -161,12 +177,12 @@ if (isset($_GET['table'])) {
         <table border='1'>
             <tr>
                 <th>ID Album</th>
-                <!-- <th>Image</th> -->
                 <th>Date de sortie</th>
                 <th>Titre</th>
                 <th>Compositeurs</th>
                 <th>Interprètes</th>
                 <th>Genres</th>
+                <th>Actions</th>
             </tr>
 
             <?php foreach ($allAlbumsObject as $album): ?>
@@ -189,13 +205,24 @@ if (isset($_GET['table'])) {
                             <?= $genre->getNomGenre() ?><br>
                         <?php endforeach; ?>
                     </td>
+                    <td>
+                        <div class="form-inline">
+                            <form action="PanelUpdateAlbum.php?update=ALBUMS" method="post">
+                                <input type="hidden" name="album_id" value="<?= $album->getId() ?>">
+                                <input type="submit" class="custom-update-submit-button">
+                            </form>
+                            <form action="/App/Controllers/Admin/AdminDeleteController.php?delete=ALBUMS" method="post">
+                                <input type="hidden" name="album_id" value="<?= $album->getId() ?>">
+                                <input type="submit" class="custom-delete-submit-button">
+                            </form>
+                        </div>
+                    </td>
                 </tr>
             <?php endforeach; ?>
 
         </table>
     </section>
     <?php endif; ?>
-
 
 </body>
 
