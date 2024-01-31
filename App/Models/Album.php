@@ -32,7 +32,7 @@ class Album {
     /**
      * @var DateTime La date de sortie de la musique.
      */
-    private DateTime $dateDeSortie;
+    private int $dateDeSortie;
 
     /**
      * @var string Le titre de la musique.
@@ -59,7 +59,7 @@ class Album {
      *
      * @param int      $idM           L'identifiant unique de la musique.
      * @param int      $img         L'identifiant de l'image associée à la musique.
-     * @param DateTime $dateDeSortie  La date de sortie de la musique.
+     * @param int $dateDeSortie  La date de sortie de la musique.
      * @param string   $title         Le titre de la musique.
      * @param array    $compositeur   La liste de compositeurs de la musique.
      * @param array    $interprete    La liste d'interprète de la musique.
@@ -152,7 +152,7 @@ class Album {
      *
      * @param DateTime $newDate La nouvelle date de sortie.
      */
-    public function setDateSortie(DateTime $newDate) {
+    public function setDateSortie(int $newDate) {
         $this->dateDeSortie = $newDate;
     }
 

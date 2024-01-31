@@ -13,8 +13,8 @@ use Throwable;
 Autoloader::register();
 
 // Test de création et d'instanciation
-$instance = new ConnexionBDD();
-$instance->create_tables($instance::obtenir_connexion(), $argv);
+// $instance = new ConnexionBDD();
+// $instance->create_tables($instance::obtenir_connexion(), $argv);
 
 /**
  * Classe ConnexionBDD
@@ -38,7 +38,6 @@ class ConnexionBDD {
                 global $argv;
                 self::$db = $this->init_DB();
             }
-
         } catch (PDOException $e) {}
     }
 
@@ -88,6 +87,7 @@ class ConnexionBDD {
 
         try {
             $sqlScript = file_get_contents($fichierSQL);
+            $db->exec(file_get_contents(__DIR__ . '/../DatabaseScripts/destruction.sql'));
             $db->exec($sqlScript);
             echo "\n>> [Tables créées avec succès]\n";
 
