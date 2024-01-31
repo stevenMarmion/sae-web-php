@@ -21,7 +21,7 @@ Autoloader::register();
 $instance = new ConnexionBDD();
 $crudAlbum = new CrudAlbum($instance::obtenir_connexion());
 $crudArtiste = new CrudArtiste($instance::obtenir_connexion());
-$listeAlbum = $crudAlbum->obtenirTousAlbums();
+$listeAlbum = $crudAlbum->obtenirAlbumsParDerniereSortie();
 $listeAlbumObjet = [];
 foreach ($listeAlbum as $album) {
     $idC = $crudAlbum->obtenirCompositeurId(intval($album["id"]))["idA"];
@@ -48,14 +48,25 @@ include_once '../Base/head.php';
     <?php
     foreach($listeAlbumObjet as $album){
         if($album->getCompositeur()["nomA"]==$album->getInterprete()["nomA"]){
-            echo '<li class="album"><img src="../../../DataRessources/images/'.$album->getImg().'" alt="#"> <h4 class="titreAlbum">'.$album->getTitre()."</h4> <div class='interprete&compositeur'>interprete et compositeur : ".$album->getCompositeur()["nomA"].'</div> ';
+            $img = $album->getImg() == "" ? "base.jpg" : $album->getImg();
+            echo '<li class="album"><img src="../../../DataRessources/images/'.$img.'" alt="image album" class="imageAlbum"> <h4 class="titreAlbum">'.$album->getTitre()."</h4> <div class='interprete&compositeur'>interprete et compositeur : ".$album->getCompositeur()["nomA"].'</div> ';
         }
         else{
-            echo "<li class='album'><img src='../../../DataRessources/images/".$album->getImg()."' alt='image album'> <h4 class='titreAlbum'>".$album->getTitre()."</h4> <div class='compositeur'> compositeur : ".$album->getCompositeur()["nomA"]." </div> <div class='interprete'> interprete : ".$album->getInterprete()["nomA"].'</div>';
+            echo "<li class='album'><img src='../../../DataRessources/images/".$img."' alt='image album' class='imageAlbum'> <h4 class='titreAlbum'>".$album->getTitre()."</h4> <div class='compositeur'> compositeur : ".$album->getCompositeur()["nomA"]." </div> <div class='interprete'> interprete : ".$album->getInterprete()["nomA"].'</div>';
         }
         echo "<a href='/App/Views/Details/detailAlbum.php?id=".$album->getId()."'><button>voir plus</button></a></li>";
     }
     ?>
+
+    <!-- il faut le changer c'est juste pour que les images soit de la bonne taille -->
+    <style>
+        .imageAlbum{
+            width: 200px;
+            height: 200px;
+        }
+    </style>
+
+
     </ul>
     <div class="infoAlbum" hidden>
     </div>
