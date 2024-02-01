@@ -18,7 +18,9 @@ require_once '../../Models/EntityOperations/CrudArtiste.php';
 require_once '../../Models/EntityOperations/CrudGenre.php';
 require_once '../../Models/Album.php';
 
-$idAlbum = $_GET["id"];
+if (isset($_GET["id"])) {
+    $idAlbum = $_GET["id"];
+}
 
 
 $instance = new ConnexionBDD();
@@ -26,7 +28,17 @@ $crudAlbum = new CrudAlbum($instance::obtenir_connexion());
 $crudArtiste = new CrudArtiste($instance::obtenir_connexion());
 $album = $crudAlbum->obtenirAlbumParId($idAlbum);
 
-include_once '../Base/head.php';
+?>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>acceuil</title>
+</head>
+<body>
+
+<?php
 
 echo "<h2>".$album["titre"]."</h2>";
 echo "<img src='../../../DataRessources/images/".$album["img"]."' alt='image album'>";
@@ -46,6 +58,6 @@ foreach ($crudAlbum->obtenirGenresAlbum($idAlbum) as $genre){
 }
 echo "<h3>Genre : ".$genres."</h3>";
 
-
-include_once '../Base/footer.php';
 ?>
+</body>
+</html>
