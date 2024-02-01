@@ -33,10 +33,20 @@ class CrudUser {
      */
     public function ajouterUtilisateurFromYml(array $userData) {
         try {
-            $query = "INSERT INTO UTILISATEUR (isAdmin, pseudo, mdp, adresseMail) VALUES (?, ?, ?, ?)";
+            $query = "SELECT * FROM UTILISATEUR WHERE pseudo = ?";
             $stmt = $this->db->prepare($query);
-            $stmt->execute([$userData['isAdmin'], $userData['pseudo'], $userData['mdp'], $userData['adresseMail']]);
-            return true;
+            $stmt->execute([$userData['pseudo']]); 
+            $stmt->fetchAll(PDO::FETCH_ASSOC) ?: false;
+
+            if ($stmt != false) {
+                $query = "INSERT INTO UTILISATEUR (isAdmin, pseudo, mdp, adresseMail) VALUES (?, ?, ?, ?)";
+                $stmt = $this->db->prepare($query);
+                $stmt->execute([$userData['isAdmin'], $userData['pseudo'], $userData['mdp'], $userData['adresseMail']]);
+                return true;
+            }
+            else {
+                return false;
+            }
         } catch (PDOException $e) {
             return false;
         }
@@ -50,13 +60,23 @@ class CrudUser {
      */
     public function ajouterUtilisateurFromObject(User $userData) {
         try {
-            $query = "INSERT INTO UTILISATEUR (isAdmin, pseudo, mdp, adresseMail) VALUES (?, ?, ?, ?)";
+            $query = "SELECT * FROM UTILISATEUR WHERE pseudo = ?";
             $stmt = $this->db->prepare($query);
-            $stmt->execute([0,
-                            $userData->getPseudo(), 
-                            $userData->getMdp(), 
-                            $userData->getMail()]);
-            return true;
+            $stmt->execute([$userData->getPseudo()]); 
+            $stmt->fetchAll(PDO::FETCH_ASSOC) ?: false;
+
+            if ($stmt != false) {
+                $query = "INSERT INTO UTILISATEUR (isAdmin, pseudo, mdp, adresseMail) VALUES (?, ?, ?, ?)";
+                $stmt = $this->db->prepare($query);
+                $stmt->execute([0,
+                                $userData->getPseudo(), 
+                                $userData->getMdp(), 
+                                $userData->getMail()]);
+                return true;
+            }
+            else {
+                return false;
+            }
         } catch (PDOException $e) {
             return false;
         }
@@ -88,18 +108,28 @@ class CrudUser {
      */
     public function modifierUtilisateur(int $userId, User $newUserData) {
         try {
-            if ($newUserData->isAdmin()) {
-                $query = "UPDATE UTILISATEUR SET isAdmin = 1, pseudo = ?, mdp = ?, adresseMail = ? WHERE idU = ?";   
+            $query = "SELECT * FROM UTILISATEUR WHERE pseudo = ?";
+            $stmt = $this->db->prepare($query);
+            $stmt->execute([$newUserData->getPseudo()]); 
+            $stmt->fetchAll(PDO::FETCH_ASSOC) ?: false;
+
+            if ($stmt != false) {
+                if ($newUserData->isAdmin()) {
+                    $query = "UPDATE UTILISATEUR SET isAdmin = 1, pseudo = ?, mdp = ?, adresseMail = ? WHERE idU = ?";   
+                }
+                else {
+                    $query = "UPDATE UTILISATEUR SET isAdmin = 0, pseudo = ?, mdp = ?, adresseMail = ? WHERE idU = ?";
+                }
+                $stmt = $this->db->prepare($query);
+                $stmt->execute([$newUserData->getPseudo(),
+                                $newUserData->getMdp(),
+                                $newUserData->getMail(),
+                                $userId]);
+                return true;
             }
             else {
-                $query = "UPDATE UTILISATEUR SET isAdmin = 0, pseudo = ?, mdp = ?, adresseMail = ? WHERE idU = ?";
+                return false;
             }
-            $stmt = $this->db->prepare($query);
-            $stmt->execute([$newUserData->getPseudo(), 
-                            $newUserData->getMdp(), 
-                            $newUserData->getMail(), 
-                            $userId]);
-            return true;
         } catch (PDOException $e) {
             return false;
         }

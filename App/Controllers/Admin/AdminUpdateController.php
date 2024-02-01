@@ -47,6 +47,12 @@ if (isset($_SERVER["REQUEST_METHOD"]) && isset($_GET["update"])) {
         $tableToUpdate = $_GET["update"]; // UTILISATEUR ou ALBUMS
         if ($tableToUpdate === "UTILISATEUR") {
             $userId = $_POST["user_id"] ?? null;
+            $userName = $_POST["pseudo"] ?? null;
+            $userMail = $_POST["adresseMail"] ?? null;
+            $userMdp = $_POST["mdp"] ?? null;
+            $userIsAdmin = $_POST["isAdmin"] == "true" ? true : false;
+            $user = new User($userId, $userName, $userMdp, $userMail, $userIsAdmin, []);
+            $crudUser->modifierUtilisateur($userId, $user);
         }
         if ($tableToUpdate === "ALBUMS") {
             $albumId = $_POST["album_id"] ?? null;

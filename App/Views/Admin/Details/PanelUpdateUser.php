@@ -60,7 +60,7 @@ if (isset($_SERVER["REQUEST_METHOD"]) && isset($_GET["update"])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/Public/Css/Admin/Details/panel-admin-update-user-style.css">
-    <title>Document</title>
+    <title>Modif - Admin - User</title>
 </head>
 <body>
     <?php 
@@ -71,6 +71,7 @@ if (isset($_SERVER["REQUEST_METHOD"]) && isset($_GET["update"])) {
 
         <form action="/App/Controllers/Admin/AdminUpdateController.php?update=UTILISATEUR" method="post">
             <input type="hidden" name="user_id" value="<?= $currentUser->getId() ?>">
+            <input type="hidden" name="mdp" value="<?= $currentUser->getMdp() ?>">
 
             <div class="form-group">
                 <label for="pseudo">Pseudo :</label>
@@ -85,10 +86,10 @@ if (isset($_SERVER["REQUEST_METHOD"]) && isset($_GET["update"])) {
             <div class="form-group">
                 <label for="isAdmin">Admin :</label>
                 <div>
-                    <input type="radio" id="adminTrue" name="isAdmin" value="true" <?= $currentUser->isAdmin() ? 'checked' : '' ?>>
+                    <input type="radio" id="isAdmin" name="isAdmin" value="true" <?= $currentUser->isAdmin() ? 'checked' : '' ?>>
                     <label for="adminTrue">True</label>
 
-                    <input type="radio" id="adminFalse" name="isAdmin" value="false" <?= !$currentUser->isAdmin() ? 'checked' : '' ?>>
+                    <input type="radio" id="isAdmin" name="isAdmin" value="false" <?= !$currentUser->isAdmin() ? 'checked' : '' ?>>
                     <label for="adminFalse">False</label>
                 </div>
             </div>
