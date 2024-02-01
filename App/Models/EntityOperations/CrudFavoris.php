@@ -4,7 +4,7 @@ namespace App\Models\EntityOperations;
 
 require_once __DIR__ . '/../../Autoloader/autoloader.php';
 
-use App\Autoloader\Autoloader;
+use \App\Autoloader\Autoloader;
 use PDO;
 use PDOException;
 

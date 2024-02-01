@@ -57,7 +57,19 @@ Edition/Suppression/Update Albums
 Pour exécuter le fichier d'initialisation de la BDD, merci de suivre la commande suivante :
 
 ```bash
-php BDD_PDO/ConnexionBDD.php extrait.yml
+bash Bash/bash_insertion.sh
+```
+
+Et pour lancer le serveur :
+
+```bash
+bash Bash/serveur.sh
+```
+
+Une fois arrivé dans l'URL, veuillez tapez : '/Public' à la suite. Ce qui donne une URL comme ceci :
+
+```text
+localhost:8000/Public
 ```
 
 **SI et SEULEMENT SI le fichier SQL/BD_app_Musique.sqlite3 n'est pas existant**. Si il l'est, c'est que la BDD est déjà instanciée.

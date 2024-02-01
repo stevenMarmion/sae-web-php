@@ -4,18 +4,18 @@ namespace App\Models\EntityOperations;
 
 require_once __DIR__ . '/../../Autoloader/autoloader.php';
 
-use App\Autoloader\Autoloader;
+use \App\Autoloader\Autoloader;
 use PDO;
 use PDOException;
 
 Autoloader::register();
 
-class EtreCRUD {
+class CrudEtre {
 
     private $db;
 
     /**
-     * Constructeur de la classe EtreCRUD.
+     * Constructeur de la classe CrudEtre.
      * Initialise la connexion à la base de données.
      *
      * @param PDO $db La connexion à la base de données.

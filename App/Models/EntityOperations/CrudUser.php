@@ -4,8 +4,8 @@ namespace App\Models\EntityOperations;
 
 require_once __DIR__ . '/../../Autoloader/autoloader.php';
 
-use App\Autoloader\Autoloader;
-use App\Models\User;
+use \App\Autoloader\Autoloader;
+use \App\Models\User;
 use PDO;
 use PDOException;
 
@@ -50,9 +50,10 @@ class CrudUser {
      */
     public function ajouterUtilisateurFromObject(User $userData) {
         try {
-            $query = "INSERT INTO UTILISATEUR (0, pseudo, mdp, adresseMail) VALUES (?, ?, ?)";
+            $query = "INSERT INTO UTILISATEUR (isAdmin, pseudo, mdp, adresseMail) VALUES (?, ?, ?, ?)";
             $stmt = $this->db->prepare($query);
-            $stmt->execute([$userData->getPseudo(), 
+            $stmt->execute([0,
+                            $userData->getPseudo(), 
                             $userData->getMdp(), 
                             $userData->getMail()]);
             return true;
@@ -126,6 +127,20 @@ class CrudUser {
         $stmt = $this->db->prepare($query);
         $stmt->execute([$userId]);
         return $stmt->fetch(PDO::FETCH_ASSOC) ?: false;
+    }
+
+    /**
+     * Récupère un utilisateur en fonction de son pseudo et mdp.
+     *
+     * @param string $pseudo Le pseudo de l'utilisateur à récupérer.
+     * @param string $mdp    Le mot de passe de l'utilisateur à récupérer.
+     * @return true|false   Les données de l'utilisateur ou False si l'utilisateur n'est pas trouvé.
+     */
+    public function isAuth(string $pseudo, string $mdp) {
+        $query = "SELECT * FROM UTILISATEUR WHERE pseudo = ? and mdp = ?";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute([$pseudo, $mdp]);
+        return $stmt->fetch(PDO::FETCH_ASSOC) ? true : false;
     }
 }
 

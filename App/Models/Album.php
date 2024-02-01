@@ -4,9 +4,9 @@ namespace App\Models;
 
 require_once __DIR__ . '/../Autoloader/autoloader.php';
 
-use App\Autoloader\Autoloader;
-use App\Models\Artiste;
-use App\Models\Genre;
+use \App\Autoloader\Autoloader;
+use \App\Models\Artiste;
+use \App\Models\Genre;
 use DateTime;
 
 Autoloader::register();
@@ -22,7 +22,7 @@ class Album {
     /**
      * @var int L'identifiant unique de la musique.
      */
-    private int $idM;
+    private int $idAl;
 
     /**
      * @var string L'identifiant de l'image associée à la musique.
@@ -57,7 +57,7 @@ class Album {
     /**
      * Constructeur de la classe Musique.
      *
-     * @param int      $idM           L'identifiant unique de la musique.
+     * @param int      $idAl           L'identifiant unique de la musique.
      * @param int      $img         L'identifiant de l'image associée à la musique.
      * @param int $dateDeSortie  La date de sortie de la musique.
      * @param string   $title         Le titre de la musique.
@@ -65,8 +65,8 @@ class Album {
      * @param array    $interprete    La liste d'interprète de la musique.
      * @param array    $genre         La liste de genre de l'album.
      */
-    public function __construct($idM, $img, $dateDeSortie, $title, $compositeur, $interprete, $genre) {
-        $this->idM = $idM;
+    public function __construct($idAl, $img, $dateDeSortie, $title, $compositeur, $interprete, $genre) {
+        $this->idAl = $idAl;
         $this->img = $img;
         $this->dateDeSortie = $dateDeSortie;
         $this->title = $title;
@@ -81,7 +81,7 @@ class Album {
      * @return int L'identifiant unique.
      */
     public function getId() {
-        return $this->idM;
+        return $this->idAl;
     }
 
     /**
@@ -190,6 +190,18 @@ class Album {
      */
     public function setGenre(Genre $newGenre) {
         $this->genre = $newGenre;
+    }
+
+    /**
+     * Vérifier l'égalité avec un autre album.
+     *
+     * @param Album $other L'autre album à comparer.
+     *
+     * @return bool Retourne true si les albums sont égaux, sinon false.
+     */
+    public function equals(Album $other)
+    {
+        return $this->idAl === $other->idAl;
     }
 }
 

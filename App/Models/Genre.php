@@ -46,6 +46,19 @@ class Genre {
     public function getNomGenre() {
         return $this->nomG;
     }
+
+    /**
+     * Vérifier l'égalité avec un autre genre musical.
+     *
+     * @param Genre $other L'autre genre musical à comparer.
+     *
+     * @return bool Retourne true si les genres musicaux sont égaux, sinon false.
+     */
+    public function equals(Genre $other)
+    {
+        return $this->idG === $other->idG;
+    }
+
 }
 
 ?>

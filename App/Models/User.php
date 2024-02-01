@@ -4,8 +4,8 @@ namespace App\Models;
 
 require_once __DIR__ . '/../Autoloader/autoloader.php';
 
-use App\Autoloader\Autoloader;
-use App\Models\Album;
+use \App\Autoloader\Autoloader;
+use \App\Models\Album;
 
 Autoloader::register();
 
@@ -170,6 +170,20 @@ class User {
     public function ajouterFavori(Album $favori) {
         array_push($favoris, $favori);
     }
+
+    /**
+     * Vérifier l'égalité avec un autre utilisateur.
+     *
+     * @param User $other L'autre utilisateur à comparer.
+     *
+     * @return bool Retourne true si les utilisateurs sont égaux, sinon false.
+     */
+    public function equals(User $other)
+    {
+        return $this->idU === $other->idU && $this->pseudo === $other->pseudo && $this->motDePasse === $other->motDePasse
+            && $this->adresseMail === $other->adresseMail && $this->isAdmin === $other->isAdmin && $this->favoris === $other->favoris;
+    }
+
 }
 
 ?>
