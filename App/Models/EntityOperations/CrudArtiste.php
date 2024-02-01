@@ -117,6 +117,13 @@ class CrudArtiste {
         $stmt->execute([$artisteId]);
         return $stmt->fetch(PDO::FETCH_ASSOC) ?: false;
     }
+
+    public function obtenirArtisteParNom(string $nomArtiste) {
+        $query = "SELECT * FROM ARTISTES WHERE nomA = ?";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute([$nomArtiste]);
+        return $stmt->fetch(PDO::FETCH_ASSOC) ?: false;
+    }
 }
 
 

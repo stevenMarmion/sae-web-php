@@ -3,7 +3,11 @@
 namespace App\Models\EntityOperations;
 
 require_once __DIR__ . '/../../Autoloader/autoloader.php';
+require_once __DIR__ . '/CrudArtiste.php';
+require_once __DIR__ . '/CrudGenre.php';
 
+use \App\Models\EntityOperations\CrudArtiste;
+use \App\Models\EntityOperations\CrudGenre;
 use \App\Autoloader\Autoloader;
 use \App\Models\Album;
 use PDO;
@@ -83,7 +87,10 @@ class CrudAlbum {
      * @param Album $newAlbumData Les nouvelles données de l'album.
      * @return bool True si la modification est réussie, False sinon.
      */
-    public function modifierAlbum(int $albumId, Album $newAlbumData) {
+    public function modifierAlbum(int $albumId, Album $newAlbumData, array $ancienComp, array $ancienInt, array $ancienGenres) {
+        $crudArtiste = new CrudArtiste($this->db);
+        $crudGenre = new CrudGenre($this->db);
+
         try {
             $query = "UPDATE ALBUMS SET img = ?, dateDeSortie = ?, titre = ? WHERE id = ?";
             $stmt = $this->db->prepare($query);
@@ -91,6 +98,30 @@ class CrudAlbum {
                             $newAlbumData->getDateSortie(), 
                             $newAlbumData->getTitre(),
                             $albumId]);
+            foreach ($ancienComp as $index_compositeur => $compositeur) {
+                $query = "UPDATE COMPOSER SET idA = ? WHERE idAl = ? and idA = ?";
+                $stmt = $this->db->prepare($query);
+                $idArtiste = $crudArtiste->obtenirArtisteParNom($newAlbumData->getCompositeurs()[$index_compositeur])["idA"];
+                $stmt->execute([$idArtiste,
+                                $albumId,
+                                $compositeur]);
+            }
+            foreach ($ancienInt as $index_interprete => $interprete) {
+                $query = "UPDATE INTERPRETER SET idA = ? WHERE idAl = ? and idA = ?";
+                $stmt = $this->db->prepare($query);
+                $idArtiste = $crudArtiste->obtenirArtisteParNom($newAlbumData->getInterpretes()[$index_interprete])["idA"];
+                $stmt->execute([$idArtiste,
+                                $albumId,
+                                $interprete]);
+            }
+            foreach ($ancienGenres as $index_genre => $genre) {
+                $query = "UPDATE ETRE SET idG = ? WHERE idAl = ? and idG = ?";
+                $stmt = $this->db->prepare($query);
+                $idGenre = $crudGenre->obtenirGenreParNom($newAlbumData->getGenres()[$index_genre])["idG"];
+                $stmt->execute([$idGenre,
+                                $albumId,
+                                $genre]);
+            }
             return true;
         } catch (PDOException $e) {
             return false;

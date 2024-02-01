@@ -117,6 +117,13 @@ class CrudGenre {
         $stmt->execute([$genreId]);
         return $stmt->fetch(PDO::FETCH_ASSOC) ?: false;
     }
+
+    public function obtenirGenreParNom(string $nomGenre) {
+        $query = "SELECT * FROM GENRE WHERE nomG = ?";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute([$nomGenre]);
+        return $stmt->fetch(PDO::FETCH_ASSOC) ?: false;
+    }
 }
 
 

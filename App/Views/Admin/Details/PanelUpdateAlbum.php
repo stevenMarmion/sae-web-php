@@ -103,6 +103,7 @@ if (isset($_SERVER["REQUEST_METHOD"]) && isset($_GET["update"])) {
 
         <form action="/App/Controllers/Admin/AdminUpdateController.php?update=ALBUMS" method="post">
             <input type="hidden" name="album_id" value="<?= $album->getId() ?>">
+            <input type="hidden" name="album_img" value="<?= $album->getImg() ?>">
 
             <div class="form-group">
                 <label for="titre">Titre :</label>
@@ -116,23 +117,29 @@ if (isset($_SERVER["REQUEST_METHOD"]) && isset($_GET["update"])) {
 
             <div class="form-group">
                 <label for="compositeurs">Compositeurs :</label>
-                <?php foreach ($album->getCompositeurs() as $compositeur): ?>
-                    <input type="text" id="compositeurs" name="compositeurs[]" value="<?= $compositeur->getNomArtiste() ?>" required>
+                <?php foreach ($album->getCompositeurs() as $index => $compositeur): ?>
+                    <input type="hidden" name="ancien-compositeurs-<?=$index?>" value="<?= $compositeur->getId() ?>">
+                    <input type="text" id="compositeurs-<?=$index?>" name="compositeurs-<?=$index?>" value="<?= $compositeur->getNomArtiste() ?>" required>
                 <?php endforeach; ?>
+                <input type="hidden" name="nb-compositeurs" value="<?= sizeof($album->getCompositeurs()) ?>">
             </div>
 
             <div class="form-group">
                 <label for="interprete">Interpretes :</label>
-                <?php foreach ($album->getInterpretes() as $interprete): ?>
-                    <input type="text" id="interprete" name="interprete" value="<?= $interprete->getNomArtiste() ?>" required>
+                <?php foreach ($album->getInterpretes() as $index => $interprete): ?>
+                    <input type="hidden" name="ancien-interpretes-<?=$index?>" value="<?= $compositeur->getId() ?>">
+                    <input type="text" id="interpretes-<?=$index?>" name="interpretes-<?=$index?>" value="<?= $interprete->getNomArtiste() ?>" required>
                 <?php endforeach; ?>
+                <input type="hidden" name="nb-interpretes" value="<?= sizeof($album->getInterpretes()) ?>">
             </div>
 
             <div class="form-group">
                 <label for="genre">Genres :</label>
-                <?php foreach ($album->getGenres() as $genre): ?>
-                    <input type="text" id="genre" name="genre" value="<?= $genre->getNomGenre() ?>" required>
+                <?php foreach ($album->getGenres() as $index => $genre): ?>
+                    <input type="hidden" name="ancien-genres-<?=$index?>" value="<?= $genre->getId() ?>">
+                    <input type="text" id="genres-<?=$index?>" name="genres-<?=$index?>" value="<?= $genre->getNomGenre() ?>" required>
                 <?php endforeach; ?>
+                <input type="hidden" name="nb-genres" value="<?= sizeof($album->getGenres()) ?>">
             </div>
 
             <div class="form-group">
