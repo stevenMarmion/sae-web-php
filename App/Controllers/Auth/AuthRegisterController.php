@@ -39,8 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo $inscriptionReussie;
 
             if ($inscriptionReussie) {
-                echo "Inscription réussie ! Bienvenue, $pseudo.";
-                //header('Location: ' . __DIR__ . '/../Views/Home/home.php'); // redirection vers le home
+                header('Location: /App/Views/Home/accueil.php');
                 exit();
             } else {
                 echo "Identifiants incorrects. Veuillez réessayer.";

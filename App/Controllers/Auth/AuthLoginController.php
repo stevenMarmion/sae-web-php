@@ -31,8 +31,7 @@ function authentifaction($instance) {
     $estAutentifie = $crudUser->isAuth($pseudo, $mdp);
 
     if ($estAutentifie) {
-        echo "Connexion réussie ! Bienvenue, $pseudo.";
-        //header('Location: ' . __DIR__ . '/../Views/Home/home.php'); // redirection vers le home
+        header('Location: /App/Views/Home/accueil.php');
         exit();
     } else {
         echo "Identifiants incorrects. Veuillez réessayer.";
