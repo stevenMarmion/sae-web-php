@@ -27,6 +27,7 @@ $instance = new ConnexionBDD();
 $crudAlbum = new CrudAlbum($instance::obtenir_connexion());
 $crudArtiste = new CrudArtiste($instance::obtenir_connexion());
 $album = $crudAlbum->obtenirAlbumParId($idAlbum);
+$img = $album["img"] == "" ? "base.jpg" : $album["img"];
 
 ?>
 <!DOCTYPE html>
@@ -38,13 +39,14 @@ $album = $crudAlbum->obtenirAlbumParId($idAlbum);
 </head>
 <body>
 
-<?php
 
-echo "<h2>".$album["titre"]."</h2>";
-echo "<img src='../../../DataRessources/images/".$album["img"]."' alt='image album'>";
-echo "<h3>Date de sortie : ".$album["dateDeSortie"]."</h3>";
-echo "<h3>Compositeur : ".$crudArtiste->obtenirArtisteParId($crudAlbum->obtenirCompositeurId($idAlbum)["idA"])["nomA"]."</h3>";
-echo "<h3>Interprete : ".$crudArtiste->obtenirArtisteParId($crudAlbum->obtenirInterpreteId($idAlbum)["idA"])["nomA"]."</h3>";
+
+<h2> <?=$album["titre"]?> </h2>
+<img src="<?= '../../../DataRessources/images/'.$img?>" alt='image album' class="imageAlbum">
+<h3>Date de sortie : <?$album["dateDeSortie"]?></h3>
+<h3>Compositeur : <?=$crudArtiste->obtenirArtisteParId($crudAlbum->obtenirCompositeurId($idAlbum)["idA"])["nomA"]?></h3>
+<h3>Interprete : <?=$crudArtiste->obtenirArtisteParId($crudAlbum->obtenirInterpreteId($idAlbum)["idA"])["nomA"]?></h3>
+<?php
 $genres="";
 $taille=sizeof($crudAlbum->obtenirGenresAlbum($idAlbum));
 foreach ($crudAlbum->obtenirGenresAlbum($idAlbum) as $genre){
@@ -56,8 +58,14 @@ foreach ($crudAlbum->obtenirGenresAlbum($idAlbum) as $genre){
         $taille--;
     }
 }
-echo "<h3>Genre : ".$genres."</h3>";
-
 ?>
+<h3>Genre : <?= $genres ?> </h3>
+    <style>
+        .imageAlbum{
+            width: 200px;
+            height: 200px;
+        }
+    </style>
+
 </body>
 </html>
