@@ -49,3 +49,18 @@ input[type="submit"] {
     color: #fff;
     cursor: pointer;
 }
+
+.select-genres, .select-compositeurs, .select-interpretes {
+    padding: 8px;
+    border-radius: 5px;
+    font-size: 13px;
+}
+
+.select-genres option, .select-compositeurs option, .select-interpretes option {
+    border-radius: 5px;
+}
+
+.erreur-add {
+    color: red;
+    font-style: italic;
+}

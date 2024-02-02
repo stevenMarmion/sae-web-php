@@ -8,7 +8,7 @@ namespace App\Autoloader;
 class Autoloader
 {
     /**
-     * Enregistre notre autoloader
+     * Autoload provenant de la documentation officielle de PHP
      */
     public static function register()
     {

@@ -71,3 +71,31 @@ td {
 .form-inline form {
     margin-right: 10px;
 }
+
+.custom-add-button {
+    margin-left: 20%;
+    margin-top: 2em;
+    background-color: transparent;
+    border: none;
+}
+
+.add-paragraph {
+    display: flex;
+    align-items: center;
+    background-color: #1DB954;
+    color: #fff;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 15px;
+    transition: background-color 0.3s ease;
+}
+
+.custom-add-button .add-paragraph:hover {
+    background-color: #16843a;
+}
+
+.icon-ajouter {
+    width: 20px; 
+    height: 20px;
+    margin-left: 1em;
+}

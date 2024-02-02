@@ -2,19 +2,19 @@
 
 namespace App\Views\Admin\Details;
 
-require_once __DIR__ . '/../../../Autoloader/autoloader.php';
+require_once __DIR__ . '/../../../../Autoloader/autoloader.php';
 
 // Tous ces require sont temporaire, comprendre pourquoi l'Autoloader ne fonctionne pas...
-require_once __DIR__ . '/../../../../Database/DatabaseConnection/ConnexionBDD.php';
-require_once __DIR__ . '/../../../Models/EntityOperations/CrudAlbum.php';
-require_once __DIR__ .'/../../../Models/EntityOperations/CrudComposer.php';
-require_once __DIR__ .'/../../../Models/EntityOperations/CrudInterprete.php';
-require_once __DIR__ .'/../../../Models/EntityOperations/CrudArtiste.php';
-require_once __DIR__ .'/../../../Models/EntityOperations/CrudEtre.php';
-require_once __DIR__ .'/../../../Models/EntityOperations/CrudGenre.php';
-require_once __DIR__ .'/../../../Models/Album.php';
-require_once __DIR__ .'/../../../Models/Artiste.php';
-require_once __DIR__ .'/../../../Models/Genre.php';
+require_once __DIR__ . '/../../../../../Database/DatabaseConnection/ConnexionBDD.php';
+require_once __DIR__ . '/../../../../Models/EntityOperations/CrudAlbum.php';
+require_once __DIR__ .'/../../../../Models/EntityOperations/CrudComposer.php';
+require_once __DIR__ .'/../../../../Models/EntityOperations/CrudInterprete.php';
+require_once __DIR__ .'/../../../../Models/EntityOperations/CrudArtiste.php';
+require_once __DIR__ .'/../../../../Models/EntityOperations/CrudEtre.php';
+require_once __DIR__ .'/../../../../Models/EntityOperations/CrudGenre.php';
+require_once __DIR__ .'/../../../../Models/Album.php';
+require_once __DIR__ .'/../../../../Models/Artiste.php';
+require_once __DIR__ .'/../../../../Models/Genre.php';
 
 use \App\Autoloader\Autoloader;
 use \Database\DatabaseConnection\ConnexionBDD;
@@ -81,6 +81,13 @@ if (isset($_SERVER["REQUEST_METHOD"]) && isset($_GET["update"])) {
     }
 }
 
+$allGenres = $crudGenre->obtenirTousGenres();
+$allGenresObject = [];
+foreach ($allGenres as $genre) {
+    $genre = new Genre($genre['idG'],$genre['nomG']);
+    $allGenresObject[] = $genre;
+}
+
 ?>
 
 
@@ -91,12 +98,12 @@ if (isset($_SERVER["REQUEST_METHOD"]) && isset($_GET["update"])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/Public/Css/Admin/Details/panel-admin-update-album-style.css">
-    <title>Modifier les détails de l'album</title>
+    <title>Update - Admin - Album</title>
 </head>
 
 <body>
     <?php 
-        include __DIR__ . '/../../Layout/Admin/AdminNavBar.php';
+        include __DIR__ . '/../../../Layout/Admin/AdminNavBar.php';
     ?>
     <section>
         <h1>Modifier les détails de l'album</h1>
@@ -137,7 +144,13 @@ if (isset($_SERVER["REQUEST_METHOD"]) && isset($_GET["update"])) {
                 <label for="genre">Genres :</label>
                 <?php foreach ($album->getGenres() as $index => $genre): ?>
                     <input type="hidden" name="ancien-genres-<?=$index?>" value="<?= $genre->getId() ?>">
-                    <input type="text" id="genres-<?=$index?>" name="genres-<?=$index?>" value="<?= $genre->getNomGenre() ?>" required>
+
+                    <select class="select-genres" id="tous-genres-<?=$index?>" name="tous-genres-<?=$index?>" required>
+                    <?php foreach ($allGenresObject as $currentGenre): ?>
+                        <option value="<?= $currentGenre->getId() ?>" <?= ($currentGenre->getId() == $album->getGenres()[$index]->getId()) ? 'selected' : '' ?>>
+                            <?= $currentGenre->getNomGenre() ?>
+                        </option>
+                    <?php endforeach; ?>
                 <?php endforeach; ?>
                 <input type="hidden" name="nb-genres" value="<?= sizeof($album->getGenres()) ?>">
             </div>

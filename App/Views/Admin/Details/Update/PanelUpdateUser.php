@@ -2,14 +2,14 @@
 
 namespace App\Controllers\Admin;
 
-require_once __DIR__ . '/../../../Autoloader/autoloader.php';
+require_once __DIR__ . '/../../../../Autoloader/autoloader.php';
 
-require_once __DIR__ . '/../../../../Database/DatabaseConnection/ConnexionBDD.php';
-require_once __DIR__ . '/../../../Models/EntityOperations/CrudAlbum.php';
-require_once __DIR__ . '/../../../Models/EntityOperations/CrudUser.php';
-require_once __DIR__ . '/../../../Models/EntityOperations/CrudFavoris.php';
-require_once __DIR__ . '/../../../Models/User.php';
-require_once __DIR__ . '/../../../Models/Favori.php';
+require_once __DIR__ . '/../../../../../Database/DatabaseConnection/ConnexionBDD.php';
+require_once __DIR__ . '/../../../../Models/EntityOperations/CrudAlbum.php';
+require_once __DIR__ . '/../../../../Models/EntityOperations/CrudUser.php';
+require_once __DIR__ . '/../../../../Models/EntityOperations/CrudFavoris.php';
+require_once __DIR__ . '/../../../../Models/User.php';
+require_once __DIR__ . '/../../../../Models/Favori.php';
 
 use \App\Autoloader\Autoloader;
 use \Database\DatabaseConnection\ConnexionBDD;
@@ -60,11 +60,11 @@ if (isset($_SERVER["REQUEST_METHOD"]) && isset($_GET["update"])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/Public/Css/Admin/Details/panel-admin-update-user-style.css">
-    <title>Modif - Admin - User</title>
+    <title>Update - Admin - User</title>
 </head>
 <body>
     <?php 
-        include __DIR__ . '/../../Layout/Admin/AdminNavBar.php';
+        include __DIR__ . '/../../../Layout/Admin/AdminNavBar.php';
     ?>
     <section>
         <h1>Modifier les détails de l'utilisateur</h1>
@@ -89,7 +89,7 @@ if (isset($_SERVER["REQUEST_METHOD"]) && isset($_GET["update"])) {
                     <input type="radio" id="isAdmin" name="isAdmin" value="true" <?= $currentUser->isAdmin() ? 'checked' : '' ?>>
                     <label for="adminTrue">True</label>
 
-                    <input type="radio" id="isAdmin" name="isAdmin" value="false" <?= !$currentUser->isAdmin() ? 'checked' : '' ?>>
+                    <input type="radio" id="isAdmin" name="isAdmin" value="false" <?= $currentUser->isAdmin() === false ? 'checked' : '' ?>>
                     <label for="adminFalse">False</label>
                 </div>
             </div>

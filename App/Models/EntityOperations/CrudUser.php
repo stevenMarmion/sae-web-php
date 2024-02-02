@@ -68,7 +68,7 @@ class CrudUser {
             if ($stmt != false) {
                 $query = "INSERT INTO UTILISATEUR (isAdmin, pseudo, mdp, adresseMail) VALUES (?, ?, ?, ?)";
                 $stmt = $this->db->prepare($query);
-                $stmt->execute([0,
+                $stmt->execute([$userData->isAdmin(),
                                 $userData->getPseudo(), 
                                 $userData->getMdp(), 
                                 $userData->getMail()]);

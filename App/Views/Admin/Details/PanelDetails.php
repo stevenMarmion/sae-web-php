@@ -8,17 +8,17 @@ require_once __DIR__ . '/../../../Autoloader/autoloader.php';
 require_once __DIR__ . '/../../../../Database/DatabaseConnection/ConnexionBDD.php';
 require_once __DIR__ . '/../../../Models/EntityOperations/CrudAlbum.php';
 require_once __DIR__ . '/../../../Models/EntityOperations/CrudUser.php';
-require_once __DIR__ .'/../../../Models/EntityOperations/CrudFavoris.php';
-require_once __DIR__ .'/../../../Models/EntityOperations/CrudComposer.php';
-require_once __DIR__ .'/../../../Models/EntityOperations/CrudInterprete.php';
-require_once __DIR__ .'/../../../Models/EntityOperations/CrudArtiste.php';
-require_once __DIR__ .'/../../../Models/EntityOperations/CrudEtre.php';
-require_once __DIR__ .'/../../../Models/EntityOperations/CrudGenre.php';
-require_once __DIR__ .'/../../../Models/User.php';
-require_once __DIR__ .'/../../../Models/Favori.php';
-require_once __DIR__ .'/../../../Models/Album.php';
-require_once __DIR__ .'/../../../Models/Artiste.php';
-require_once __DIR__ .'/../../../Models/Genre.php';
+require_once __DIR__ . '/../../../Models/EntityOperations/CrudFavoris.php';
+require_once __DIR__ . '/../../../Models/EntityOperations/CrudComposer.php';
+require_once __DIR__ . '/../../../Models/EntityOperations/CrudInterprete.php';
+require_once __DIR__ . '/../../../Models/EntityOperations/CrudArtiste.php';
+require_once __DIR__ . '/../../../Models/EntityOperations/CrudEtre.php';
+require_once __DIR__ . '/../../../Models/EntityOperations/CrudGenre.php';
+require_once __DIR__ . '/../../../Models/User.php';
+require_once __DIR__ . '/../../../Models/Favori.php';
+require_once __DIR__ . '/../../../Models/Album.php';
+require_once __DIR__ . '/../../../Models/Artiste.php';
+require_once __DIR__ . '/../../../Models/Genre.php';
 
 use \App\Autoloader\Autoloader;
 use \Database\DatabaseConnection\ConnexionBDD;
@@ -128,6 +128,14 @@ if (isset($_GET['table'])) {
 
     <?php if (isset($_GET['table']) && ($_GET['table'] == "UTILISATEUR")) : ?>
     <section>
+        <form action="/App/Views/Admin/Details/Add/PanelAddUser.php?add=UTILISATEUR" method="POST">
+            <button class="custom-add-button">
+                <p class="add-paragraph">
+                    Ajouter un utilisateur
+                    <img class="icon-ajouter" src="/Public/Icons/add.png">
+                </p>
+            </button>
+        </form>
         <h1>Liste de tous les utilisateurs</h1>
         <table border='1'>
             <tr>
@@ -154,11 +162,11 @@ if (isset($_GET['table'])) {
                     </td>
                     <td>
                         <div class="form-inline">
-                            <form action="PanelUpdateUser.php?update=UTILISATEUR" method="post">
+                            <form action="Update/PanelUpdateUser.php?update=UTILISATEUR" method="post">
                                 <input type="hidden" name="user_id" value="<?= $user->getId() ?>">
                                 <input type="submit" class="custom-update-submit-button">
                             </form>
-                            <form action="/App/Controllers/Admin/AdminDeleteController.php?delete=UTILISATEUR" method="post">
+                            <form action="Delete/PanelDeleteUser.php?delete=UTILISATEUR" method="post">
                                 <input type="hidden" name="user_id" value="<?= $user->getId() ?>">
                                 <input type="submit" class="custom-delete-submit-button">
                             </form>
@@ -173,6 +181,14 @@ if (isset($_GET['table'])) {
 
     <?php if (isset($_GET['table']) && ($_GET['table'] == "ALBUMS")) : ?>
     <section>
+        <form action="/App/Views/Admin/Details/Add/PanelAddAlbums.php?add=ALBUMS" method="POST">
+            <button class="custom-add-button">
+                <p class="add-paragraph">
+                    Ajouter un album
+                    <img class="icon-ajouter" src="/Public/Icons/add.png">
+                </p>
+            </button>
+        </form>
         <h1>Liste de tous les albums</h1>
         <table border='1'>
             <tr>
@@ -207,11 +223,11 @@ if (isset($_GET['table'])) {
                     </td>
                     <td>
                         <div class="form-inline">
-                            <form action="PanelUpdateAlbum.php?update=ALBUMS" method="post">
+                            <form action="Update/PanelUpdateAlbum.php?update=ALBUMS" method="post">
                                 <input type="hidden" name="album_id" value="<?= $album->getId() ?>">
                                 <input type="submit" class="custom-update-submit-button">
                             </form>
-                            <form action="/App/Controllers/Admin/AdminDeleteController.php?delete=ALBUMS" method="post">
+                            <form action="Delete/PanelDeleteAlbum.php?delete=ALBUMS" method="post">
                                 <input type="hidden" name="album_id" value="<?= $album->getId() ?>">
                                 <input type="submit" class="custom-delete-submit-button">
                             </form>

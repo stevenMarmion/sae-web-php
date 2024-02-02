@@ -26,10 +26,10 @@ $crudUser = new CrudUser($db::obtenir_connexion());
 $crudFavoris = new CrudFavoris($db::obtenir_connexion());
 $crudAlbum = new CrudAlbum($db::obtenir_connexion());
 
-if (isset($_SERVER["REQUEST_METHOD"]) && isset($_GET["update"])) {
+if (isset($_SERVER["REQUEST_METHOD"]) && isset($_GET["add"])) {
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $tableToUpdate = $_GET["update"]; // UTILISATEUR ou ALBUMS
-        if ($tableToUpdate === "UTILISATEUR") {
+        $tableToAdd = $_GET["add"]; // UTILISATEUR ou ALBUMS
+        if ($tableToAdd === "UTILISATEUR") {
             // Prépare les données pour le CRUD USER
             $userId = $_POST["user_id"] ?? null;
             $userName = $_POST["pseudo"] ?? null;
@@ -37,26 +37,24 @@ if (isset($_SERVER["REQUEST_METHOD"]) && isset($_GET["update"])) {
             $userMdp = $_POST["mdp"] ?? null;
             $userIsAdmin = $_POST["isAdmin"] == "true" ? true : false;
             $user = new User($userId, $userName, $userMdp, $userMail, $userIsAdmin, []);
-            $actionValid = $crudUser->modifierUtilisateur($userId, $user);
+            $actionValid = $crudUser->ajouterUtilisateurFromObject($user);
             if ($actionValid) {
                 header('Location: /App/Views/Admin/Details/PanelDetails.php?table=UTILISATEUR'); // redirection vers la page actuelle actualisée
                 exit();
             }
             else {
-                header('Location: /App/Views/Admin/Details/PanelDetails.php?error=NullValues'); // redirection vers la page actuelle avec erreurs
+                header('Location: /App/Views/Admin/Details/Add/PanelAddUser.php?error=AlreadyExists'); // redirection vers la page actuelle avec erreurs
                 exit();
             }
         }
-        if ($tableToUpdate === "ALBUMS") {
-            // Récupère les anciennes données pour la modif CRUD ALBUM
-            $ancienComp = [];
-            $ancienInt = [];
-            $ancienGenres = [];
+        if ($tableToAdd === "ALBUMS") {
 
+            // Préparation des listes de compositeurs, interpretes et des genres
             $albumCompositeurs = [];
             $albumInterpretes = [];
-            $albumGenres = [];
+            $albumGenres = []; 
 
+            // Récupération du nombre de compositeurs, interpretes et genres associés
             $nbComp = $_POST["nb-compositeurs"] ?? null;
             $nbInt = $_POST["nb-interpretes"] ?? null;
             $nbGenres = $_POST["nb-genres"] ?? null;
@@ -67,20 +65,20 @@ if (isset($_SERVER["REQUEST_METHOD"]) && isset($_GET["update"])) {
             $albumName = $_POST["titre"] ?? null;
             $albumDateSortie = $_POST["dateDeSortie"] ?? null;
 
-            for ($i = 0; $i < $nbComp; $i++) {
-                $albumCompositeurs[] = $_POST["compositeurs-$i"] ?? null;
-                $ancienComp[] = $_POST["ancien-compositeurs-$i"] ?? null;
+            for ($i = 1; $i < $nbComp+1; $i++) {
+                $albumCompositeurs[] = $_POST["tous-compositeurs-$i"] ?? null;
             }
-            for ($i = 0; $i < $nbInt; $i++) {
-                $albumInterpretes[] = $_POST["interpretes-$i"] ?? null;
-                $ancienInt[] = $_POST["ancien-interpretes-$i"] ?? null;
+            for ($i = 1; $i < $nbInt+1; $i++) {
+                $albumInterpretes[] = $_POST["tous-interpretes-$i"] ?? null;
             }
-            for ($i = 0; $i < $nbGenres; $i++) {
+            for ($i = 1; $i < $nbGenres+1; $i++) {
                 $albumGenres[] = $_POST["tous-genres-$i"] ?? null;
-                $ancienGenres[] = $_POST["ancien-genres-$i"] ?? null;
             }
+            print_r($albumCompositeurs);
+            print_r($albumInterpretes);
+            print_r($albumGenres);
             $album = new Album($albumId, $albumImg, $albumDateSortie, $albumName, $albumCompositeurs, $albumInterpretes, $albumGenres);
-            $actionValid = $crudAlbum->modifierAlbum($albumId, $album, $ancienComp, $ancienInt, $ancienGenres);
+            $actionValid = $crudAlbum->ajouterAlbumFromObject($album);
             if ($actionValid) {
                 header('Location: /App/Views/Admin/Details/PanelDetails.php?table=ALBUMS'); // redirection vers la page actuelle actualisée
                 exit();
