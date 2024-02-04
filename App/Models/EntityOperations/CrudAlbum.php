@@ -3,17 +3,15 @@
 namespace App\Models\EntityOperations;
 
 require_once __DIR__ . '/../../Autoloader/autoloader.php';
-require_once __DIR__ . '/CrudArtiste.php';
-require_once __DIR__ . '/CrudGenre.php';
-require_once __DIR__ . '/CrudComposer.php';
-require_once __DIR__ . '/CrudInterprete.php';
-require_once __DIR__ . '/CrudEtre.php';
 
 use \App\Models\EntityOperations\CrudArtiste;
 use \App\Models\EntityOperations\CrudGenre;
 use \App\Models\EntityOperations\CrudComposer;
 use \App\Models\EntityOperations\CrudInterprete;
 use \App\Models\EntityOperations\CrudEtre;
+use \App\Models\EntityOperations\CrudContenir;
+use \App\Models\EntityOperations\CrudNote;
+use \App\Models\EntityOperations\CrudFavoris;
 use \App\Autoloader\Autoloader;
 use \App\Models\Album;
 use PDO;
@@ -24,6 +22,14 @@ Autoloader::register();
 class CrudAlbum {
 
     private $db;
+    private CrudComposer $crudComposer;
+    private CrudInterprete $crudInterpreter;
+    private CrudEtre $crudEtre;
+    private CrudArtiste $crudArtiste;
+    private CrudGenre $crudGenre;
+    private CrudContenir $crudContenir;
+    private CrudNote $crudNote;
+    private CrudFavoris $crudFavoris;
 
     /**
      * Constructeur de la classe CrudAlbum.
@@ -33,6 +39,14 @@ class CrudAlbum {
      */
     public function __construct(PDO $db) {
         $this->db = $db;
+        $this->crudComposer = new CrudComposer($this->db);
+        $this->crudInterpreter = new CrudInterprete($this->db);
+        $this->crudEtre = new CrudEtre($this->db);
+        $this->crudArtiste = new CrudArtiste($this->db);
+        $this->crudGenre = new CrudGenre($this->db);
+        $this->crudContenir = new CrudContenir($this->db);
+        $this->crudNote = new CrudNote($this->db);
+        $this->crudFavoris = new CrudFavoris($this->db);
     }
 
     /**
@@ -59,12 +73,7 @@ class CrudAlbum {
      * @return bool True si l'ajout est réussi, False sinon.
      */
     public function ajouterAlbumFromObject(Album $albumData) {
-        $crudComposer = new CrudComposer($this->db);
-        $crudInterpreter = new CrudInterprete($this->db);
-        $crudEtre = new CrudEtre($this->db);
-
         try {
-
             $query = "SELECT * FROM ALBUMS WHERE id = ?";
             $stmt = $this->db->prepare($query);
             $stmt->execute([$albumData->getId()]); 
@@ -77,20 +86,17 @@ class CrudAlbum {
 
                 // Ajoute le(s) compositeur(s) de l'album
                 foreach ($albumData->getCompositeurs() as $compositeur) {
-                    print_r($compositeur);
-                    $crudComposer->ajouterCompositeur($albumData->getId(), $compositeur);
+                    $this->crudComposer->ajouterCompositeur($albumData->getId(), $compositeur);
                 }
 
                 // Ajoute les interprètes de l'album
                 foreach ($albumData->getInterpretes() as $interprete) {
-                    print_r($interprete);
-                    $crudInterpreter->ajouterInterprete($albumData->getId(), $interprete);
+                    $this->crudInterpreter->ajouterInterprete($albumData->getId(), $interprete);
                 }
 
                 // Ajoute le(s) genre(s) de l'album
                 foreach ($albumData->getGenres() as $genre) {
-                    print_r($genre);
-                    $crudEtre->ajouterRelation($albumData->getId(), $genre);
+                    $this->crudEtre->ajouterRelation($albumData->getId(), $genre);
                 }
             }
             else {
@@ -111,6 +117,13 @@ class CrudAlbum {
      */
     public function supprimerAlbum(int $albumId) {
         try {
+            $this->crudContenir->supprimerAllAlbum($albumId);
+            $this->crudNote->supprimerToutesNotesFromIdAlbum($albumId);
+            $this->crudFavoris->supprimerAlbumFromFavori($albumId);
+            $this->crudEtre->supprimerAllAlbum($albumId);
+            $this->crudInterpreter->supprimerAllAlbum($albumId);
+            $this->crudComposer->supprimerAllAlbum($albumId);
+
             $query = "DELETE FROM ALBUMS WHERE id = ?";
             $stmt = $this->db->prepare($query);
             $stmt->execute([$albumId]);
@@ -128,9 +141,6 @@ class CrudAlbum {
      * @return bool True si la modification est réussie, False sinon.
      */
     public function modifierAlbum(int $albumId, Album $newAlbumData, array $ancienComp, array $ancienInt, array $ancienGenres) {
-        $crudArtiste = new CrudArtiste($this->db);
-        $crudGenre = new CrudGenre($this->db);
-
         try {
             // Modifier les données de l'album
             $query = "UPDATE ALBUMS SET img = ?, dateDeSortie = ?, titre = ? WHERE id = ?";
@@ -141,33 +151,18 @@ class CrudAlbum {
                             $albumId]);
 
             // Modifier le(s) compositeur(s) de l'album
-            foreach ($ancienComp as $index_compositeur => $compositeur) {
-                $query = "UPDATE COMPOSER SET idA = ? WHERE idAl = ? and idA = ?";
-                $stmt = $this->db->prepare($query);
-                $idArtiste = $crudArtiste->obtenirArtisteParNom($newAlbumData->getCompositeurs()[$index_compositeur])["idA"];
-                $stmt->execute([$idArtiste,
-                                $albumId,
-                                $compositeur]);
+            foreach ($ancienComp as $indexComp => $compositeur) {
+                $this->crudComposer->modifierCompositeur($albumId, $newAlbumData, $indexComp, $compositeur);
             }
 
             // Modifier les interprètes de l'album
-            foreach ($ancienInt as $index_interprete => $interprete) {
-                $query = "UPDATE INTERPRETER SET idA = ? WHERE idAl = ? and idA = ?";
-                $stmt = $this->db->prepare($query);
-                $idArtiste = $crudArtiste->obtenirArtisteParNom($newAlbumData->getInterpretes()[$index_interprete])["idA"];
-                $stmt->execute([$idArtiste,
-                                $albumId,
-                                $interprete]);
+            foreach ($ancienInt as $indexInt => $interprete) {
+                $this->crudInterpreter->modifierInterprete($albumId, $newAlbumData, $indexInt, $interprete);
             }
 
             // Modifier le(s) genre(s) de l'album
-            foreach ($ancienGenres as $index_genre => $genre) {
-                $query = "UPDATE ETRE SET idG = ? WHERE idAl = ? and idG = ?";
-                $stmt = $this->db->prepare($query);
-                $idGenre = $crudGenre->obtenirGenreParId($newAlbumData->getGenres()[$index_genre])["idG"];
-                $stmt->execute([$idGenre,
-                                $albumId,
-                                $genre]);
+            foreach ($ancienGenres as $indexGenre => $genre) {
+                $this->crudEtre->modifierRelation($albumId, $newAlbumData, $indexGenre, $genre);
             }
             return true;
         } catch (PDOException $e) {

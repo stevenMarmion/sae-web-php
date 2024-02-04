@@ -4,19 +4,21 @@ namespace App\Controllers\Admin;
 
 require_once __DIR__ . '/../../Autoloader/autoloader.php';
 
-require_once __DIR__ . '/../../../Database/DatabaseConnection/ConnexionBDD.php';
-require_once __DIR__ . '/../../Models/EntityOperations/CrudAlbum.php';
-require_once __DIR__ . '/../../Models/EntityOperations/CrudUser.php';
-require_once __DIR__ .'/../../Models/EntityOperations/CrudFavoris.php';
-require_once __DIR__ .'/../../Models/User.php';
-require_once __DIR__ .'/../../Models/Album.php';
+// require_once __DIR__ . '/../../../Database/DatabaseConnection/ConnexionBDD.php';
+// require_once __DIR__ . '/../../Models/EntityOperations/CrudAlbum.php';
+// require_once __DIR__ . '/../../Models/EntityOperations/CrudUser.php';
+// require_once __DIR__ .'/../../Models/EntityOperations/CrudFavoris.php';
+// require_once __DIR__ .'/../../Models/User.php';
+// require_once __DIR__ .'/../../Models/Album.php';
 
 use \App\Autoloader\Autoloader;
 use \Database\DatabaseConnection\ConnexionBDD;
 use \App\Models\EntityOperations\CrudAlbum;
 use \App\Models\EntityOperations\CrudUser;
 use \App\Models\EntityOperations\CrudFavoris;
+use \App\Models\EntityOperations\CrudArtiste;
 use \App\Models\User;
+use \App\Models\Artiste;
 use \App\Models\Album;
 
 Autoloader::register();
@@ -25,6 +27,7 @@ $db = new ConnexionBDD();
 $crudUser = new CrudUser($db::obtenir_connexion());
 $crudFavoris = new CrudFavoris($db::obtenir_connexion());
 $crudAlbum = new CrudAlbum($db::obtenir_connexion());
+$crudArtiste = new CrudArtiste($db::obtenir_connexion());
 
 if (isset($_SERVER["REQUEST_METHOD"]) && isset($_GET["add"])) {
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -85,6 +88,21 @@ if (isset($_SERVER["REQUEST_METHOD"]) && isset($_GET["add"])) {
             }
             else {
                 header('Location: /App/Views/Admin/Details/PanelDetails.php?error=NullValues'); // redirection vers la page actuelle avec erreurs
+                exit();
+            }
+        }
+        if ($tableToAdd === "ARTISTES") {
+            $artisteId = $_POST["artiste_id"] ?? null;
+            $nomArtiste = $_POST["nom"] ?? null;
+
+            $artiste = new Artiste($artisteId, $nomArtiste);
+            $actionValid = $crudArtiste->ajouterArtisteFromObject($artiste);
+            if ($actionValid) {
+                header('Location: /App/Views/Admin/Details/PanelDetails.php?table=ARTISTES'); // redirection vers la page actuelle actualisée
+                exit();
+            }
+            else {
+                header('Location: /App/Views/Admin/Details/PanelDetails.php?error=AlreadyExists'); // redirection vers la page actuelle avec erreurs
                 exit();
             }
         }

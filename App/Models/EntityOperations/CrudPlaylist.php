@@ -62,6 +62,18 @@ class CrudPlaylist
         }
     }
 
+    public function supprimerPlaylistByIdU(int $idU)
+    {
+        try {
+            $query = "DELETE FROM PLAYLIST WHERE idU = ?";
+            $stmt = $this->db->prepare($query);
+            $stmt->execute([$idU]);
+            return true;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
     /**
      * Modifie le nom d'une playlist dans la base de données en fonction de son ID.
      *

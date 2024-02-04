@@ -4,22 +4,6 @@ namespace App\Views\Admin\Details;
 
 require_once __DIR__ . '/../../../Autoloader/autoloader.php';
 
-// Tous ces require sont temporaire, comprendre pourquoi l'Autoloader ne fonctionne pas...
-require_once __DIR__ . '/../../../../Database/DatabaseConnection/ConnexionBDD.php';
-require_once __DIR__ . '/../../../Models/EntityOperations/CrudAlbum.php';
-require_once __DIR__ . '/../../../Models/EntityOperations/CrudUser.php';
-require_once __DIR__ . '/../../../Models/EntityOperations/CrudFavoris.php';
-require_once __DIR__ . '/../../../Models/EntityOperations/CrudComposer.php';
-require_once __DIR__ . '/../../../Models/EntityOperations/CrudInterprete.php';
-require_once __DIR__ . '/../../../Models/EntityOperations/CrudArtiste.php';
-require_once __DIR__ . '/../../../Models/EntityOperations/CrudEtre.php';
-require_once __DIR__ . '/../../../Models/EntityOperations/CrudGenre.php';
-require_once __DIR__ . '/../../../Models/User.php';
-require_once __DIR__ . '/../../../Models/Favori.php';
-require_once __DIR__ . '/../../../Models/Album.php';
-require_once __DIR__ . '/../../../Models/Artiste.php';
-require_once __DIR__ . '/../../../Models/Genre.php';
-
 use \App\Autoloader\Autoloader;
 use \Database\DatabaseConnection\ConnexionBDD;
 use \App\Models\EntityOperations\CrudAlbum;
@@ -39,6 +23,8 @@ use \App\Models\Genre;
 Autoloader::register();
 
 $db = new ConnexionBDD();
+
+$errorDetected = null;
 
 if (isset($_GET['table'])) {
     if ($_GET['table'] == "UTILISATEUR") {
@@ -103,6 +89,28 @@ if (isset($_GET['table'])) {
                 $currentAlbum->ajouterGenre($currentGenre);
             }
             $allAlbumsObject[] = $currentAlbum;
+        }
+    }
+}
+
+if (isset($_GET['table'])) {
+    if ($_GET['table'] == "ARTISTES") {
+        if (isset($_GET['error'])) {
+            if ($_GET["error"] == "AlreadyExists") {
+                $errorDetected = true;
+            }
+            else {
+                $errorDetected = false;
+            }
+        }
+        $crudArtiste = new CrudArtiste($db::obtenir_connexion());
+
+        $allArtistes = $crudArtiste->obtenirTousArtistes();
+        $allArtistesObject = [];
+
+        foreach ($allArtistes as $artiste) {
+            $currentArtistes = new Artiste($artiste["idA"], $artiste["nomA"]);
+            $allArtistesObject[] = $currentArtistes;
         }
     }
 }
@@ -229,6 +237,47 @@ if (isset($_GET['table'])) {
                             </form>
                             <form action="Delete/PanelDeleteAlbum.php?delete=ALBUMS" method="post">
                                 <input type="hidden" name="album_id" value="<?= $album->getId() ?>">
+                                <input type="submit" class="custom-delete-submit-button">
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+
+        </table>
+    </section>
+    <?php endif; ?>
+
+    <?php if (isset($_GET['table']) && ($_GET['table'] == "ARTISTES")) : ?>
+    <section>
+        <form action="/App/Views/Admin/Details/Add/PanelAddUser.php?add=ARTISTES" method="POST">
+            <button class="custom-add-button">
+                <p class="add-paragraph">
+                    Ajouter un artiste
+                    <img class="icon-ajouter" src="/Public/Icons/add.png">
+                </p>
+            </button>
+        </form>
+        <h1>Liste de tous les artistes</h1>
+        <table border='1'>
+            <tr>
+                <th>ID Artiste</th>
+                <th>Nom</th>
+                <th>Actions</th>
+            </tr>
+
+            <?php foreach ($allArtistesObject as $artiste): ?>
+                <tr>
+                    <td><?= $artiste->getId() ?></td>
+                    <td><?= $artiste->getNomArtiste() ?></td>
+                    <td>
+                        <div class="form-inline">
+                            <form action="Update/PanelUpdateArtiste.php?update=ARTISTES" method="post">
+                                <input type="hidden" name="artiste_id" value="<?= $artiste->getId() ?>">
+                                <input type="submit" class="custom-update-submit-button">
+                            </form>
+                            <form action="Delete/PanelDeleteArtiste.php?delete=ARTISTES" method="post">
+                                <input type="hidden" name="artiste_id" value="<?= $artiste->getId() ?>">
                                 <input type="submit" class="custom-delete-submit-button">
                             </form>
                         </div>

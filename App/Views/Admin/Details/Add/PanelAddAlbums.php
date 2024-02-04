@@ -2,18 +2,6 @@
 
 require_once __DIR__ . '/../../../../Autoloader/autoloader.php';
 
-// Tous ces require sont temporaire, comprendre pourquoi l'Autoloader ne fonctionne pas...
-require_once __DIR__ . '/../../../../../Database/DatabaseConnection/ConnexionBDD.php';
-require_once __DIR__ . '/../../../../Models/EntityOperations/CrudAlbum.php';
-require_once __DIR__ .'/../../../../Models/EntityOperations/CrudComposer.php';
-require_once __DIR__ .'/../../../../Models/EntityOperations/CrudInterprete.php';
-require_once __DIR__ .'/../../../../Models/EntityOperations/CrudArtiste.php';
-require_once __DIR__ .'/../../../../Models/EntityOperations/CrudEtre.php';
-require_once __DIR__ .'/../../../../Models/EntityOperations/CrudGenre.php';
-require_once __DIR__ .'/../../../../Models/Album.php';
-require_once __DIR__ .'/../../../../Models/Artiste.php';
-require_once __DIR__ .'/../../../../Models/Genre.php';
-
 use \App\Autoloader\Autoloader;
 use \Database\DatabaseConnection\ConnexionBDD;
 use \App\Models\EntityOperations\CrudAlbum;
@@ -93,7 +81,7 @@ $nbGenres = 1;
 
             <div class="form-group">
                 <label for="album_img">Image associée :</label>
-                <input type="text" name="album_img" required>
+                <input type="file" accept="image/*" name="album_img" required>
             </div>
 
             <div class="form-group">

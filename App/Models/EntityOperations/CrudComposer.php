@@ -3,8 +3,11 @@
 namespace App\Models\EntityOperations;
 
 require_once __DIR__ . '/../../Autoloader/autoloader.php';
+// require_once __DIR__ . '/../../Models/EntityOperations/CrudArtiste.php';
 
 use \App\Autoloader\Autoloader;
+use App\Models\EntityOperations\CrudArtiste;
+use App\Models\Album;
 use PDO;
 use PDOException;
 
@@ -13,6 +16,7 @@ Autoloader::register();
 class CrudComposer {
 
     private $db;
+    private CrudArtiste $crudArtiste;
 
     /**
      * Constructeur de la classe CrudComposer.
@@ -22,6 +26,7 @@ class CrudComposer {
      */
     public function __construct(PDO $db) {
         $this->db = $db;
+        $this->crudArtiste = new CrudArtiste($db);
     }
 
     /**
@@ -55,6 +60,24 @@ class CrudComposer {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function obtenirAlbumdParCompositeur(int $artisteId) {
+        $query = "SELECT * FROM COMPOSER WHERE idA = ?";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute([$artisteId]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function modifierCompositeur(int $albumId, Album $newAlbumData, int $indexComp, int $compositeur) {
+        $query = "UPDATE COMPOSER SET idA = ? WHERE idAl = ? and idA = ?";
+        $stmt = $this->db->prepare($query);
+        $idArtiste = $this->crudArtiste->obtenirArtisteParNom($newAlbumData->getCompositeurs()[$indexComp])["idA"];
+        $stmt->execute([$idArtiste,
+                        $albumId,
+                        $compositeur]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+
     /**
      * Supprime un compositeur de la base de données en fonction de l'ID de l'album et de l'ID de l'artiste.
      *
@@ -67,6 +90,17 @@ class CrudComposer {
             $query = "DELETE FROM COMPOSER WHERE idAl = ? AND idA = ?";
             $stmt = $this->db->prepare($query);
             $stmt->execute([$albumId, $artisteId]);
+            return true;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    public function supprimerAllAlbum(int $albumId) {
+        try {
+            $query = "DELETE FROM COMPOSER WHERE idAl = ?";
+            $stmt = $this->db->prepare($query);
+            $stmt->execute([$albumId]);
             return true;
         } catch (PDOException $e) {
             return false;

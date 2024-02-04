@@ -3,7 +3,7 @@
 namespace App\Parser;
 
 require_once __DIR__ . '/../Autoloader/autoloader.php';
-require_once __DIR__.'/../../Config/vendor/autoload.php';
+require_once __DIR__. ' /../../Config/vendor/autoload.php';
 
 use App\Autoloader\Autoloader;
 use Symfony\Component\Yaml\Yaml;

@@ -3,8 +3,12 @@
 namespace App\Models\EntityOperations;
 
 require_once __DIR__ . '/../../Autoloader/autoloader.php';
+// require_once __DIR__ . '/../../Models/EntityOperations/CrudGenre.php';
+// require_once __DIR__ . '/../../Models/Album.php';
 
 use \App\Autoloader\Autoloader;
+use App\Models\EntityOperations\CrudGenre;
+use App\Models\Album;
 use PDO;
 use PDOException;
 
@@ -13,6 +17,7 @@ Autoloader::register();
 class CrudEtre {
 
     private $db;
+    private CrudGenre $crudGenre;
 
     /**
      * Constructeur de la classe CrudEtre.
@@ -22,6 +27,7 @@ class CrudEtre {
      */
     public function __construct(PDO $db) {
         $this->db = $db;
+        $this->crudGenre = new CrudGenre($db);
     }
 
     /**
@@ -58,6 +64,27 @@ class CrudEtre {
         } catch (PDOException $e) {
             return false;
         }
+    }
+
+    public function supprimerAllAlbum(int $idAlbum) {
+        try {
+            $query = "DELETE FROM ETRE WHERE idAl = ?";
+            $stmt = $this->db->prepare($query);
+            $stmt->execute([$idAlbum]);
+            return true;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    public function modifierRelation(int $albumId, Album $newAlbumData, int $indexGenre, int $genre) {
+        $query = "UPDATE ETRE SET idG = ? WHERE idAl = ? and idG = ?";
+        $stmt = $this->db->prepare($query);
+        $idGenre = $this->crudGenre->obtenirGenreParId($newAlbumData->getGenres()[$indexGenre])["idG"];
+        $stmt->execute([$idGenre,
+                        $albumId,
+                        $genre]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     /**

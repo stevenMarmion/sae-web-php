@@ -33,7 +33,7 @@ class CrudFavoris {
      */
     public function ajouterFavori(int $idUtilisateur, int $idMusique) {
         try {
-            $query = "INSERT INTO FAVORIS (idU, idM) VALUES (?, ?)";
+            $query = "INSERT INTO FAVORIS (idU, idAl) VALUES (?, ?)";
             $stmt = $this->db->prepare($query);
             $stmt->execute([$idUtilisateur, $idMusique]);
             return true;
@@ -51,9 +51,31 @@ class CrudFavoris {
      */
     public function supprimerFavori(int $idUtilisateur, int $idMusique) {
         try {
-            $query = "DELETE FROM FAVORIS WHERE idU = ? AND idM = ?";
+            $query = "DELETE FROM FAVORIS WHERE idU = ? AND idAl = ?";
             $stmt = $this->db->prepare($query);
             $stmt->execute([$idUtilisateur, $idMusique]);
+            return true;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    public function supprimerFavoriFromIdu(int $idUtilisateur) {
+        try {
+            $query = "DELETE FROM FAVORIS WHERE idU = ?";
+            $stmt = $this->db->prepare($query);
+            $stmt->execute([$idUtilisateur]);
+            return true;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    public function supprimerAlbumFromFavori(int $idAlbum) {
+        try {
+            $query = "DELETE FROM FAVORIS WHERE idAl = ?";
+            $stmt = $this->db->prepare($query);
+            $stmt->execute([$idAlbum]);
             return true;
         } catch (PDOException $e) {
             return false;
@@ -81,7 +103,7 @@ class CrudFavoris {
      * @return bool True si la musique est dans les favoris, False sinon.
      */
     public function estFavori(int $idUtilisateur, int $idMusique) {
-        $query = "SELECT * FROM FAVORIS WHERE idU = ? AND idM = ?";
+        $query = "SELECT * FROM FAVORIS WHERE idU = ? AND idAl = ?";
         $stmt = $this->db->prepare($query);
         $stmt->execute([$idUtilisateur, $idMusique]);
         return $stmt->rowCount() > 0;

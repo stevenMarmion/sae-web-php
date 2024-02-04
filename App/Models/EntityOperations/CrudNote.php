@@ -64,6 +64,31 @@ class CrudNote
         }
     }
 
+    public function supprimerToutesNotesFromIdU(int $idUser)
+    {
+        try {
+            $query = "DELETE FROM NOTE WHERE idU = ?";
+            $stmt = $this->db->prepare($query);
+            $stmt->execute([$idUser]);
+            return true;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+
+    public function supprimerToutesNotesFromIdAlbum(int $idAlbum)
+    {
+        try {
+            $query = "DELETE FROM NOTE WHERE idAl = ?";
+            $stmt = $this->db->prepare($query);
+            $stmt->execute([$idAlbum]);
+            return true;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
     /**
      * Modifie la note d'un album dans la base de données en fonction de l'ID de l'album et de l'ID de l'utilisateur.
      *

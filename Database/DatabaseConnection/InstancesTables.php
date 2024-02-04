@@ -4,14 +4,13 @@
 namespace Database\DatabaseConnection;
 
 require_once __DIR__ . '/../../App/Autoloader/autoloader.php';
-require_once __DIR__ . '/ConnexionBDD.php';
-require_once __DIR__ . '/../../App/Parser/YamlParser.php';
 
-use \App\Autoloader\Autoloader;
-use \App\Parser\YamlParser;
 use Throwable;
 use PDO;
 use PDOException;
+use App\Autoloader\Autoloader;
+use App\Parser\YamlParser;
+use Database\DatabaseConnection\ConnexionBDD;
 
 Autoloader::register();
 

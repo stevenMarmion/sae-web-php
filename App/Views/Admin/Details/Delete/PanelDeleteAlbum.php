@@ -2,10 +2,6 @@
 
 require_once __DIR__ . '/../../../../Autoloader/autoloader.php';
 
-require_once __DIR__ . '/../../../../../Database/DatabaseConnection/ConnexionBDD.php';
-require_once __DIR__ . '/../../../../Models/EntityOperations/CrudAlbum.php';
-require_once __DIR__ . '/../../../../Models/Album.php';
-
 use \App\Autoloader\Autoloader;
 use \Database\DatabaseConnection\ConnexionBDD;
 use \App\Models\EntityOperations\CrudAlbum;

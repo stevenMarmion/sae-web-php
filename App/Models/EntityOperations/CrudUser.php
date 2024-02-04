@@ -5,6 +5,9 @@ namespace App\Models\EntityOperations;
 require_once __DIR__ . '/../../Autoloader/autoloader.php';
 
 use \App\Autoloader\Autoloader;
+use \App\Models\EntityOperations\CrudFavoris;
+use \App\Models\EntityOperations\CrudPlaylist;
+use \App\Models\EntityOperations\CrudNote;
 use \App\Models\User;
 use PDO;
 use PDOException;
@@ -14,6 +17,9 @@ Autoloader::register();
 class CrudUser {
 
     private $db;
+    private CrudPlaylist $crudPlaylist;
+    private CrudNote $crudNote;
+    private CrudFavoris $crudFavoris;
 
     /**
      * Constructeur de la classe CrudUser.
@@ -23,6 +29,9 @@ class CrudUser {
      */
     public function __construct(PDO $db) {
         $this->db = $db;
+        $this->crudPlaylist = new CrudPlaylist($db);
+        $this->crudNote = new CrudNote($db);
+        $this->crudFavoris = new CrudFavoris($db);
     }
 
     /**
@@ -90,6 +99,10 @@ class CrudUser {
      */
     public function supprimerUtilisateur(int $userId) {
         try {
+            $this->crudFavoris->supprimerFavoriFromIdu($userId);
+            $this->crudNote->supprimerToutesNotesFromIdU($userId);
+            $this->crudPlaylist->supprimerPlaylistByIdU($userId);
+            
             $query = "DELETE FROM UTILISATEUR WHERE idU = ?";
             $stmt = $this->db->prepare($query);
             $stmt->execute([$userId]);

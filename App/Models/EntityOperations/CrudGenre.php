@@ -28,14 +28,14 @@ class CrudGenre {
     /**
      * Ajoute un nouveau genre à la base de données depuis une donnée yml.
      *
-     * @param array $genreData Les données du genre à ajouter.
+     * @param string $genreData Les données du genre à ajouter.
      * @return bool True si l'ajout est réussi, False sinon.
      */
-    public function ajouterGenreFromYml(array $genreData) {
+    public function ajouterGenreFromYml(string $genreData) {
         try {
             $query = "INSERT INTO GENRE (nomG) VALUES (?)";
             $stmt = $this->db->prepare($query);
-            $stmt->execute([$genreData['nomG']]);
+            $stmt->execute([$genreData]);
             return true;
         } catch (PDOException $e) {
             return false;
@@ -123,6 +123,14 @@ class CrudGenre {
         $stmt = $this->db->prepare($query);
         $stmt->execute([$nomGenre]);
         return $stmt->fetch(PDO::FETCH_ASSOC) ?: false;
+    }
+
+    public function obtenirGenreParYml(string $genre) {
+        $queryIdGenre = "SELECT idG from GENRE where nomG = :nomG";
+        $stmtIdGenre = self::$db->prepare($queryIdGenre);
+        $stmtIdGenre->bindParam(':nomG', $genre, PDO::PARAM_STR);
+        $stmtIdGenre->execute();
+        return $stmtIdGenre->fetchColumn() ?: false;
     }
 }
 

@@ -5,6 +5,9 @@ namespace App\Models\EntityOperations;
 require_once __DIR__ . '/../../Autoloader/autoloader.php';
 
 use \App\Autoloader\Autoloader;
+use \App\Models\EntityOperations\CrudComposer;
+use \App\Models\EntityOperations\CrudInterprete;
+use \App\Models\EntityOperations\CrudAlbum;
 use \App\Models\Artiste;
 use PDO;
 use PDOException;
@@ -14,6 +17,9 @@ Autoloader::register();
 class CrudArtiste {
 
     private $db;
+    private CrudComposer $crudComposer;
+    private CrudInterprete $crudInterpreter;
+    private CrudAlbum $crudAlbum;  
 
     /**
      * Constructeur de la classe CrudArtiste.
@@ -23,6 +29,9 @@ class CrudArtiste {
      */
     public function __construct(PDO $db) {
         $this->db = $db;
+        $this->crudComposer = new CrudComposer($this->db);
+        $this->crudInterpreter = new CrudInterprete($this->db);
+        $this->crudAlbum = new CrudAlbum($this->db);
     }
 
     /**
@@ -33,10 +42,19 @@ class CrudArtiste {
      */
     public function ajouterArtisteFromYml(array $artisteData) {
         try {
-            $query = "INSERT INTO ARTISTES (nomA) VALUES (?)";
+            $query = "SELECT * FROM ARTISTES WHERE nomA = ?";
             $stmt = $this->db->prepare($query);
-            $stmt->execute([$artisteData['nomA']]);
-            return true;
+            $stmt->execute([$artisteData['by']]); 
+            $stmt->fetchAll(PDO::FETCH_ASSOC) ?: false;
+
+            if ($stmt != false) {
+                $query = "INSERT INTO ARTISTES (nomA) VALUES (?)";
+                $stmt = $this->db->prepare($query);
+                $stmt->execute([$artisteData['by']]);
+                return true;
+            } else {
+                return false;
+            }
         } catch (PDOException $e) {
             return false;
         }
@@ -50,10 +68,19 @@ class CrudArtiste {
      */
     public function ajouterArtisteFromObject(Artiste $artisteData) {
         try {
-            $query = "INSERT INTO ARTISTES (nomA) VALUES (?)";
+            $query = "SELECT * FROM ARTISTES WHERE nomA = ?";
             $stmt = $this->db->prepare($query);
-            $stmt->execute([$artisteData->getNomArtiste()]);
-            return true;
+            $stmt->execute([$artisteData->getNomArtiste()]); 
+            $stmt->fetchAll(PDO::FETCH_ASSOC) ?: false;
+
+            if ($stmt != false) {
+                $query = "INSERT INTO ARTISTES (nomA) VALUES (?)";
+                $stmt = $this->db->prepare($query);
+                $stmt->execute([$artisteData->getNomArtiste()]);
+                return true;
+            } else {
+                return false;
+            }
         } catch (PDOException $e) {
             return false;
         }
@@ -67,6 +94,19 @@ class CrudArtiste {
      */
     public function supprimerArtiste(int $artisteId) {
         try {
+
+            // On supprime tous les albums composés par cet artiste
+            $listeAlbums = $this->crudComposer->obtenirAlbumdParCompositeur($artisteId);
+            foreach ($listeAlbums as $album) {
+                $this->crudAlbum->supprimerAlbum($album["idAl"]);
+            }
+
+            // On supprime tous les albums interpretés par cet artiste
+            $listeAlbums = $this->crudInterpreter->obtenirAlbumsParInterprete($artisteId);
+            foreach ($listeAlbums as $album) {
+                $this->crudAlbum->supprimerAlbum($album["idAl"]);
+            }
+
             $query = "DELETE FROM ARTISTES WHERE idA = ?";
             $stmt = $this->db->prepare($query);
             $stmt->execute([$artisteId]);
@@ -85,10 +125,19 @@ class CrudArtiste {
      */
     public function modifierArtiste(int $artisteId, Artiste $newArtisteData) {
         try {
-            $query = "UPDATE ARTISTES SET nomA = ? WHERE idA = ?";
+            $query = "SELECT * FROM ARTISTES WHERE nomA = ?";
             $stmt = $this->db->prepare($query);
-            $stmt->execute([$newArtisteData->getNomArtiste(), $artisteId]);
-            return true;
+            $stmt->execute([$newArtisteData->getNomArtiste()]); 
+            $stmt->fetchAll(PDO::FETCH_ASSOC) ?: false;
+
+            if ($stmt != false) {
+                $query = "UPDATE ARTISTES SET nomA = ? WHERE idA = ?";
+                $stmt = $this->db->prepare($query);
+                $stmt->execute([$newArtisteData->getNomArtiste(), $artisteId]);
+                return true;
+            } else {
+                return false;
+            }
         } catch (PDOException $e) {
             return false;
         }

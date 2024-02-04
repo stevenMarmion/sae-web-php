@@ -12,17 +12,12 @@ class Autoloader
      */
     public static function register()
     {
-        spl_autoload_register(function ($class) {
-            echo $class . PHP_EOL;
-            echo "<br>";
-            $file = "/" . str_replace('\\', DIRECTORY_SEPARATOR, $class) . '.php';
-            echo "file : " . $file;
-            if (file_exists($file)) {
-                require_once $file;
-                return true;
-            }
-            return false;
-        });
+        spl_autoload_register(array(__CLASS__, 'autoload'));
+    }
+
+    static function autoload($class) {
+        $file = str_replace('\\', DIRECTORY_SEPARATOR, $class);
+        require __DIR__ . '/../../' . $file . '.php';
     }
 }
 
