@@ -13,6 +13,7 @@
             <a id="panel-admin-link" href="Details/PanelDetails.php?table=UTILISATEUR">Gérer les utilisateurs</a>
             <a id="panel-admin-link" href="Details/PanelDetails.php?table=ALBUMS">Gérer les albums</a>
             <a id="panel-admin-link" href="Details/PanelDetails.php?table=ARTISTES">Gérer les artistes</a>
+            <a id="panel-admin-link" href="Details/PanelDetails.php?table=GENRES">Gérer les genres</a>
         </nav>
     </div>
     <h1>Bienvenue dans le panel admin</h1>

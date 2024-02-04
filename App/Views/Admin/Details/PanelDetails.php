@@ -24,8 +24,6 @@ Autoloader::register();
 
 $db = new ConnexionBDD();
 
-$errorDetected = null;
-
 if (isset($_GET['table'])) {
     if ($_GET['table'] == "UTILISATEUR") {
         $crudUser = new CrudUser($db::obtenir_connexion());
@@ -48,10 +46,7 @@ if (isset($_GET['table'])) {
             $allUsersObject[] = $currentUser;
         }
     }
-}
-
-if (isset($_GET['table'])) {
-    if ($_GET['table'] == "ALBUMS") {
+    else if ($_GET['table'] == "ALBUMS") {
         $crudInterpreter = new CrudInterprete($db::obtenir_connexion());
         $crudComposer = new CrudComposer($db::obtenir_connexion());
         $crudArtiste = new CrudArtiste($db::obtenir_connexion());
@@ -91,18 +86,7 @@ if (isset($_GET['table'])) {
             $allAlbumsObject[] = $currentAlbum;
         }
     }
-}
-
-if (isset($_GET['table'])) {
-    if ($_GET['table'] == "ARTISTES") {
-        if (isset($_GET['error'])) {
-            if ($_GET["error"] == "AlreadyExists") {
-                $errorDetected = true;
-            }
-            else {
-                $errorDetected = false;
-            }
-        }
+    else if ($_GET['table'] == "ARTISTES") {
         $crudArtiste = new CrudArtiste($db::obtenir_connexion());
 
         $allArtistes = $crudArtiste->obtenirTousArtistes();
@@ -113,8 +97,17 @@ if (isset($_GET['table'])) {
             $allArtistesObject[] = $currentArtistes;
         }
     }
-}
+    else if ($_GET['table'] == "GENRES") {
+        $crudGenre = new CrudGenre($db::obtenir_connexion());
+        $allGenres = $crudGenre->obtenirTousGenres();
+        $allGenresObject = [];
 
+        foreach ($allGenres as $genre) {
+            $currentGenre = new Genre($genre["idG"], $genre["nomG"]);
+            $allGenresObject[] = $currentGenre;
+        }
+    }
+}
 
 ?>
 
@@ -278,6 +271,47 @@ if (isset($_GET['table'])) {
                             </form>
                             <form action="Delete/PanelDeleteArtiste.php?delete=ARTISTES" method="post">
                                 <input type="hidden" name="artiste_id" value="<?= $artiste->getId() ?>">
+                                <input type="submit" class="custom-delete-submit-button">
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+
+        </table>
+    </section>
+    <?php endif; ?>
+
+    <?php if (isset($_GET['table']) && ($_GET['table'] == "GENRES")) : ?>
+    <section>
+        <form action="/App/Views/Admin/Details/Add/PanelAddGenre.php?add=GENRES" method="POST">
+            <button class="custom-add-button">
+                <p class="add-paragraph">
+                    Ajouter un genre
+                    <img class="icon-ajouter" src="/Public/Icons/add.png">
+                </p>
+            </button>
+        </form>
+        <h1>Liste de tous les genres</h1>
+        <table border='1'>
+            <tr>
+                <th>ID Genre</th>
+                <th>Nom</th>
+                <th>Actions</th>
+            </tr>
+
+            <?php foreach ($allGenresObject as $genre): ?>
+                <tr>
+                    <td><?= $genre->getId() ?></td>
+                    <td><?= $genre->getNomGenre() ?></td>
+                    <td>
+                        <div class="form-inline">
+                            <form action="Update/PanelUpdateGenre.php?update=GENRES" method="post">
+                                <input type="hidden" name="genre_id" value="<?= $genre->getId() ?>">
+                                <input type="submit" class="custom-update-submit-button">
+                            </form>
+                            <form action="Delete/PanelDeleteGenre.php?delete=GENRES" method="post">
+                                <input type="hidden" name="genre_id" value="<?= $genre->getId() ?>">
                                 <input type="submit" class="custom-delete-submit-button">
                             </form>
                         </div>

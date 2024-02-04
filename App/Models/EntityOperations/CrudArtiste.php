@@ -44,7 +44,7 @@ class CrudArtiste {
         try {
             $query = "SELECT * FROM ARTISTES WHERE nomA = ?";
             $stmt = $this->db->prepare($query);
-            $stmt->execute([$artisteData['by']]); 
+            $stmt->execute([$artisteData['by']]);
             $stmt->fetchAll(PDO::FETCH_ASSOC) ?: false;
 
             if ($stmt != false) {

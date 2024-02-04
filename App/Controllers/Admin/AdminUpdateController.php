@@ -17,9 +17,11 @@ use \App\Models\EntityOperations\CrudAlbum;
 use \App\Models\EntityOperations\CrudUser;
 use \App\Models\EntityOperations\CrudFavoris;
 use \App\Models\EntityOperations\CrudArtiste;
+use \App\Models\EntityOperations\CrudGenre;
 use \App\Models\User;
 use \App\Models\Album;
 use \App\Models\Artiste;
+use \App\Models\Genre;
 
 Autoloader::register();
 
@@ -102,6 +104,22 @@ if (isset($_SERVER["REQUEST_METHOD"]) && isset($_GET["update"])) {
             $actionValid = $crudArtiste->modifierArtiste($artisteId, $artiste);
             if ($actionValid) {
                 header('Location: /App/Views/Admin/Details/PanelDetails.php?table=ARTISTES'); // redirection vers la page actuelle actualisée
+                exit();
+            }
+            else {
+                header('Location: /App/Views/Admin/Details/PanelDetails.php?error=AlreadyExists'); // redirection vers la page actuelle avec erreurs
+                exit();
+            }
+        }
+        if ($tableToUpdate === "GENRES") {
+            $genreId = $_POST["genre_id"] ?? null;
+            $nomGenre = $_POST["nom"] ?? null;
+
+            $genre = new Genre($genreId, $nomGenre);
+
+            $actionValid = $crudGenre->modifierGenre($genreId, $genre);
+            if ($actionValid) {
+                header('Location: /App/Views/Admin/Details/PanelDetails.php?table=GENRES'); // redirection vers la page actuelle actualisée
                 exit();
             }
             else {

@@ -11,6 +11,7 @@ require_once __DIR__ . '/../../../Database/DatabaseConnection/ConnexionBDD.php';
 // require_once __DIR__ .'/../../Models/Album.php';
 
 use \App\Autoloader\Autoloader;
+use App\Models\EntityOperations\CrudGenre;
 use \Database\DatabaseConnection\ConnexionBDD;
 use \App\Models\EntityOperations\CrudAlbum;
 use \App\Models\EntityOperations\CrudUser;
@@ -26,6 +27,7 @@ $db = new ConnexionBDD();
 $crudUser = new CrudUser($db::obtenir_connexion());
 $crudAlbum = new CrudAlbum($db::obtenir_connexion());
 $crudArtiste = new CrudArtiste($db::obtenir_connexion());
+$crudGenre = new CrudGenre($db::obtenir_connexion());
 
 if (isset($_SERVER["REQUEST_METHOD"]) && isset($_GET["delete"])) {
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -66,6 +68,20 @@ if (isset($_SERVER["REQUEST_METHOD"]) && isset($_GET["delete"])) {
 
             if ($actionValidDeleteOnTableArtiste) {
                 header('Location: /App/Views/Admin/Details/PanelDetails.php?table=ARTISTES'); // redirection vers la page actuelle actualisée
+                exit();
+            }
+            else {
+                header('Location: /App/Views/Admin/Details/PanelDetails.php?error=NullValues'); // redirection vers la page actuelle avec erreurs
+                exit();
+            }
+        }
+        if ($tableToUpdate === "GENRES") {
+            $genreId = $_POST["genre_id"];
+
+            $actionValidDeleteOnTableGenre = $crudGenre->supprimerGenre($genreId);
+
+            if ($actionValidDeleteOnTableGenre) {
+                header('Location: /App/Views/Admin/Details/PanelDetails.php?table=GENRES'); // redirection vers la page actuelle actualisée
                 exit();
             }
             else {

@@ -6,6 +6,7 @@ require_once __DIR__ . '/../../Autoloader/autoloader.php';
 
 use \App\Autoloader\Autoloader;
 use \App\Models\Genre;
+use \App\Models\EntityOperations\CrudEtre;
 use PDO;
 use PDOException;
 
@@ -14,6 +15,7 @@ Autoloader::register();
 class CrudGenre {
 
     private $db;
+    private CrudEtre $crudEtre;
 
     /**
      * Constructeur de la classe CrudGenre.
@@ -23,6 +25,7 @@ class CrudGenre {
      */
     public function __construct(PDO $db) {
         $this->db = $db;
+        $this->crudEtre = new CrudEtre($this->db);
     }
 
     /**
@@ -67,6 +70,11 @@ class CrudGenre {
      */
     public function supprimerGenre(int $genreId) {
         try {
+            $listeAlbums = $this->crudEtre->obtenirMusiquesParGenre($genreId);
+
+            foreach ($listeAlbums as $album) {
+                $this->crudEtre->supprimerRelation($genreId, $album["idAl"]);
+            }
             $query = "DELETE FROM GENRE WHERE idG = ?";
             $stmt = $this->db->prepare($query);
             $stmt->execute([$genreId]);
