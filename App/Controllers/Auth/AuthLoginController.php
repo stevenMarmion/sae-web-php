@@ -33,8 +33,10 @@ function authentifaction($instance) {
     $estAutentifie = $crudUser->isAuth($pseudo, $mdp);
 
     if ($estAutentifie) {
-        $_SESSION["id"] = $crudUser->obtenirUtilisateurParPseudo($pseudo)["idU"];
-        header('Location: /App/Views/Home/accueil.php');
+        $datas = $crudUser->obtenirUtilisateurParPseudo($pseudo);
+        $_SESSION["id"] = $datas["idU"];
+        $_SESSION["pseudo"] = $datas["pseudo"];
+        header('Location: /App/Views/Home/Accueil.php');
         exit();
     } else {
         echo "Identifiants incorrects. Veuillez réessayer.";

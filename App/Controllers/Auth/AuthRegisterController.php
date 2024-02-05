@@ -41,8 +41,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo $inscriptionReussie;
 
             if ($inscriptionReussie) {
-                $_SESSION["id"] = $crudUser->obtenirUtilisateurParPseudo($user->getPseudo())["idU"];
-                header('Location: /App/Views/Home/accueil.php');
+                $datas = $crudUser->obtenirUtilisateurParPseudo($user->getPseudo());
+                $_SESSION["id"] = $datas["idU"];
+                $_SESSION["pseudo"] = $datas["pseudo"];
+                header('Location: /App/Views/Home/Accueil.php');
                 exit();
             } else {
                 echo "Identifiants incorrects. Veuillez réessayer.";

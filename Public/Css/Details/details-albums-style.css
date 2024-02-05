@@ -1,0 +1,38 @@
+body {
+    background-color: #e8e8ea;
+    color: #282828;
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #282828;
+    padding: 10px;
+}
+
+h2 {
+    text-align: center;
+    color: #1DB954;
+}
+
+.imageAlbum {
+    width: 200px;
+    height: 200px;
+    border-radius: 5px;
+    margin: 10px auto;
+    display: block;
+}
+
+h3 {
+    text-align: center;
+    margin: 10px;
+    color: #282828;
+}
+
+.imageAlbum{
+    width: 200px;
+    height: 200px;
+}
