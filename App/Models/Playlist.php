@@ -24,7 +24,7 @@ class Playlist
     /**
      * @var int L'identifiant de l'utilisateur auquel la playlist est associée.
      */
-    private int $idU;
+    private int $idCreateur;
 
     /**
      * @var string Le nom de la playlist.
@@ -46,7 +46,7 @@ class Playlist
     public function __construct($idPlaylist, $idU, $nomPlaylist)
     {
         $this->idPlaylist = $idPlaylist;
-        $this->idU = $idU;
+        $this->idCreateur = $idU;
         $this->nomPlaylist = $nomPlaylist;
         $this->albums = [];
     }
@@ -62,13 +62,13 @@ class Playlist
     }
 
     /**
-     * Obtenir l'identifiant de l'utilisateur associé à la playlist.
+     * Obtenir l'identifiant de l'utilisateur qui a créer la playlist.
      *
-     * @return int L'identifiant de l'utilisateur.
+     * @return int L'identifiant de l'utilisateur qui a créer cette playlist.
      */
-    public function getIdU()
+    public function getIdCreateur()
     {
-        return $this->idU;
+        return $this->idCreateur;
     }
 
     /**
@@ -128,7 +128,7 @@ class Playlist
      */
     public function equals(Playlist $other)
     {
-        return $this->idPlaylist === $other->idPlaylist && $this->idU === $other->idU;
+        return $this->idPlaylist === $other->idPlaylist && $this->idCreateur === $other->idCreateur;
     }
 
 }

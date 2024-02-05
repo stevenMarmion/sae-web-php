@@ -31,6 +31,16 @@ function authentifaction($instance) {
     $estAutentifie = $crudUser->isAuth($pseudo, $mdp);
 
     if ($estAutentifie) {
+        if (!isset($_SESSION)){
+            echo "session";
+            session_start();
+        }
+        else {
+            session_destroy();
+            session_start();
+        }
+        $_SESSION['idU'] = $crudUser->obtenirUtilisateurParPseudo($pseudo)["idU"];
+        var_dump($_SESSION);
         header('Location: /App/Views/Home/accueil.php');
         exit();
     } else {

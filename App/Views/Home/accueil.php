@@ -6,17 +6,14 @@ use App\Models\EntityOperations\CrudAlbum;
 use App\Models\EntityOperations\CrudArtiste;
 use Database\DatabaseConnection\ConnexionBDD;
 use App\Models\Album;
-use App\Views\Base\head;
-use App\Views\Base\footer;
-use App\Models\EntityOperations\CrudGenre;
 
 require_once '../../../Database/DatabaseConnection/ConnexionBDD.php';
 require_once '../../Models/EntityOperations/CrudAlbum.php';
 require_once '../../Models/EntityOperations/CrudArtiste.php';
-require_once '../../Models/EntityOperations/CrudGenre.php';
 require_once '../../Models/Album.php';
 
 Autoloader::register();
+session_start();
 
 $instance = new ConnexionBDD();
 $crudAlbum = new CrudAlbum($instance::obtenir_connexion());
@@ -37,7 +34,7 @@ foreach ($listeAlbum as $album) {
                 );
     array_push($listeAlbumObjet, $al);
 }
-include_once '../Base/head.php';
+var_dump($_SESSION);
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -48,7 +45,7 @@ include_once '../Base/head.php';
 </head>
 <body>
     <div class="nav">
-        <a href="#">Mes playlists</a>
+        <a href="/App/Views/playlist/Playlists.php">Mes playlists</a>
         <a href="#">Recherche utilisateur</a>
         <a href="#">Profile</a>
     </div>
@@ -56,23 +53,43 @@ include_once '../Base/head.php';
     <ul>
     <?php
     foreach($listeAlbumObjet as $album){
+        $img = $album->getImg();
+        if(file_exists("../../../DataRessources/images/".$img) && (strstr($img,"%")===false)){
+            $img = $album->getImg() == "" ? "base.jpg" : $album->getImg();
+        }
+        else{
+            $img = "base.jpg";
+        }
         if($album->getCompositeur()["nomA"]==$album->getInterprete()["nomA"]){
-            $img = $album->getImg();
-            if(file_exists("../../../DataRessources/images/".$img) && (strstr($img,"%")===false)){
-                $img = $album->getImg() == "" ? "base.jpg" : $album->getImg();
-            }
-            else{
-                $img = "base.jpg";
-            }
             ?>
-                <li class="album"><img src="<?= '../../../DataRessources/images/'.$img?>"alt="image album" class="imageAlbum"> <h4 class="titreAlbum"><?= $album->getTitre()?></h4> <div class='interprete&compositeur'>interprete et compositeur : <?= $album->getCompositeur()["nomA"]?></div>
+                <li class="album"><img src="<?= '../../../DataRessources/images/'.$img?>"alt="image album" class="imageAlbum"> 
+                <h4 class="titreAlbum"><?= $album->getTitre()?></h4> 
+                <div class='interprete&compositeur'>interprete et compositeur : <?= $album->getCompositeur()["nomA"]?></div>
             <?php }
         else{
             ?>
-            <li class="album"><img src="<?= '../../../DataRessources/images/'.$img?>"alt="image album" class="imageAlbum"> <h4 class="titreAlbum"><?= $album->getTitre()?></h4> <div class='interprete&compositeur'>compositeur : <?= $album->getCompositeur()["nomA"]?> </div><div class='interprete&compositeur'>interprete : <?= $album->getInterprete()["nomA"]?> </div>
+                <li class="album">
+                    <img src="<?= '../../../DataRessources/images/'.$img?>"alt="image album" class="imageAlbum">
+                    <h4 class="titreAlbum"><?= $album->getTitre()?></h4> 
+                    <div class='interprete&compositeur'>compositeur : <?= $album->getCompositeur()["nomA"]?> </div>
+                    <div class='interprete&compositeur'>interprete : <?= $album->getInterprete()["nomA"]?> </div>
             <?php
         }
+        ?>
+        <form action="/App/Controllers/Playlist/AjoutAlbum.php">
+                        <select name="idPlaylist">
+                            <?php
+                            foreach($_SESSION["listePlaylist"] as $playlist){
+                                echo "<option value=".$playlist["idPlaylist"].">".$playlist["nomPlaylist"]."</option>";
+                            }
+                            ?>
+                        </select>
+                        <input type="hidden" name="idAlbum" value="<?= $album->getId()?>">
+                        <input type="submit" value="ajouter à une playlist">
+        </form>
+        <?php
         echo "<a href='/App/Views/Details/detailAlbum.php?id=".$album->getId()."'><button>voir plus</button></a></li>";
+        
     }
     ?>
 

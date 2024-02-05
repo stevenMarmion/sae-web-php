@@ -39,6 +39,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo $inscriptionReussie;
 
             if ($inscriptionReussie) {
+                if (!isset($_SESSION)){
+                    session_start();
+                }
+                else {
+                    session_destroy();
+                    session_start();
+                }
+                $_SESSION['idU'] = $crudUser->obtenirUtilisateurParPseudo($pseudo)["idU"];
                 header('Location: /App/Views/Home/accueil.php');
                 exit();
             } else {

@@ -130,6 +130,26 @@ class CrudUser {
     }
 
     /**
+     * Récupère un utilisateur en fonction de son pseudo.
+     *
+     * @param string $pseudo Le pseudo de l'utilisateur à récupérer.
+     * @return array|false Les données de l'utilisateur ou False si l'utilisateur n'est pas trouvé.
+     */
+    public function obtenirUtilisateurParPseudo(string $pseudo) {
+        $query = "SELECT * FROM UTILISATEUR WHERE pseudo = ?";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute([$pseudo]);
+        return $stmt->fetch(PDO::FETCH_ASSOC) ?: false;
+    }
+
+    public function obtenirPlaylistsUtilisateur(int $idUser) {
+        $query = "SELECT * FROM PLAYLIST WHERE idPlaylist IN (SELECT idPlaylist FROM POSSEDER WHERE idU = ?)";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute([$idUser]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
      * Récupère un utilisateur en fonction de son pseudo et mdp.
      *
      * @param string $pseudo Le pseudo de l'utilisateur à récupérer.

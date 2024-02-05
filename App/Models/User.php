@@ -46,6 +46,11 @@ class User {
     private array $favoris;
 
     /**
+     * @var array Un tableau contenant les playlists de l'utilisateur.
+     */
+    private array $playlists;
+
+    /**
      * Constructeur de la classe User.
      *
      * @param int    $idU         L'identifiant unique de l'utilisateur.
@@ -62,6 +67,7 @@ class User {
         $this->adresseMail = $adresseMail;
         $this->isAdmin = $isAdmin;
         $this->favoris = $favoris;
+        $this->playlists = [];
     }
 
     /**
@@ -119,6 +125,15 @@ class User {
     }
 
     /**
+     * Obtenir les playlists de l'utilisateur.
+     *
+     * @return array Un tableau contenant les playlists de l'utilisateur.
+     */
+    public function getPlaylists() {
+        return $this->playlists;
+    }
+
+    /**
      * Définir le nom d'utilisateur de l'utilisateur.
      *
      * @param string $p Le nouveau nom d'utilisateur.
@@ -169,6 +184,32 @@ class User {
      */
     public function ajouterFavori(Album $favori) {
         array_push($favoris, $favori);
+    }
+
+    /**
+     * Ajouter une playlist à la liste de l'utilisateur.
+     *
+     * @param Playlist $playlist L'objet Playlist à ajouter à la liste.
+     */
+    public function ajouterPlaylist(Playlist $playlist) {
+        array_push($playlists, $playlist);
+    }
+
+    /**
+     * Supprimer une playlist de la liste de l'utilisateur.
+     *
+     * @param int $idPlaylist L'identifiant de la playlist à supprimer.
+     *
+     * @return bool Retourne true si la playlist a été supprimée avec succès, sinon false.
+     */
+    public function supprimerPlaylist(int $idPlaylist) {
+        foreach ($this->getPlaylists() as $index => $playlist) {
+            if ($playlist->getId() === $idPlaylist) {
+                unset($this->getPlaylists()[$index]);
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
