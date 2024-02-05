@@ -5,7 +5,6 @@ namespace App\Views\Admin\Details;
 require_once __DIR__ . '/../../../Autoloader/autoloader.php';
 
 use \App\Autoloader\Autoloader;
-use App\Models\EntityOperations\CrudNote;
 use \Database\DatabaseConnection\ConnexionBDD;
 use \App\Models\EntityOperations\CrudAlbum;
 use \App\Models\EntityOperations\CrudUser;
@@ -15,7 +14,6 @@ use \App\Models\EntityOperations\CrudFavoris;
 use \App\Models\EntityOperations\CrudArtiste;
 use \App\Models\EntityOperations\CrudGenre;
 use \App\Models\EntityOperations\CrudEtre;
-use \App\Models\EntityOperations\CrudPlaylist;
 use \App\Models\User;
 use \App\Models\Favori;
 use \App\Models\Album;

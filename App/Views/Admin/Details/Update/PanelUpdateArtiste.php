@@ -28,6 +28,17 @@ if (isset($_SERVER["REQUEST_METHOD"]) && isset($_GET["update"])) {
     }
 }
 
+$errorDetected = null;
+
+if (isset($_GET['error'])) {
+    if ($_GET["error"] == "AlreadyExists") {
+        $errorDetected = true;
+    }
+    else {
+        $errorDetected = false;
+    }
+}
+
 
 ?>
 
@@ -46,6 +57,7 @@ if (isset($_SERVER["REQUEST_METHOD"]) && isset($_GET["update"])) {
     <section>
         <h1>Modifier les détails de l'artiste</h1>
 
+        <?php if ($errorDetected === null) : ?>
         <form action="/App/Controllers/Admin/AdminUpdateController.php?update=ARTISTES" method="post">
             <input type="hidden" name="artiste_id" value="<?= $currentArtiste->getId() ?>">
 
@@ -56,9 +68,10 @@ if (isset($_SERVER["REQUEST_METHOD"]) && isset($_GET["update"])) {
 
             <input type="submit" value="Mettre à jour">
         </form>
+        <?php endif; ?>
         <?php if ($errorDetected) : ?>
             <p class="erreur-add">
-                Le pseudo de cet utilisateur existe déjà, veuillez en choisir un autre...
+                Le nom de cet artiste existe déjà, veuillez en choisir un autre...
             </p>
         <?php endif; ?>
     </section>

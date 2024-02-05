@@ -28,6 +28,17 @@ if (isset($_SERVER["REQUEST_METHOD"]) && isset($_GET["update"])) {
     }
 }
 
+$errorDetected = null;
+
+if (isset($_GET['error'])) {
+    if ($_GET["error"] == "AlreadyExists") {
+        $errorDetected = true;
+    }
+    else {
+        $errorDetected = false;
+    }
+}
+
 
 ?>
 
@@ -46,16 +57,18 @@ if (isset($_SERVER["REQUEST_METHOD"]) && isset($_GET["update"])) {
     <section>
         <h1>Modifier les détails du genre</h1>
 
-        <form action="/App/Controllers/Admin/AdminUpdateController.php?update=GENRES" method="post">
-            <input type="hidden" name="genre_id" value="<?= $currentGenre->getId() ?>">
+        <?php if ($errorDetected === null) : ?>
+            <form action="/App/Controllers/Admin/AdminUpdateController.php?update=GENRES" method="post">
+                <input type="hidden" name="genre_id" value="<?= $currentGenre->getId() ?>">
 
-            <div class="form-group">
-                <label for="nom">Nom :</label>
-                <input type="text" id="nom" name="nom" value="<?= $currentGenre->getNomGenre() ?>" required>
-            </div>
+                <div class="form-group">
+                    <label for="nom">Nom :</label>
+                    <input type="text" id="nom" name="nom" value="<?= $currentGenre->getNomGenre() ?>" required>
+                </div>
 
-            <input type="submit" value="Mettre à jour">
-        </form>
+                <input type="submit" value="Mettre à jour">
+            </form>
+        <?php endif; ?>
         <?php if ($errorDetected) : ?>
             <p class="erreur-add">
                 Ce nom de genre existe déjà, veuillez en choisir un autre...

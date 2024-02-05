@@ -49,7 +49,7 @@ if (isset($_SERVER["REQUEST_METHOD"]) && isset($_GET["update"])) {
                 exit();
             }
             else {
-                header('Location: /App/Views/Admin/Details/PanelDetails.php?error=NullValues'); // redirection vers la page actuelle avec erreurs
+                header('Location: /App/Views/Admin/Details/Update/PanelUpdateUser.php?error=AlreadyExists'); // redirection vers la page actuelle avec erreurs
                 exit();
             }
         }
@@ -92,12 +92,8 @@ if (isset($_SERVER["REQUEST_METHOD"]) && isset($_GET["update"])) {
                 exit();
             }
             else {
-                print_r($albumCompositeurs);
-                print_r($ancienComp);
-                print_r($albumInterpretes);
-                print_r($ancienInt);
-                //header('Location: /App/Views/Admin/Details/PanelDetails.php?error=NullValues'); // redirection vers la page actuelle avec erreurs
-                //exit();
+                header('Location: /App/Views/Admin/Details/Update/PanelUpdateAlbum.php?error=AlreadyExists'); // redirection vers la page actuelle avec erreurs
+                exit();
             }
         }
         if ($tableToUpdate === "ARTISTES") {
@@ -112,7 +108,7 @@ if (isset($_SERVER["REQUEST_METHOD"]) && isset($_GET["update"])) {
                 exit();
             }
             else {
-                header('Location: /App/Views/Admin/Details/PanelDetails.php?error=AlreadyExists'); // redirection vers la page actuelle avec erreurs
+                header('Location: /App/Views/Admin/Details/Update/PanelUpdateArtiste.php?error=AlreadyExists'); // redirection vers la page actuelle avec erreurs
                 exit();
             }
         }
@@ -128,7 +124,7 @@ if (isset($_SERVER["REQUEST_METHOD"]) && isset($_GET["update"])) {
                 exit();
             }
             else {
-                header('Location: /App/Views/Admin/Details/PanelDetails.php?error=AlreadyExists'); // redirection vers la page actuelle avec erreurs
+                header('Location: /App/Views/Admin/Details/Update/PanelUpdateGenre.php?error=AlreadyExists'); // redirection vers la page actuelle avec erreurs
                 exit();
             }
         }

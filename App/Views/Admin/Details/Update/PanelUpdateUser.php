@@ -27,7 +27,7 @@ if (isset($_SERVER["REQUEST_METHOD"]) && isset($_GET["update"])) {
             if (!empty($userId)) {
                 $currentUser = $crudUser->obtenirUtilisateurParId($userId);
                 $allUsersObject = [];
-                $isAdmin = $currentUser["isAdmin"] === 1 ? true : false;
+                $isAdmin = $currentUser["isAdmin"] == "1" ? true : false;
                 $currentUser = new User($currentUser["idU"],$currentUser["pseudo"],$currentUser["mdp"],$currentUser["adresseMail"],$isAdmin,[]);
                 $allFavoris = $crudFavoris->obtenirFavorisParUtilisateur($currentUser->getId());
 
@@ -42,6 +42,17 @@ if (isset($_SERVER["REQUEST_METHOD"]) && isset($_GET["update"])) {
                 $currentUser = $allUsersObject[0];
             }
         }
+    }
+}
+
+$errorDetected = null;
+
+if (isset($_GET['error'])) {
+    if ($_GET["error"] == "AlreadyExists") {
+        $errorDetected = true;
+    }
+    else {
+        $errorDetected = false;
     }
 }
 
@@ -62,6 +73,7 @@ if (isset($_SERVER["REQUEST_METHOD"]) && isset($_GET["update"])) {
     <section>
         <h1>Modifier les détails de l'utilisateur</h1>
 
+        <?php if ($errorDetected === null) : ?>
         <form action="/App/Controllers/Admin/AdminUpdateController.php?update=UTILISATEUR" method="post">
             <input type="hidden" name="user_id" value="<?= $currentUser->getId() ?>">
             <input type="hidden" name="mdp" value="<?= $currentUser->getMdp() ?>">
@@ -82,13 +94,19 @@ if (isset($_SERVER["REQUEST_METHOD"]) && isset($_GET["update"])) {
                     <input type="radio" id="isAdmin" name="isAdmin" value="true" <?= $currentUser->isAdmin() ? 'checked' : '' ?>>
                     <label for="adminTrue">True</label>
 
-                    <input type="radio" id="isAdmin" name="isAdmin" value="false" <?= $currentUser->isAdmin() === false ? 'checked' : '' ?>>
+                    <input type="radio" id="isAdmin" name="isAdmin" value="false" <?= $currentUser->isAdmin() == false ? 'checked' : '' ?>>
                     <label for="adminFalse">False</label>
                 </div>
             </div>
 
             <input type="submit" value="Mettre à jour">
         </form>
+        <?php endif; ?>
+        <?php if ($errorDetected) : ?>
+            <p class="erreur-add">
+                Le pseudo de cet utilisateur existe déjà, veuillez en choisir un autre...
+            </p>
+        <?php endif; ?>
     </section>
 </body>
 </html>

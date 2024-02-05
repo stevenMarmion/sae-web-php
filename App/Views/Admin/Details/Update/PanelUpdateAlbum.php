@@ -102,6 +102,17 @@ foreach ($allArtistes as $artiste) {
     $allArtistesObject[] = $artiste;
 }
 
+$errorDetected = null;
+
+if (isset($_GET['error'])) {
+    if ($_GET["error"] == "AlreadyExists") {
+        $errorDetected = true;
+    }
+    else {
+        $errorDetected = false;
+    }
+}
+
 ?>
 
 
@@ -122,6 +133,7 @@ foreach ($allArtistes as $artiste) {
     <section>
         <h1>Modifier les détails de l'album</h1>
 
+        <?php if ($errorDetected === null) : ?>
         <form action="/App/Controllers/Admin/AdminUpdateController.php?update=ALBUMS" method="post">
             <input type="hidden" name="album_id" value="<?= $album->getId() ?>">
             <input type="hidden" name="album_img" value="<?= $album->getImg() ?>">
@@ -186,6 +198,12 @@ foreach ($allArtistes as $artiste) {
                 <input type="submit" value="Mettre à jour">
             </div>
         </form>
+        <?php endif; ?>
+        <?php if ($errorDetected) : ?>
+            <p class="erreur-add">
+                L'id de cet album existe déjà, veuillez en choisir un autre...
+            </p>
+        <?php endif; ?>
     </section>
 </body>
 

@@ -42,7 +42,7 @@ if (isset($_SERVER["REQUEST_METHOD"]) && isset($_GET["delete"])) {
                 exit();
             }
             else {
-                header('Location: /App/Views/Admin/Details/PanelDetails.php?error=NullValues'); // redirection vers la page actuelle avec erreurs
+                header('Location: /App/Views/Admin/Details/PanelDetails.php?error=AlreadyExists'); // redirection vers la page actuelle avec erreurs
                 exit();
             }
         }
@@ -56,7 +56,7 @@ if (isset($_SERVER["REQUEST_METHOD"]) && isset($_GET["delete"])) {
                 exit();
             }
             else {
-                header('Location: /App/Views/Admin/Details/PanelDetails.php?error=NullValues'); // redirection vers la page actuelle avec erreurs
+                header('Location: /App/Views/Admin/Details/PanelDetails.php?error=AlreadyExists'); // redirection vers la page actuelle avec erreurs
                 exit();
             }
         }
@@ -71,7 +71,7 @@ if (isset($_SERVER["REQUEST_METHOD"]) && isset($_GET["delete"])) {
                 exit();
             }
             else {
-                header('Location: /App/Views/Admin/Details/PanelDetails.php?error=NullValues'); // redirection vers la page actuelle avec erreurs
+                header('Location: /App/Views/Admin/Details/PanelDetails.php?error=AlreadyExists'); // redirection vers la page actuelle avec erreurs
                 exit();
             }
         }
@@ -85,7 +85,7 @@ if (isset($_SERVER["REQUEST_METHOD"]) && isset($_GET["delete"])) {
                 exit();
             }
             else {
-                header('Location: /App/Views/Admin/Details/PanelDetails.php?error=NullValues'); // redirection vers la page actuelle avec erreurs
+                header('Location: /App/Views/Admin/Details/PanelDetails.php?error=AlreadyExists'); // redirection vers la page actuelle avec erreurs
                 exit();
             }
         }

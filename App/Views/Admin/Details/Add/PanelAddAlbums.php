@@ -10,7 +10,6 @@ use \App\Models\EntityOperations\CrudInterprete;
 use \App\Models\EntityOperations\CrudArtiste;
 use \App\Models\EntityOperations\CrudGenre;
 use \App\Models\EntityOperations\CrudEtre;
-use \App\Models\Album;
 use \App\Models\Artiste;
 use \App\Models\Genre;
 
