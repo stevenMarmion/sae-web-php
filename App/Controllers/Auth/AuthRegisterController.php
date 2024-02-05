@@ -14,6 +14,8 @@ Autoloader::register();
 
 $instance = new ConnexionBDD();
 
+session_start();
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['pseudo']) && isset($_POST['email']) &&
         isset($_POST['mdp']) && isset($_POST['confirmer_mdp']) &&
@@ -39,6 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo $inscriptionReussie;
 
             if ($inscriptionReussie) {
+                $_SESSION["id"] = $crudUser->obtenirUtilisateurParPseudo($user->getPseudo())["idU"];
                 header('Location: /App/Views/Home/accueil.php');
                 exit();
             } else {

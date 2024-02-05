@@ -18,6 +18,8 @@ require_once '../../Models/Album.php';
 
 Autoloader::register();
 
+session_start();
+
 $instance = new ConnexionBDD();
 $crudAlbum = new CrudAlbum($instance::obtenir_connexion());
 $crudArtiste = new CrudArtiste($instance::obtenir_connexion());
@@ -55,6 +57,7 @@ include_once '../Base/head.php';
         <a href="#">Profile</a>
     </div>
     <h1> Voici les dernieres sorties ! </h1>
+    <h2>Bienvenu utilisateur d'id : <?= $_SESSION["id"] ?></h2>
     <ul>
     <?php
     foreach($listeAlbumObjet as $album){

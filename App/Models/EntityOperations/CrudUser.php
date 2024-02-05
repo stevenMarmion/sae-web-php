@@ -170,6 +170,13 @@ class CrudUser {
         return $stmt->fetch(PDO::FETCH_ASSOC) ?: false;
     }
 
+    public function obtenirUtilisateurParPseudo(string $pseudo) {
+        $query = "SELECT * FROM UTILISATEUR WHERE pseudo = ?";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute([$pseudo]);
+        return $stmt->fetch(PDO::FETCH_ASSOC) ?: false;
+    }
+    
     /**
      * Récupère un utilisateur en fonction de son pseudo et mdp.
      *
