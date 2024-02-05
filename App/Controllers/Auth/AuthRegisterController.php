@@ -38,7 +38,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $crudUser = new CrudUser($instance::obtenir_connexion());
             $user = new User(0, $pseudo, $mdp, $email, false, []); // nous mettons 0 car l'insertion est en AUTO INCREMENT dans tout les cas
             $inscriptionReussie = $crudUser->ajouterUtilisateurFromObject($user);
-            echo $inscriptionReussie;
 
             if ($inscriptionReussie) {
                 $datas = $crudUser->obtenirUtilisateurParPseudo($user->getPseudo());
@@ -47,8 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 header('Location: /App/Views/Home/Accueil.php');
                 exit();
             } else {
-                echo "Identifiants incorrects. Veuillez réessayer.";
-                //header('Location: ' . __DIR__ . '/../Views/Auth/UserRegister.php?error=3'); // Erreur lors de l'inscription
+                header('Location: /App/Views/Auth/UserRegister.php?error=AlreadyExists'); // Erreur lors de l'inscription
                 exit();
             }
     } else {

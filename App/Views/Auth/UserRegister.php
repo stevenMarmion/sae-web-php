@@ -2,6 +2,17 @@
 
 session_start();
 
+$errorDetected = null;
+
+if (isset($_GET['error'])) {
+    if ($_GET["error"] == "AlreadyExists") {
+        $errorDetected = true;
+    }
+    else {
+        $errorDetected = false;
+    }
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -41,6 +52,11 @@ session_start();
         <p id="account"> Déjà inscrit ? 
             <a id="login-link" href="/App/Views/Auth/UserLogin.php">Se connecter</a>
         </p>
+        <?php if ($errorDetected) : ?>
+            <p class="erreur-register">
+                Le pseudo de cet utilisateur existe déjà, veuillez en choisir un autre...
+            </p>
+        <?php endif; ?>
     </form>
 
 </body>

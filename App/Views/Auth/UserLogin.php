@@ -2,6 +2,17 @@
 
 session_start();
 
+$errorDetected = null;
+
+if (isset($_GET['error'])) {
+    if ($_GET["error"] == "No-account") {
+        $errorDetected = true;
+    }
+    else {
+        $errorDetected = false;
+    }
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -34,6 +45,11 @@ session_start();
             <p id="no-account"> Vous n'avez pas de compte ? 
                 <a id="register-link" href="/App/Views/Auth/UserRegister.php">S'inscrire gratuitement</a>
             </p>
+            <?php if ($errorDetected) : ?>
+                <p class="erreur-login">
+                    Vous n'avez pas de compte, veuillez en créer un...
+                </p>
+            <?php endif; ?>
         </form>
     </section>
 

@@ -40,7 +40,7 @@ function authentifaction($instance) {
         exit();
     } else {
         echo "Identifiants incorrects. Veuillez réessayer.";
-        //header('Location: ' . __DIR__ . '/../Views/Auth/UserRegister.php?error=1'); // indique l'utilisateur n'existe pas
+        header('Location: /App/Views/Auth/UserLogin.php?error=No-account');
         exit();
     }
 }
