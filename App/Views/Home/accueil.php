@@ -57,10 +57,16 @@ include_once '../Base/head.php';
     <?php
     foreach($listeAlbumObjet as $album){
         if($album->getCompositeur()["nomA"]==$album->getInterprete()["nomA"]){
-            $img = $album->getImg() == "" ? "base.jpg" : $album->getImg();
+            $img = $album->getImg();
+            if(file_exists("../../../DataRessources/images/".$img) && (strstr($img,"%")===false)){
+                $img = $album->getImg() == "" ? "base.jpg" : $album->getImg();
+            }
+            else{
+                $img = "base.jpg";
+            }
             ?>
                 <li class="album"><img src="<?= '../../../DataRessources/images/'.$img?>"alt="image album" class="imageAlbum"> <h4 class="titreAlbum"><?= $album->getTitre()?></h4> <div class='interprete&compositeur'>interprete et compositeur : <?= $album->getCompositeur()["nomA"]?></div>
-            <?php        }
+            <?php }
         else{
             ?>
             <li class="album"><img src="<?= '../../../DataRessources/images/'.$img?>"alt="image album" class="imageAlbum"> <h4 class="titreAlbum"><?= $album->getTitre()?></h4> <div class='interprete&compositeur'>compositeur : <?= $album->getCompositeur()["nomA"]?> </div><div class='interprete&compositeur'>interprete : <?= $album->getInterprete()["nomA"]?> </div>
