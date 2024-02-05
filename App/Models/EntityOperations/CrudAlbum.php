@@ -193,6 +193,34 @@ class CrudAlbum {
         $stmt->execute([$albumId]);
         return $stmt->fetch(PDO::FETCH_ASSOC) ?: false;
     }
+
+    public function obtenirGenresAlbum(int $albumId) {
+        $query = "SELECT * FROM GENRE WHERE idG in (SELECT idG FROM ETRE WHERE idAl=? )";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute([$albumId]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC) ?: false;
+    }
+
+    public function obtenirCompositeurId(int $albumId) {
+        $query = "SELECT idA FROM COMPOSER WHERE idAl=?";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute([$albumId]);
+        return $stmt->fetch(PDO::FETCH_ASSOC) ?: false;
+    }
+
+    public function obtenirInterpreteId(int $albumId) {
+        $query = "SELECT idA FROM INTERPRETER WHERE idAl=?";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute([$albumId]);
+        return $stmt->fetch(PDO::FETCH_ASSOC) ?: false;
+        
+    }
+
+    public function obtenirAlbumsParDerniereSortie() {
+        $query = "SELECT * FROM ALBUMS ORDER BY dateDeSortie DESC";
+        $stmt = $this->db->query($query);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
 
 ?>

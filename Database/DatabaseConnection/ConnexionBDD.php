@@ -31,7 +31,6 @@ class ConnexionBDD {
                 // Créer la connexion
                 self::$db = $this->init_DB(); 
             }
-
         } catch (PDOException $e) {}
     }
 

@@ -152,7 +152,7 @@ class Album {
      *
      * @param DateTime $newDate La nouvelle date de sortie.
      */
-    public function setDateSortie(DateTime $newDate) {
+    public function setDateSortie(int $newDate) {
         $this->dateDeSortie = $newDate;
     }
 
