@@ -39,7 +39,16 @@ $img = $album["img"] == "" ? "base.jpg" : $album["img"];
 </head>
 <body>
 
+<?php
 
+if(file_exists("../../../DataRessources/images/".$img) && (strstr($img,"%")===false)){
+    $img = $album["img"] == "" ? "base.jpg" : $album["img"];
+}
+else{
+    $img = "base.jpg";
+}
+
+?>
 
 <h2> <?=$album["titre"]?> </h2>
 <img src="<?= '../../../DataRessources/images/'.$img?>" alt='image album' class="imageAlbum">
