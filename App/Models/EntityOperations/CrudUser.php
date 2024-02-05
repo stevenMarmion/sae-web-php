@@ -17,9 +17,6 @@ Autoloader::register();
 class CrudUser {
 
     private $db;
-    private CrudPlaylist $crudPlaylist;
-    private CrudNote $crudNote;
-    private CrudFavoris $crudFavoris;
 
     /**
      * Constructeur de la classe CrudUser.
@@ -29,9 +26,6 @@ class CrudUser {
      */
     public function __construct(PDO $db) {
         $this->db = $db;
-        $this->crudPlaylist = new CrudPlaylist($db);
-        $this->crudNote = new CrudNote($db);
-        $this->crudFavoris = new CrudFavoris($db);
     }
 
     /**
@@ -99,9 +93,13 @@ class CrudUser {
      */
     public function supprimerUtilisateur(int $userId) {
         try {
-            $this->crudFavoris->supprimerFavoriFromIdu($userId);
-            $this->crudNote->supprimerToutesNotesFromIdU($userId);
-            $this->crudPlaylist->supprimerPlaylistByIdU($userId);
+            $crudFavoris = new CrudFavoris($this->db);
+            $crudNote = new CrudNote($this->db);
+            $crudPlaylist = new CrudPlaylist($this->db);
+
+            $crudFavoris->supprimerFavoriFromIdu($userId);
+            $crudNote->supprimerToutesNotesFromIdU($userId);
+            $crudPlaylist->supprimerPlaylistByIdU($userId);
             
             $query = "DELETE FROM UTILISATEUR WHERE idU = ?";
             $stmt = $this->db->prepare($query);

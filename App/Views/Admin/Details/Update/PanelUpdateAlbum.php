@@ -39,27 +39,46 @@ if (isset($_SERVER["REQUEST_METHOD"]) && isset($_GET["update"])) {
 
                 // Récupérer les compositeurs
                 $compositeurs = $crudComposer->obtenirCompositeursParAlbum($album["id"]);
-                foreach ($compositeurs as $compositeur) {
-                    $currentArtiste = $crudArtiste->obtenirArtisteParId($compositeur["idA"]);
-                    $currentCompositeur = new Artiste($compositeur["idA"],$currentArtiste['nomA']);
+                if (sizeof($compositeurs) == 0) {
+                    $currentCompositeur = new Artiste(-1, "Inconnu");
                     $currentAlbum->ajouterCompositeur($currentCompositeur);
+                }
+                else {
+                    foreach ($compositeurs as $compositeur) {
+                        $currentArtiste = $crudArtiste->obtenirArtisteParId($compositeur["idA"]);
+                        $currentCompositeur = new Artiste($compositeur["idA"],$currentArtiste['nomA']);
+                        $currentAlbum->ajouterCompositeur($currentCompositeur);
+                    }
                 }
 
                 // Récupérer les interprètes
                 $interpretes = $crudInterpreter->obtenirInterpretesParAlbum($album["id"]);
-                foreach ($interpretes as $interprete) {
-                    $currentArtiste = $crudArtiste->obtenirArtisteParId($interprete["idA"]);
-                    $currentInterprete = new Artiste($interprete["idA"],$currentArtiste['nomA']);
+                if (sizeof($interpretes) == 0) {
+                    $currentInterprete = new Artiste(-1, "Inconnu");
                     $currentAlbum->ajouterInterprete($currentInterprete);
+                }
+                else {
+                    foreach ($interpretes as $interprete) {
+                        $currentArtiste = $crudArtiste->obtenirArtisteParId($interprete["idA"]);
+                        $currentInterprete = new Artiste($interprete["idA"],$currentArtiste['nomA']);
+                        $currentAlbum->ajouterInterprete($currentInterprete);
+                    }
                 }
 
                 // Récupérer les genres
                 $genres = $crudEtre->obtenirGenresParMusique($album["id"]);
-                foreach ($genres as $genre) {
-                    $currentGenre = $crudGenre->obtenirGenreParId($genre["idG"]);
-                    $currentGenre = new Genre($genre["idG"],$currentGenre['nomG']);
+                if (sizeof($genres) == 0) {
+                    $currentGenre = new Genre(-1, "Inconnu");
                     $currentAlbum->ajouterGenre($currentGenre);
                 }
+                else {
+                    foreach ($genres as $genre) {
+                        $currentGenre = $crudGenre->obtenirGenreParId($genre["idG"]);
+                        $currentGenre = new Genre($genre["idG"],$currentGenre['nomG']);
+                        $currentAlbum->ajouterGenre($currentGenre);
+                    }
+                }
+
                 $albumRecupObject[] = $currentAlbum;
             }
             if (!empty($albumRecupObject)) {
@@ -74,6 +93,13 @@ $allGenresObject = [];
 foreach ($allGenres as $genre) {
     $genre = new Genre($genre['idG'],$genre['nomG']);
     $allGenresObject[] = $genre;
+}
+
+$allArtistes = $crudArtiste->obtenirTousArtistes();
+$allArtistesObject = [];
+foreach ($allArtistes as $artiste) {
+    $artiste = new Artiste($artiste['idA'],$artiste['nomA']);
+    $allArtistesObject[] = $artiste;
 }
 
 ?>
@@ -114,7 +140,13 @@ foreach ($allGenres as $genre) {
                 <label for="compositeurs">Compositeurs :</label>
                 <?php foreach ($album->getCompositeurs() as $index => $compositeur): ?>
                     <input type="hidden" name="ancien-compositeurs-<?=$index?>" value="<?= $compositeur->getId() ?>">
-                    <input type="text" id="compositeurs-<?=$index?>" name="compositeurs-<?=$index?>" value="<?= $compositeur->getNomArtiste() ?>" required>
+                    <select class="select-compositeurs" id="tous-compositeurs-<?=$index?>" name="tous-compositeurs-<?=$index?>" required>
+                        <?php foreach ($allArtistesObject as $currentCompositeurs): ?>
+                            <option value="<?= $currentCompositeurs->getId() ?>" <?= ($currentCompositeurs->getId() == $album->getCompositeurs()[$index]->getId()) ? 'selected' : '' ?>>
+                                <?= $currentCompositeurs->getNomArtiste() ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
                 <?php endforeach; ?>
                 <input type="hidden" name="nb-compositeurs" value="<?= sizeof($album->getCompositeurs()) ?>">
             </div>
@@ -123,7 +155,14 @@ foreach ($allGenres as $genre) {
                 <label for="interprete">Interpretes :</label>
                 <?php foreach ($album->getInterpretes() as $index => $interprete): ?>
                     <input type="hidden" name="ancien-interpretes-<?=$index?>" value="<?= $compositeur->getId() ?>">
-                    <input type="text" id="interpretes-<?=$index?>" name="interpretes-<?=$index?>" value="<?= $interprete->getNomArtiste() ?>" required>
+                    <select class="select-interpretes" id="tous-interpretes-<?=$index?>" name="tous-interpretes-<?=$index?>" required>
+                        <?php foreach ($allArtistesObject as $currentInterpretes): ?>
+                            <option value="<?= $currentInterpretes->getId() ?>" <?= ($currentInterpretes->getId() == $album->getInterpretes()[$index]->getId()) ? 'selected' : '' ?>>
+                                <?= $currentInterpretes->getNomArtiste() ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+
                 <?php endforeach; ?>
                 <input type="hidden" name="nb-interpretes" value="<?= sizeof($album->getInterpretes()) ?>">
             </div>

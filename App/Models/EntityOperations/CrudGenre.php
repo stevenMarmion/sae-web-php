@@ -15,7 +15,6 @@ Autoloader::register();
 class CrudGenre {
 
     private $db;
-    private CrudEtre $crudEtre;
 
     /**
      * Constructeur de la classe CrudGenre.
@@ -25,7 +24,6 @@ class CrudGenre {
      */
     public function __construct(PDO $db) {
         $this->db = $db;
-        $this->crudEtre = new CrudEtre($this->db);
     }
 
     /**
@@ -70,10 +68,12 @@ class CrudGenre {
      */
     public function supprimerGenre(int $genreId) {
         try {
-            $listeAlbums = $this->crudEtre->obtenirMusiquesParGenre($genreId);
+            $crudEtre = new CrudEtre($this->db);
+
+            $listeAlbums = $crudEtre->obtenirMusiquesParGenre($genreId);
 
             foreach ($listeAlbums as $album) {
-                $this->crudEtre->supprimerRelation($genreId, $album["idAl"]);
+                $actionValid = $crudEtre->supprimerRelation($album["idAl"], $genreId);
             }
             $query = "DELETE FROM GENRE WHERE idG = ?";
             $stmt = $this->db->prepare($query);

@@ -4,14 +4,8 @@ namespace App\Controllers\Admin;
 
 require_once __DIR__ . '/../../Autoloader/autoloader.php';
 
-// require_once __DIR__ . '/../../../Database/DatabaseConnection/ConnexionBDD.php';
-// require_once __DIR__ . '/../../Models/EntityOperations/CrudAlbum.php';
-// require_once __DIR__ . '/../../Models/EntityOperations/CrudUser.php';
-// require_once __DIR__ .'/../../Models/EntityOperations/CrudFavoris.php';
-// require_once __DIR__ .'/../../Models/User.php';
-// require_once __DIR__ .'/../../Models/Album.php';
-
 use \App\Autoloader\Autoloader;
+use App\Models\EntityOperations\CrudGenre;
 use \Database\DatabaseConnection\ConnexionBDD;
 use \App\Models\EntityOperations\CrudAlbum;
 use \App\Models\EntityOperations\CrudUser;
@@ -29,6 +23,7 @@ $crudUser = new CrudUser($db::obtenir_connexion());
 $crudFavoris = new CrudFavoris($db::obtenir_connexion());
 $crudAlbum = new CrudAlbum($db::obtenir_connexion());
 $crudArtiste = new CrudArtiste($db::obtenir_connexion());
+$crudGenre = new CrudGenre($db::obtenir_connexion());
 
 if (isset($_SERVER["REQUEST_METHOD"]) && isset($_GET["add"])) {
     if ($_SERVER["REQUEST_METHOD"] == "POST") {

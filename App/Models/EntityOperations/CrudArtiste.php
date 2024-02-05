@@ -16,10 +16,7 @@ Autoloader::register();
 
 class CrudArtiste {
 
-    private $db;
-    private CrudComposer $crudComposer;
-    private CrudInterprete $crudInterpreter;
-    private CrudAlbum $crudAlbum;  
+    private $db; 
 
     /**
      * Constructeur de la classe CrudArtiste.
@@ -29,9 +26,6 @@ class CrudArtiste {
      */
     public function __construct(PDO $db) {
         $this->db = $db;
-        $this->crudComposer = new CrudComposer($this->db);
-        $this->crudInterpreter = new CrudInterprete($this->db);
-        $this->crudAlbum = new CrudAlbum($this->db);
     }
 
     /**
@@ -94,17 +88,20 @@ class CrudArtiste {
      */
     public function supprimerArtiste(int $artisteId) {
         try {
+            $crudAlbum = new CrudAlbum($this->db);
+            $crudComposer = new CrudComposer($this->db);
+            $crudInterpreter = new CrudInterprete($this->db);
 
             // On supprime tous les albums composés par cet artiste
-            $listeAlbums = $this->crudComposer->obtenirAlbumdParCompositeur($artisteId);
+            $listeAlbums = $crudComposer->obtenirAlbumdParCompositeur($artisteId);
             foreach ($listeAlbums as $album) {
-                $this->crudAlbum->supprimerAlbum($album["idAl"]);
+                $crudComposer->supprimerCompositeur($album["idAl"], $artisteId);
             }
 
             // On supprime tous les albums interpretés par cet artiste
-            $listeAlbums = $this->crudInterpreter->obtenirAlbumsParInterprete($artisteId);
+            $listeAlbums = $crudInterpreter->obtenirAlbumsParInterprete($artisteId);
             foreach ($listeAlbums as $album) {
-                $this->crudAlbum->supprimerAlbum($album["idAl"]);
+                $crudInterpreter->supprimerInterprete($album["idAl"], $artisteId);
             }
 
             $query = "DELETE FROM ARTISTES WHERE idA = ?";

@@ -30,6 +30,7 @@ $crudUser = new CrudUser($db::obtenir_connexion());
 $crudFavoris = new CrudFavoris($db::obtenir_connexion());
 $crudAlbum = new CrudAlbum($db::obtenir_connexion());
 $crudArtiste = new CrudArtiste($db::obtenir_connexion());
+$crudGenre = new CrudGenre($db::obtenir_connexion());
 
 if (isset($_SERVER["REQUEST_METHOD"]) && isset($_GET["update"])) {
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -73,26 +74,30 @@ if (isset($_SERVER["REQUEST_METHOD"]) && isset($_GET["update"])) {
             $albumDateSortie = $_POST["dateDeSortie"] ?? null;
 
             for ($i = 0; $i < $nbComp; $i++) {
-                $albumCompositeurs[] = $_POST["compositeurs-$i"] ?? null;
+                $albumCompositeurs[] = $_POST["tous-compositeurs-$i"] ?? null;
                 $ancienComp[] = $_POST["ancien-compositeurs-$i"] ?? null;
             }
             for ($i = 0; $i < $nbInt; $i++) {
-                $albumInterpretes[] = $_POST["interpretes-$i"] ?? null;
+                $albumInterpretes[] = $_POST["tous-interpretes-$i"] ?? null;
                 $ancienInt[] = $_POST["ancien-interpretes-$i"] ?? null;
             }
             for ($i = 0; $i < $nbGenres; $i++) {
                 $albumGenres[] = $_POST["tous-genres-$i"] ?? null;
                 $ancienGenres[] = $_POST["ancien-genres-$i"] ?? null;
             }
-            $album = new Album($albumId, $albumImg, $albumDateSortie, $albumName, $albumCompositeurs, $albumInterpretes, $albumGenres);
-            $actionValid = $crudAlbum->modifierAlbum($albumId, $album, $ancienComp, $ancienInt, $ancienGenres);
+            $album = new Album($albumId, $albumImg, $albumDateSortie, $albumName, $albumCompositeurs, $albumInterpretes, $albumGenres); // $albumCompositeur = 5
+            $actionValid = $crudAlbum->modifierAlbum($albumId, $album, $ancienComp, $ancienInt, $ancienGenres); // ancien comp = 3
             if ($actionValid) {
                 header('Location: /App/Views/Admin/Details/PanelDetails.php?table=ALBUMS'); // redirection vers la page actuelle actualisée
                 exit();
             }
             else {
-                header('Location: /App/Views/Admin/Details/PanelDetails.php?error=NullValues'); // redirection vers la page actuelle avec erreurs
-                exit();
+                print_r($albumCompositeurs);
+                print_r($ancienComp);
+                print_r($albumInterpretes);
+                print_r($ancienInt);
+                //header('Location: /App/Views/Admin/Details/PanelDetails.php?error=NullValues'); // redirection vers la page actuelle avec erreurs
+                //exit();
             }
         }
         if ($tableToUpdate === "ARTISTES") {

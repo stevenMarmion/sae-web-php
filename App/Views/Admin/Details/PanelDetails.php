@@ -5,6 +5,7 @@ namespace App\Views\Admin\Details;
 require_once __DIR__ . '/../../../Autoloader/autoloader.php';
 
 use \App\Autoloader\Autoloader;
+use App\Models\EntityOperations\CrudNote;
 use \Database\DatabaseConnection\ConnexionBDD;
 use \App\Models\EntityOperations\CrudAlbum;
 use \App\Models\EntityOperations\CrudUser;
@@ -14,6 +15,7 @@ use \App\Models\EntityOperations\CrudFavoris;
 use \App\Models\EntityOperations\CrudArtiste;
 use \App\Models\EntityOperations\CrudGenre;
 use \App\Models\EntityOperations\CrudEtre;
+use \App\Models\EntityOperations\CrudPlaylist;
 use \App\Models\User;
 use \App\Models\Favori;
 use \App\Models\Album;
@@ -26,8 +28,8 @@ $db = new ConnexionBDD();
 
 if (isset($_GET['table'])) {
     if ($_GET['table'] == "UTILISATEUR") {
-        $crudUser = new CrudUser($db::obtenir_connexion());
         $crudFavoris = new CrudFavoris($db::obtenir_connexion());
+        $crudUser = new CrudUser($db::obtenir_connexion());
         $crudAlbum = new CrudAlbum($db::obtenir_connexion());
 
         $allUsers = $crudUser->obtenirTousUtilisateurs();
@@ -62,27 +64,46 @@ if (isset($_GET['table'])) {
 
             // Récupérer les compositeurs
             $compositeurs = $crudComposer->obtenirCompositeursParAlbum($album["id"]);
-            foreach ($compositeurs as $compositeur) {
-                $currentArtiste = $crudArtiste->obtenirArtisteParId($compositeur["idA"]);
-                $currentCompositeur = new Artiste($compositeur["idA"],$currentArtiste['nomA']);
+            if (sizeof($compositeurs) == 0) {
+                $currentCompositeur = new Artiste(-1, "Inconnu");
                 $currentAlbum->ajouterCompositeur($currentCompositeur);
+            }
+            else {
+                foreach ($compositeurs as $compositeur) {
+                    $currentArtiste = $crudArtiste->obtenirArtisteParId($compositeur["idA"]);
+                    $currentCompositeur = new Artiste($compositeur["idA"],$currentArtiste['nomA']);
+                    $currentAlbum->ajouterCompositeur($currentCompositeur);
+                }
             }
 
             // Récupérer les interprètes
             $interpretes = $crudInterpreter->obtenirInterpretesParAlbum($album["id"]);
-            foreach ($interpretes as $interprete) {
-                $currentArtiste = $crudArtiste->obtenirArtisteParId($interprete["idA"]);
-                $currentInterprete = new Artiste($interprete["idA"],$currentArtiste['nomA']);
+            if (sizeof($interpretes) == 0) {
+                $currentInterprete = new Artiste(-1, "Inconnu");
                 $currentAlbum->ajouterInterprete($currentInterprete);
+            }
+            else {
+                foreach ($interpretes as $interprete) {
+                    $currentArtiste = $crudArtiste->obtenirArtisteParId($interprete["idA"]);
+                    $currentInterprete = new Artiste($interprete["idA"],$currentArtiste['nomA']);
+                    $currentAlbum->ajouterInterprete($currentInterprete);
+                }
             }
 
             // Récupérer les genres
             $genres = $crudEtre->obtenirGenresParMusique($album["id"]);
-            foreach ($genres as $genre) {
-                $currentGenre = $crudGenre->obtenirGenreParId($genre["idG"]);
-                $currentGenre = new Genre($genre["idG"],$currentGenre['nomG']);
+            if (sizeof($genres) == 0) {
+                $currentGenre = new Genre(-1, "Inconnu");
                 $currentAlbum->ajouterGenre($currentGenre);
             }
+            else {
+                foreach ($genres as $genre) {
+                    $currentGenre = $crudGenre->obtenirGenreParId($genre["idG"]);
+                    $currentGenre = new Genre($genre["idG"],$currentGenre['nomG']);
+                    $currentAlbum->ajouterGenre($currentGenre);
+                }
+            }
+
             $allAlbumsObject[] = $currentAlbum;
         }
     }
@@ -243,7 +264,7 @@ if (isset($_GET['table'])) {
 
     <?php if (isset($_GET['table']) && ($_GET['table'] == "ARTISTES")) : ?>
     <section>
-        <form action="/App/Views/Admin/Details/Add/PanelAddUser.php?add=ARTISTES" method="POST">
+        <form action="/App/Views/Admin/Details/Add/PanelAddArtiste.php?add=ARTISTES" method="POST">
             <button class="custom-add-button">
                 <p class="add-paragraph">
                     Ajouter un artiste

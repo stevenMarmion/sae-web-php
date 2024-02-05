@@ -47,7 +47,7 @@ if (isset($_SERVER["REQUEST_METHOD"]) && isset($_GET["update"])) {
         <h1>Modifier les détails du genre</h1>
 
         <form action="/App/Controllers/Admin/AdminUpdateController.php?update=GENRES" method="post">
-            <input type="hidden" name="artiste_id" value="<?= $currentGenre->getId() ?>">
+            <input type="hidden" name="genre_id" value="<?= $currentGenre->getId() ?>">
 
             <div class="form-group">
                 <label for="nom">Nom :</label>

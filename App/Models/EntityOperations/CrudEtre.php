@@ -3,8 +3,6 @@
 namespace App\Models\EntityOperations;
 
 require_once __DIR__ . '/../../Autoloader/autoloader.php';
-// require_once __DIR__ . '/../../Models/EntityOperations/CrudGenre.php';
-// require_once __DIR__ . '/../../Models/Album.php';
 
 use \App\Autoloader\Autoloader;
 use App\Models\EntityOperations\CrudGenre;
@@ -17,7 +15,6 @@ Autoloader::register();
 class CrudEtre {
 
     private $db;
-    private CrudGenre $crudGenre;
 
     /**
      * Constructeur de la classe CrudEtre.
@@ -27,7 +24,6 @@ class CrudEtre {
      */
     public function __construct(PDO $db) {
         $this->db = $db;
-        $this->crudGenre = new CrudGenre($db);
     }
 
     /**
@@ -80,7 +76,8 @@ class CrudEtre {
     public function modifierRelation(int $albumId, Album $newAlbumData, int $indexGenre, int $genre) {
         $query = "UPDATE ETRE SET idG = ? WHERE idAl = ? and idG = ?";
         $stmt = $this->db->prepare($query);
-        $idGenre = $this->crudGenre->obtenirGenreParId($newAlbumData->getGenres()[$indexGenre])["idG"];
+        $crudGenre = new CrudGenre($this->db);
+        $idGenre = $crudGenre->obtenirGenreParId($newAlbumData->getGenres()[$indexGenre])["idG"];
         $stmt->execute([$idGenre,
                         $albumId,
                         $genre]);

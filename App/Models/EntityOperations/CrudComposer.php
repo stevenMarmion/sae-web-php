@@ -3,10 +3,8 @@
 namespace App\Models\EntityOperations;
 
 require_once __DIR__ . '/../../Autoloader/autoloader.php';
-// require_once __DIR__ . '/../../Models/EntityOperations/CrudArtiste.php';
 
 use \App\Autoloader\Autoloader;
-use App\Models\EntityOperations\CrudArtiste;
 use App\Models\Album;
 use PDO;
 use PDOException;
@@ -16,7 +14,6 @@ Autoloader::register();
 class CrudComposer {
 
     private $db;
-    private CrudArtiste $crudArtiste;
 
     /**
      * Constructeur de la classe CrudComposer.
@@ -26,7 +23,6 @@ class CrudComposer {
      */
     public function __construct(PDO $db) {
         $this->db = $db;
-        $this->crudArtiste = new CrudArtiste($db);
     }
 
     /**
@@ -67,11 +63,12 @@ class CrudComposer {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function modifierCompositeur(int $albumId, Album $newAlbumData, int $indexComp, int $compositeur) {
+    public function modifierCompositeur(int $albumId, Album $newAlbumData, int $indexComp, int $compositeur) { // index comp = 1, compositeur = 3
         $query = "UPDATE COMPOSER SET idA = ? WHERE idAl = ? and idA = ?";
         $stmt = $this->db->prepare($query);
-        $idArtiste = $this->crudArtiste->obtenirArtisteParNom($newAlbumData->getCompositeurs()[$indexComp])["idA"];
-        $stmt->execute([$idArtiste,
+        $crudArtiste = new CrudArtiste($this->db);
+        $idArtiste = $crudArtiste->obtenirArtisteParId($newAlbumData->getCompositeurs()[$indexComp]);
+        $stmt->execute([$idArtiste["idA"],
                         $albumId,
                         $compositeur]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);

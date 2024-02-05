@@ -20,8 +20,7 @@ class CrudPlaylist
      *
      * @param PDO $db La connexion à la base de données.
      */
-    public function __construct(PDO $db)
-    {
+    public function __construct(PDO $db){
         $this->db = $db;
     }
 
