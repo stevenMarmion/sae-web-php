@@ -63,6 +63,18 @@ class CrudContenir
         }
     }
 
+    public function supprimerAllAlbum(int $idAlbum)
+    {
+        try {
+            $query = "DELETE FROM CONTENIR WHERE idAl = ?";
+            $stmt = $this->db->prepare($query);
+            $stmt->execute([$idAlbum]);
+            return true;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
     /**
      * Récupère tous les albums associés à une playlist en fonction de l'ID de la playlist.
      *

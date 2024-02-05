@@ -37,7 +37,9 @@ foreach ($listeAlbum as $album) {
                 );
     array_push($listeAlbumObjet, $al);
 }
+
 include_once '../Base/head.php';
+
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -56,7 +58,7 @@ include_once '../Base/head.php';
     <ul>
     <?php
     foreach($listeAlbumObjet as $album){
-        if($album->getCompositeur()["nomA"]==$album->getInterprete()["nomA"]){
+        if($album->getCompositeurs()["nomA"]==$album->getInterpretes()["nomA"]){
             $img = $album->getImg();
             if(file_exists("../../../DataRessources/images/".$img) && (strstr($img,"%")===false)){
                 $img = $album->getImg() == "" ? "base.jpg" : $album->getImg();
@@ -65,11 +67,11 @@ include_once '../Base/head.php';
                 $img = "base.jpg";
             }
             ?>
-                <li class="album"><img src="<?= '../../../DataRessources/images/'.$img?>"alt="image album" class="imageAlbum"> <h4 class="titreAlbum"><?= $album->getTitre()?></h4> <div class='interprete&compositeur'>interprete et compositeur : <?= $album->getCompositeur()["nomA"]?></div>
+                <li class="album"><img src="<?= '../../../DataRessources/images/'.$img?>"alt="image album" class="imageAlbum"> <h4 class="titreAlbum"><?= $album->getTitre()?></h4> <div class='interprete&compositeur'>interprete et compositeur : <?= $album->getCompositeurs()["nomA"]?></div>
             <?php }
         else{
             ?>
-            <li class="album"><img src="<?= '../../../DataRessources/images/'.$img?>"alt="image album" class="imageAlbum"> <h4 class="titreAlbum"><?= $album->getTitre()?></h4> <div class='interprete&compositeur'>compositeur : <?= $album->getCompositeur()["nomA"]?> </div><div class='interprete&compositeur'>interprete : <?= $album->getInterprete()["nomA"]?> </div>
+            <li class="album"><img src="<?= '../../../DataRessources/images/'.$img?>"alt="image album" class="imageAlbum"> <h4 class="titreAlbum"><?= $album->getTitre()?></h4> <div class='interprete&compositeur'>compositeur : <?= $album->getCompositeurs()["nomA"]?> </div><div class='interprete&compositeur'>interprete : <?= $album->getInterpretes()["nomA"]?> </div>
             <?php
         }
         echo "<a href='/App/Views/Details/detailAlbum.php?id=".$album->getId()."'><button>voir plus</button></a></li>";

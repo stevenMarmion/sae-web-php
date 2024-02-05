@@ -1,0 +1,38 @@
+body {
+    margin: 0;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #282828;
+    padding: 10px;
+}
+
+#icon-retour {
+    width: 20px; 
+    height: 20px; 
+    margin-right: 15px; 
+}
+
+.retour-panel-admin a{
+    background-color: #1DB954;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 15px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.3s ease;
+}
+
+.retour-panel-admin a:hover {
+    background-color: #16843a;
+}
+
+#logo {
+    width: 200px;
+}

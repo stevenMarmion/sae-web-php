@@ -8,20 +8,17 @@ namespace App\Autoloader;
 class Autoloader
 {
     /**
-     * Enregistre notre autoloader
+     * Autoload provenant de la documentation officielle de PHP
      */
     public static function register()
     {
-        spl_autoload_register(function ($class) {
-            $file = str_replace('\\', DIRECTORY_SEPARATOR, $class).'.php';
-            if (file_exists($file)) {
-                require $file;
-                return true;
-            }
-            return false;
-        });
+        spl_autoload_register(array(__CLASS__, 'autoload'));
+    }
+
+    static function autoload($class) {
+        $file = str_replace('\\', DIRECTORY_SEPARATOR, $class);
+        require __DIR__ . '/../../' . $file . '.php';
     }
 }
-Autoloader::register();
 
-
+?>

@@ -15,7 +15,7 @@ Autoloader::register();
  * 
  * Cette classe représente la connexion à la base de données.
  * Elle initialise la base de données, crée les tables nécessaires,
- * insère les données de quiz, questions, réponses et choix, si la base de données est vide.
+ * insère les données utilisateurs, genres, albums, etc ...
  */
 class ConnexionBDD {
     private static $db = null;
@@ -59,7 +59,7 @@ class ConnexionBDD {
     function init_DB() {
         if (self::$db === null) {
             try {
-                $cheminFichierSQLite = __DIR__ . '/../DatabaseScripts/BD_app_Musique.sqlite3';
+                $cheminFichierSQLite = __DIR__ . '/../DatabaseScripts/BDD_ALBUM.sqlite3';
                 self::$db = new PDO('sqlite:' . $cheminFichierSQLite);
                 self::$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             } catch (PDOException $e) {
@@ -68,7 +68,6 @@ class ConnexionBDD {
         }
         return self::$db;
     }
-
 }
 
 ?>
