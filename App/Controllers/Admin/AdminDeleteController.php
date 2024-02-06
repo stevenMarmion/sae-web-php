@@ -2,24 +2,12 @@
 
 require_once __DIR__ . '/../../Autoloader/autoloader.php';
 
-require_once __DIR__ . '/../../../Database/DatabaseConnection/ConnexionBDD.php';
-// require_once __DIR__ . '/../../Models/EntityOperations/CrudAlbum.php';
-// require_once __DIR__ . '/../../Models/EntityOperations/CrudUser.php';
-// require_once __DIR__ . '/../../Models/EntityOperations/CrudPlaylist.php';
-// require_once __DIR__ . '/../../Models/EntityOperations/CrudNote.php';
-// require_once __DIR__ .'/../../Models/User.php';
-// require_once __DIR__ .'/../../Models/Album.php';
-
 use \App\Autoloader\Autoloader;
 use App\Models\EntityOperations\CrudGenre;
 use \Database\DatabaseConnection\ConnexionBDD;
 use \App\Models\EntityOperations\CrudAlbum;
 use \App\Models\EntityOperations\CrudUser;
 use \App\Models\EntityOperations\CrudArtiste;
-use \App\Models\EntityOperations\CrudPlaylist;
-use \App\Models\EntityOperations\CrudNote;
-use \App\Models\User;
-use \App\Models\Album;
 
 Autoloader::register();
 

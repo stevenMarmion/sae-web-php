@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 
 namespace Database\DatabaseConnection;
 
@@ -68,7 +69,7 @@ class InstancesTables {
     }
 
     function recup_argv($argv) {
-        echo "\n>> [Instanciation de la BDD avec les paramètres d'exécution suivant...\n", print_r($argv), "]\n" ;
+        echo "\n>> [Instanciation de la BDD avec les paramètres d'exécution suivant...\n", $argv, "]\n" ;
         if (count($argv) < 2) {
             die("Veuillez fournir le chemin vers le fichier YAML en argument !\n");
         }

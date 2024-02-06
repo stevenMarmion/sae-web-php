@@ -1,11 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models\EntityOperations;
 
 require_once __DIR__ . '/../../Autoloader/autoloader.php';
 
-use \App\Models\EntityOperations\CrudArtiste;
-use \App\Models\EntityOperations\CrudGenre;
 use \App\Models\EntityOperations\CrudComposer;
 use \App\Models\EntityOperations\CrudInterprete;
 use \App\Models\EntityOperations\CrudEtre;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\DatabaseConnection;
 
 require_once __DIR__ . '/../../App/Autoloader/autoloader.php';
