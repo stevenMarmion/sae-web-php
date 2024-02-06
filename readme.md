@@ -58,8 +58,10 @@ Pour déployer l'application, merci de suivre les instructions suivantes :
   php --version
   ```
 Si aucune version de PHP n'est trouvable, merci de l'installer en suivant le guide ici : https://www.php.net/manual/fr/install.php
-Dans le cas où une verison est trouvée, continuez l'avancement des commandes ci-dessous :
+
+Dans le cas où une version est trouvée, continuez l'avancement des commandes ci-dessous :
 - Vérifier l'existence d'un fichier **.sqlite3** dans le chemin : *Database/DatabaseScripts/* 
+
 Si il n'y aucun fichier :
 - ```bash
   bash Bash/bash_insertion.sh
