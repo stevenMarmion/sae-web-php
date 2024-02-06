@@ -119,13 +119,21 @@ class CrudPlaylist
     public function ajouterAlbumPlaylist(int $idPlaylist, int $idAlbum)
     {
         try {
-            $query = "INSERT INTO CONTENIR (idPlaylist, idAlbum) VALUES (?, ?)";
+            $query = "INSERT INTO CONTENIR (idPlaylist, idAl) VALUES (?, ?)";
             $stmt = $this->db->prepare($query);
             $stmt->execute([$idPlaylist, $idAlbum]);
             return true;
         } catch (PDOException $e) {
-            return false;
+            return $e;
         }
+    }
+
+    public function obtenirPlaylistSansIdAlbum(int $idAlbum, int $idU)
+    {
+        $query = "SELECT * FROM PLAYLIST natural join POSSEDER WHERE idPlaylist NOT IN (SELECT idPlaylist FROM CONTENIR WHERE idAl = ?) and idU = ?";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute([$idAlbum,$idU]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
 

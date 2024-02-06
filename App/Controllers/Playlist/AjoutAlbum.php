@@ -19,13 +19,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit();
     }
 }
+header('Location: /App/Views/playlist/Playlists.php?error=2');
+exit();
 
 function ajoutAlbum() {
     $instance = new ConnexionBDD();
     $crudPlaylist = new CrudPlaylist($instance::obtenir_connexion());
     $idAlbum = $_POST['idAlbum'];
     $idPlaylist = $_POST['idPlaylist'];
-    $crudPlaylist->ajouterAlbumPlaylist($idPlaylist, $idAlbum);
+    echo $crudPlaylist->ajouterAlbumPlaylist($idPlaylist, $idAlbum);
     header('Location: /App/Views/playlist/Playlists.php');
     exit();
 }

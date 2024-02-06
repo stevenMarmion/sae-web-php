@@ -148,6 +148,17 @@ class CrudAlbum {
         $stmt = $this->db->query($query);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function ajouterLike(int $idU, int $idAlbum) {
+        try {
+            $query = "INSERT INTO AIMER (idU, idAl) VALUES (?, ?)";
+            $stmt = $this->db->prepare($query);
+            $stmt->execute([$idU, $idAlbum]);
+            return true;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
 }
 
 ?>
