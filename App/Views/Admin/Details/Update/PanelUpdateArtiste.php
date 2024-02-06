@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 
 namespace App\Views\Admin\Details;
 
@@ -19,7 +20,7 @@ if (isset($_SERVER["REQUEST_METHOD"]) && isset($_GET["update"])) {
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $tableToUpdate = $_GET["update"]; // UTILISATEUR ou ALBUMS
         if ($tableToUpdate === "ARTISTES") {
-            $artisteId = $_POST["artiste_id"] ?? null;
+            $artisteId = intval($_POST["artiste_id"]) ?? null;
             if (!empty($artisteId)) {
                 $artiste = $crudArtiste->obtenirArtisteParId($artisteId);
                 $currentArtiste = new Artiste($artiste["idA"], $artiste["nomA"]);

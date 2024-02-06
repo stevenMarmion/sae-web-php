@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controllers\Admin;
 
 require_once __DIR__ . '/../../../../Autoloader/autoloader.php';
@@ -23,7 +25,7 @@ if (isset($_SERVER["REQUEST_METHOD"]) && isset($_GET["update"])) {
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $tableToUpdate = $_GET["update"]; // UTILISATEUR ou ALBUMS
         if ($tableToUpdate === "UTILISATEUR") {
-            $userId = $_POST["user_id"] ?? null;
+            $userId = intval($_POST["user_id"]) ?? null;
             if (!empty($userId)) {
                 $currentUser = $crudUser->obtenirUtilisateurParId($userId);
                 $allUsersObject = [];

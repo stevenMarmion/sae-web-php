@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 require_once __DIR__ . '/../../Autoloader/autoloader.php';
 
 use \App\Autoloader\Autoloader;
@@ -21,17 +23,18 @@ $crudAlbum = new CrudAlbum($instance::obtenir_connexion());
 $crudArtiste = new CrudArtiste($instance::obtenir_connexion());
 $listeAlbum = $crudAlbum->obtenirAlbumsParDerniereSortie();
 $listeAlbumObjet = [];
+
 foreach ($listeAlbum as $album) {
     $idC = $crudAlbum->obtenirCompositeurId(intval($album["id"]))["idA"];
     $idI = $crudAlbum->obtenirInterpreteId(intval($album["id"]))["idA"];
-    $listeGenre = $crudAlbum->obtenirGenresAlbum($album["id"]);
+    $listeGenre = $crudAlbum->obtenirGenresAlbum(intval($album["id"]));
     $al = new Album($idM=intval($album["id"]),
                     $img=$album["img"] ?? "",
                     $dateDeSortie=intval($album["dateDeSortie"]),
                     $title=$album["titre"],
-                    $compositeur=$crudArtiste->obtenirArtisteParId($idC),
-                    $interprete=$crudArtiste->obtenirArtisteParId($idI),
-                    $genre=$listeGenre === false ? [] : $listeGenre,
+                    $compositeur=$crudArtiste->obtenirArtisteParId(intval($idC)) ?: [],
+                    $interprete=$crudArtiste->obtenirArtisteParId(intval($idI)) ?: [],
+                    $genre = $listeGenre == false ? [] : $listeGenre,
                 );
     array_push($listeAlbumObjet, $al);
 }
@@ -56,8 +59,12 @@ foreach ($listeAlbum as $album) {
         <a href="#">Recherche utilisateur</a>
         <a href="#">Profil</a>
     </div>
-    <p class="message-user-accueil">Bonjour <strong><?= $_SESSION["pseudo"] ?></strong>, nous espérons que tout va bien aujourd'hui...</p>
-    <h1> Voici les dernieres sorties ! </h1>
+    <p class="message-user-accueil">Bonjour <strong><?= $_SESSION["pseudo"] ?>
+        </strong>, nous espérons que tout va bien aujourd'hui...
+    </p>
+    <h1>
+        Voici les dernieres sorties !
+    </h1>
     <ul>
         <?php
             foreach($listeAlbumObjet as $album){
@@ -78,8 +85,8 @@ foreach ($listeAlbum as $album) {
                         <div class='interpreteAndcompositeur'>
                             Interprete(s) et Compositeur(s) : <?= $album->getCompositeurs()["nomA"]?>
                         </div>
-                    <?php }
-                else{
+                    <?php 
+                } else {
                     ?>
                     <li class="album">
                         <img src="<?= '../../../DataRessources/images/'.$img?>"alt="image album" class="imageAlbum">

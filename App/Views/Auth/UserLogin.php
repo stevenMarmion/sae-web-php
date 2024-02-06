@@ -5,12 +5,26 @@ session_start();
 $errorDetected = null;
 
 if (isset($_GET['error'])) {
-    if ($_GET["error"] == "No-account") {
-        $errorDetected = true;
+    $errorDetected = true;
+    $error = $_GET['error'];
+    switch ($error) {
+        case 'No-account':
+            $noAccount = true;
+            $badPwd = false;
+            break;
+        
+        case 'BadPassword':
+            $badPwd = true;
+            $noAccount = false;
+            break;
+        default:
+            $badPwd = false;
+            $noAccount = false;
+            break;
     }
-    else {
-        $errorDetected = false;
-    }
+}
+else {
+    $errorDetected = false;
 }
 
 ?>
@@ -47,7 +61,12 @@ if (isset($_GET['error'])) {
             </p>
             <?php if ($errorDetected) : ?>
                 <p class="erreur-login">
-                    Vous n'avez pas de compte, veuillez en créer un...
+                    <?php if ($noAccount) : ?>
+                        Vous n'avez pas de compte, veuillez vous en créer un...
+                    <?php endif; ?>
+                    <?php if ($badPwd) : ?>
+                        Le mot de passe que vous essayez d'entrer n'est pas correct...
+                    <?php endif; ?>
                 </p>
             <?php endif; ?>
         </form>

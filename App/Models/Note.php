@@ -4,12 +4,6 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-require_once __DIR__ . '/../Autoloader/autoloader.php';
-
-use \App\Autoloader\Autoloader;
-
-Autoloader::register();
-
 /**
  * Class Note
  *

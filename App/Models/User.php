@@ -40,7 +40,7 @@ class User {
     /**
      * @var bool Le rôle de l'utilisateur, indiquant s'il s'agit d'un administrateur.
      */
-    private string $isAdmin;
+    private bool $isAdmin;
 
     /**
      * @var array Un tableau contenant les éléments favoris de l'utilisateur.

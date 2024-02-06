@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Views\Admin\Details;
 
 require_once __DIR__ . '/../../../../Autoloader/autoloader.php';
@@ -30,7 +32,7 @@ if (isset($_SERVER["REQUEST_METHOD"]) && isset($_GET["update"])) {
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $tableToUpdate = $_GET["update"]; // UTILISATEUR ou ALBUMS
         if ($tableToUpdate === "ALBUMS") {
-            $albumId = $_POST["album_id"] ?? null;
+            $albumId = intval($_POST["album_id"]) ?? null;
             if (!empty($albumId)) {
 
                 $album = $crudAlbum->obtenirAlbumParId($albumId);

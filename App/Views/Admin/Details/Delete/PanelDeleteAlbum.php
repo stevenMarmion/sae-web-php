@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 require_once __DIR__ . '/../../../../Autoloader/autoloader.php';
 
 use \App\Autoloader\Autoloader;
@@ -16,7 +18,7 @@ if (isset($_SERVER["REQUEST_METHOD"]) && isset($_GET["delete"])) {
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $tableToUpdate = $_GET["delete"]; // ALBUMS
         if ($tableToUpdate === "ALBUMS") {
-            $albumId = $_POST["album_id"];
+            $albumId = intval($_POST["album_id"]);
             $listeAlbum = $crudAlbum->obtenirAlbumParId($albumId);
             if ($listeAlbum != false) {
                 $album = new Album($listeAlbum["id"], $listeAlbum["img"], $listeAlbum["dateDeSortie"], $listeAlbum["titre"], [], [], []);

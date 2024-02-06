@@ -5,12 +5,26 @@ session_start();
 $errorDetected = null;
 
 if (isset($_GET['error'])) {
-    if ($_GET["error"] == "AlreadyExists") {
-        $errorDetected = true;
+    $errorDetected = true;
+    $error = $_GET['error'];
+    switch ($error) {
+        case 'AlreadyExists':
+            $alreadyExists = true;
+            $badPwd = false;
+            break;
+        
+        case 'BadPassword':
+            $badPwd = true;
+            $alreadyExists = false;
+            break;
+        default:
+            $badPwd = false;
+            $alreadyExists = false;
+            break;
     }
-    else {
-        $errorDetected = false;
-    }
+}
+else {
+    $errorDetected = false;
 }
 
 ?>
@@ -54,7 +68,12 @@ if (isset($_GET['error'])) {
         </p>
         <?php if ($errorDetected) : ?>
             <p class="erreur-register">
-                Le pseudo de cet utilisateur existe déjà, veuillez en choisir un autre...
+                <?php if ($alreadyExists) : ?>
+                    Le pseudo de cet utilisateur existe déjà, veuillez en choisir un autre...
+                <?php endif; ?>
+                <?php if ($badPwd) : ?>
+                    Les deux mots de passe sont différents...
+                <?php endif; ?>
             </p>
         <?php endif; ?>
     </form>

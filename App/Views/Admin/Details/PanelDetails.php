@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Views\Admin\Details;
 
 require_once __DIR__ . '/../../../Autoloader/autoloader.php';
@@ -25,106 +27,108 @@ Autoloader::register();
 $db = new ConnexionBDD();
 
 if (isset($_GET['table'])) {
-    if ($_GET['table'] == "UTILISATEUR") {
-        $crudFavoris = new CrudFavoris($db::obtenir_connexion());
-        $crudUser = new CrudUser($db::obtenir_connexion());
-        $crudAlbum = new CrudAlbum($db::obtenir_connexion());
+    $table = $_GET['table'];
+    switch ($table) {
+        case "UTILISATEUR": 
+            $crudFavoris = new CrudFavoris($db::obtenir_connexion());
+            $crudUser = new CrudUser($db::obtenir_connexion());
+            $crudAlbum = new CrudAlbum($db::obtenir_connexion());
 
-        $allUsers = $crudUser->obtenirTousUtilisateurs();
-        $allUsersObject = [];
+            $allUsers = $crudUser->obtenirTousUtilisateurs();
+            $allUsersObject = [];
 
-        foreach ($allUsers as $user) {
-            $isAdmin = $user["isAdmin"] === 1 ? true : false;
-            $currentUser = new User($user["idU"],$user["pseudo"],$user["mdp"],$user["adresseMail"],$isAdmin,[]);
-            $allFavoris = $crudFavoris->obtenirFavorisParUtilisateur($currentUser->getId());
+            foreach ($allUsers as $user) {
+                $isAdmin = $user["isAdmin"] === 1 ? true : false;
+                $currentUser = new User($user["idU"],$user["pseudo"],$user["mdp"],$user["adresseMail"],$isAdmin,[]);
+                $allFavoris = $crudFavoris->obtenirFavorisParUtilisateur($currentUser->getId());
 
-            foreach ($allFavoris as $favori) {
-                $currentFavori = new Favori($favori["idU"], $favori["idAl"]);
-                $currentAlbum = $crudAlbum->obtenirAlbumParId($currentFavori->getIdAlbum());
-                $currentUser->ajouterFavori($currentAlbum["id"]);
+                foreach ($allFavoris as $favori) {
+                    $currentFavori = new Favori($favori["idU"], $favori["idAl"]);
+                    $currentAlbum = $crudAlbum->obtenirAlbumParId($currentFavori->getIdAlbum());
+                    $currentUser->ajouterFavori($currentAlbum["id"]);
+                }
+                $allUsersObject[] = $currentUser;
             }
-            $allUsersObject[] = $currentUser;
-        }
-    }
-    else if ($_GET['table'] == "ALBUMS") {
-        $crudInterpreter = new CrudInterprete($db::obtenir_connexion());
-        $crudComposer = new CrudComposer($db::obtenir_connexion());
-        $crudArtiste = new CrudArtiste($db::obtenir_connexion());
-        $crudGenre = new CrudGenre($db::obtenir_connexion());
-        $crudEtre = new CrudEtre($db::obtenir_connexion());
-        $crudAlbum = new CrudAlbum($db::obtenir_connexion());
 
-        $allAlbums = $crudAlbum->obtenirTousAlbums();
-        $allAlbumsObject = [];
+        case "ALBUMS" : 
+            $crudInterpreter = new CrudInterprete($db::obtenir_connexion());
+            $crudComposer = new CrudComposer($db::obtenir_connexion());
+            $crudArtiste = new CrudArtiste($db::obtenir_connexion());
+            $crudGenre = new CrudGenre($db::obtenir_connexion());
+            $crudEtre = new CrudEtre($db::obtenir_connexion());
+            $crudAlbum = new CrudAlbum($db::obtenir_connexion());
 
-        foreach ($allAlbums as $album) {
-            $currentAlbum = new Album($album["id"],$album["img"] ?? "",$album["dateDeSortie"],$album["titre"],[],[],[]);
+            $allAlbums = $crudAlbum->obtenirTousAlbums();
+            $allAlbumsObject = [];
 
-            // Récupérer les compositeurs
-            $compositeurs = $crudComposer->obtenirCompositeursParAlbum($album["id"]);
-            if (sizeof($compositeurs) == 0) {
-                $currentCompositeur = new Artiste(-1, "Inconnu");
-                $currentAlbum->ajouterCompositeur($currentCompositeur);
-            }
-            else {
-                foreach ($compositeurs as $compositeur) {
-                    $currentArtiste = $crudArtiste->obtenirArtisteParId($compositeur["idA"]);
-                    $currentCompositeur = new Artiste($compositeur["idA"],$currentArtiste['nomA']);
+            foreach ($allAlbums as $album) {
+                $currentAlbum = new Album($album["id"],$album["img"] ?? "",$album["dateDeSortie"],$album["titre"],[],[],[]);
+
+                // Récupérer les compositeurs
+                $compositeurs = $crudComposer->obtenirCompositeursParAlbum($album["id"]);
+                if (sizeof($compositeurs) == 0) {
+                    $currentCompositeur = new Artiste(-1, "Inconnu");
                     $currentAlbum->ajouterCompositeur($currentCompositeur);
                 }
-            }
+                else {
+                    foreach ($compositeurs as $compositeur) {
+                        $currentArtiste = $crudArtiste->obtenirArtisteParId($compositeur["idA"]);
+                        $currentCompositeur = new Artiste($compositeur["idA"],$currentArtiste['nomA']);
+                        $currentAlbum->ajouterCompositeur($currentCompositeur);
+                    }
+                }
 
-            // Récupérer les interprètes
-            $interpretes = $crudInterpreter->obtenirInterpretesParAlbum($album["id"]);
-            if (sizeof($interpretes) == 0) {
-                $currentInterprete = new Artiste(-1, "Inconnu");
-                $currentAlbum->ajouterInterprete($currentInterprete);
-            }
-            else {
-                foreach ($interpretes as $interprete) {
-                    $currentArtiste = $crudArtiste->obtenirArtisteParId($interprete["idA"]);
-                    $currentInterprete = new Artiste($interprete["idA"],$currentArtiste['nomA']);
+                // Récupérer les interprètes
+                $interpretes = $crudInterpreter->obtenirInterpretesParAlbum($album["id"]);
+                if (sizeof($interpretes) == 0) {
+                    $currentInterprete = new Artiste(-1, "Inconnu");
                     $currentAlbum->ajouterInterprete($currentInterprete);
                 }
-            }
+                else {
+                    foreach ($interpretes as $interprete) {
+                        $currentArtiste = $crudArtiste->obtenirArtisteParId($interprete["idA"]);
+                        $currentInterprete = new Artiste($interprete["idA"],$currentArtiste['nomA']);
+                        $currentAlbum->ajouterInterprete($currentInterprete);
+                    }
+                }
 
-            // Récupérer les genres
-            $genres = $crudEtre->obtenirGenresParMusique($album["id"]);
-            if (sizeof($genres) == 0) {
-                $currentGenre = new Genre(-1, "Inconnu");
-                $currentAlbum->ajouterGenre($currentGenre);
-            }
-            else {
-                foreach ($genres as $genre) {
-                    $currentGenre = $crudGenre->obtenirGenreParId($genre["idG"]);
-                    $currentGenre = new Genre($genre["idG"],$currentGenre['nomG']);
+                // Récupérer les genres
+                $genres = $crudEtre->obtenirGenresParMusique($album["id"]);
+                if (sizeof($genres) == 0) {
+                    $currentGenre = new Genre(-1, "Inconnu");
                     $currentAlbum->ajouterGenre($currentGenre);
                 }
+                else {
+                    foreach ($genres as $genre) {
+                        $currentGenre = $crudGenre->obtenirGenreParId($genre["idG"]);
+                        $currentGenre = new Genre($genre["idG"],$currentGenre['nomG']);
+                        $currentAlbum->ajouterGenre($currentGenre);
+                    }
+                }
+
+                $allAlbumsObject[] = $currentAlbum;
             }
 
-            $allAlbumsObject[] = $currentAlbum;
-        }
-    }
-    else if ($_GET['table'] == "ARTISTES") {
-        $crudArtiste = new CrudArtiste($db::obtenir_connexion());
+        case "ARTISTES" : 
+            $crudArtiste = new CrudArtiste($db::obtenir_connexion());
 
-        $allArtistes = $crudArtiste->obtenirTousArtistes();
-        $allArtistesObject = [];
+            $allArtistes = $crudArtiste->obtenirTousArtistes();
+            $allArtistesObject = [];
 
-        foreach ($allArtistes as $artiste) {
-            $currentArtistes = new Artiste($artiste["idA"], $artiste["nomA"]);
-            $allArtistesObject[] = $currentArtistes;
-        }
-    }
-    else if ($_GET['table'] == "GENRES") {
-        $crudGenre = new CrudGenre($db::obtenir_connexion());
-        $allGenres = $crudGenre->obtenirTousGenres();
-        $allGenresObject = [];
+            foreach ($allArtistes as $artiste) {
+                $currentArtistes = new Artiste($artiste["idA"], $artiste["nomA"]);
+                $allArtistesObject[] = $currentArtistes;
+            }
 
-        foreach ($allGenres as $genre) {
-            $currentGenre = new Genre($genre["idG"], $genre["nomG"]);
-            $allGenresObject[] = $currentGenre;
-        }
+        case "GENRES" : 
+            $crudGenre = new CrudGenre($db::obtenir_connexion());
+            $allGenres = $crudGenre->obtenirTousGenres();
+            $allGenresObject = [];
+
+            foreach ($allGenres as $genre) {
+                $currentGenre = new Genre($genre["idG"], $genre["nomG"]);
+                $allGenresObject[] = $currentGenre;
+            }
     }
 }
 
