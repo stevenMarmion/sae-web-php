@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 require_once __DIR__ . '/../../../../Autoloader/autoloader.php';
 
 use \App\Autoloader\Autoloader;
@@ -16,7 +18,7 @@ if (isset($_SERVER["REQUEST_METHOD"]) && isset($_GET["delete"])) {
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $tableToUpdate = $_GET["delete"]; // UTILISATEUR
         if ($tableToUpdate === "GENRES") {
-            $genreId = $_POST["genre_id"];
+            $genreId = intval($_POST["genre_id"]) ?? null;
             $genre = $crudGenre->obtenirGenreParId($genreId);
             if ($genre != false) {
                 $currentGenre = new Genre($genre["idG"], $genre["nomG"]);

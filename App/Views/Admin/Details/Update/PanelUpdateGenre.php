@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 
 namespace App\Views\Admin\Details;
 
@@ -19,7 +20,7 @@ if (isset($_SERVER["REQUEST_METHOD"]) && isset($_GET["update"])) {
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $tableToUpdate = $_GET["update"]; // UTILISATEUR ou ALBUMS
         if ($tableToUpdate === "GENRES") {
-            $genreId = $_POST["genre_id"] ?? null;
+            $genreId = intval($_POST["genre_id"]) ?? null;
             if (!empty($genreId)) {
                 $genre = $crudGenre->obtenirGenreParId($genreId);
                 $currentGenre = new Genre($genre["idG"], $genre["nomG"]);

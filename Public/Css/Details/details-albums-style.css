@@ -13,7 +13,7 @@ nav {
     padding: 10px;
 }
 
-h2 {
+h1 {
     text-align: center;
     color: #1DB954;
 }
@@ -26,9 +26,10 @@ h2 {
     display: block;
 }
 
-h3 {
+p {
     text-align: center;
     margin: 10px;
+    font-size: 120%;
     color: #282828;
 }
 

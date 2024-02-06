@@ -1,9 +1,8 @@
 <?php
 
+declare(strict_types=1);
+
 require_once __DIR__ . '/../../Autoloader/autoloader.php';
-require_once __DIR__ .'/../../../Database/DatabaseConnection/ConnexionBDD.php';
-require_once __DIR__ .'/../../Models/EntityOperations/CrudUser.php';
-require_once __DIR__ .'/../../Models/User.php';
 
 use \App\Autoloader\Autoloader;
 use \Database\DatabaseConnection\ConnexionBDD;
@@ -29,8 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             // Vérifier si les mots de passe correspondent
             if ($mdp !== $confirmer_mdp) {
-                echo "Mot de passe différent";
-                //header('Location: ' . __DIR__ . '/../Views/Auth/UserRegister.php?error=2');  // Mot de passe et confirmation ne correspondent pas
+                header('Location: /App/Views/Auth/UserRegister.php?error=BadPassword'); // Erreur lors de l'inscription
                 exit();
             }
 

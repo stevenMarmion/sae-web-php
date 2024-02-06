@@ -1,11 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models\EntityOperations;
 
 require_once __DIR__ . '/../../Autoloader/autoloader.php';
 
-use \App\Models\EntityOperations\CrudArtiste;
-use \App\Models\EntityOperations\CrudGenre;
 use \App\Models\EntityOperations\CrudComposer;
 use \App\Models\EntityOperations\CrudInterprete;
 use \App\Models\EntityOperations\CrudEtre;
@@ -75,17 +75,17 @@ class CrudAlbum {
 
                 // Ajoute le(s) compositeur(s) de l'album
                 foreach ($albumData->getCompositeurs() as $compositeur) {
-                    $crudComposer->ajouterCompositeur($albumData->getId(), $compositeur);
+                    $crudComposer->ajouterCompositeur($albumData->getId(), intval($compositeur));
                 }
 
                 // Ajoute les interprètes de l'album
                 foreach ($albumData->getInterpretes() as $interprete) {
-                    $crudInterpreter->ajouterInterprete($albumData->getId(), $interprete);
+                    $crudInterpreter->ajouterInterprete($albumData->getId(), intval($interprete));
                 }
 
                 // Ajoute le(s) genre(s) de l'album
                 foreach ($albumData->getGenres() as $genre) {
-                    $crudEtre->ajouterRelation($albumData->getId(), $genre);
+                    $crudEtre->ajouterRelation($albumData->getId(), intval($genre));
                 }
             }
             else {
@@ -152,17 +152,17 @@ class CrudAlbum {
 
             // Modifier le(s) compositeur(s) de l'album
             foreach ($ancienComp as $indexComp => $compositeur) {
-                $crudComposer->modifierCompositeur($albumId, $newAlbumData, $indexComp, $compositeur); // compositeur = 3, indexComp = 1
+                $crudComposer->modifierCompositeur($albumId, $newAlbumData, $indexComp, intval($compositeur)); // compositeur = 3, indexComp = 1
             }
 
             // Modifier les interprètes de l'album
             foreach ($ancienInt as $indexInt => $interprete) {
-                $crudInterpreter->modifierInterprete($albumId, $newAlbumData, $indexInt, $interprete);
+                $crudInterpreter->modifierInterprete($albumId, $newAlbumData, $indexInt, intval($interprete));
             }
 
             // Modifier le(s) genre(s) de l'album
             foreach ($ancienGenres as $indexGenre => $genre) {
-                $crudEtre->modifierRelation($albumId, $newAlbumData, $indexGenre, $genre);
+                $crudEtre->modifierRelation($albumId, $newAlbumData, $indexGenre, intval($genre));
             }
             return true;
         } catch (PDOException $e) {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 require_once __DIR__ . '/../../../../Autoloader/autoloader.php';
 
 use \App\Autoloader\Autoloader;
@@ -16,7 +18,7 @@ if (isset($_SERVER["REQUEST_METHOD"]) && isset($_GET["delete"])) {
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $tableToUpdate = $_GET["delete"]; // UTILISATEUR
         if ($tableToUpdate === "ARTISTES") {
-            $artisteId = $_POST["artiste_id"];
+            $artisteId = intval($_POST["artiste_id"]) ?? null;
             $artiste = $crudArtiste->obtenirArtisteParId($artisteId);
             if ($artiste != false) {
                 $currentArtiste = new Artiste($artiste["idA"], $artiste["nomA"]);

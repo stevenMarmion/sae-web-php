@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 require_once __DIR__ . '/../../../../Autoloader/autoloader.php';
 
 use \App\Autoloader\Autoloader;
@@ -16,10 +18,11 @@ if (isset($_SERVER["REQUEST_METHOD"]) && isset($_GET["delete"])) {
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $tableToUpdate = $_GET["delete"]; // UTILISATEUR
         if ($tableToUpdate === "UTILISATEUR") {
-            $userId = $_POST["user_id"];
+            $userId = intval($_POST["user_id"]);
             $listeUsers = $crudUser->obtenirUtilisateurParId($userId);
             if ($listeUsers != false) {
-                $user = new User($listeUsers["idU"], $listeUsers["pseudo"], $listeUsers["mdp"], $listeUsers["adresseMail"], $listeUsers["isAdmin"], []);
+                $isAdmin = $listeUsers["isAdmin"] == 1 ? true : false;
+                $user = new User($listeUsers["idU"], $listeUsers["pseudo"], $listeUsers["mdp"], $listeUsers["adresseMail"], $isAdmin, []);
             }
         }
     }
