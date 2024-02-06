@@ -1,10 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models\EntityOperations;
 
 require_once __DIR__ . '/../../Autoloader/autoloader.php';
 
 use \App\Autoloader\Autoloader;
+use App\Models\EntityOperations\CrudGenre;
+use App\Models\Album;
 use PDO;
 use PDOException;
 
@@ -33,7 +37,7 @@ class CrudEtre {
      */
     public function ajouterRelation(int $idMusique, int $idGenre) {
         try {
-            $query = "INSERT INTO ETRE (idM, idG) VALUES (?, ?)";
+            $query = "INSERT INTO ETRE (idAl, idG) VALUES (?, ?)";
             $stmt = $this->db->prepare($query);
             $stmt->execute([$idMusique, $idGenre]);
             return true;
@@ -51,13 +55,35 @@ class CrudEtre {
      */
     public function supprimerRelation(int $idMusique, int $idGenre) {
         try {
-            $query = "DELETE FROM ETRE WHERE idM = ? AND idG = ?";
+            $query = "DELETE FROM ETRE WHERE idAl = ? AND idG = ?";
             $stmt = $this->db->prepare($query);
             $stmt->execute([$idMusique, $idGenre]);
             return true;
         } catch (PDOException $e) {
             return false;
         }
+    }
+
+    public function supprimerAllAlbum(int $idAlbum) {
+        try {
+            $query = "DELETE FROM ETRE WHERE idAl = ?";
+            $stmt = $this->db->prepare($query);
+            $stmt->execute([$idAlbum]);
+            return true;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    public function modifierRelation(int $albumId, Album $newAlbumData, int $indexGenre, int $genre) {
+        $query = "UPDATE ETRE SET idG = ? WHERE idAl = ? and idG = ?";
+        $stmt = $this->db->prepare($query);
+        $crudGenre = new CrudGenre($this->db);
+        $idGenre = $crudGenre->obtenirGenreParId($newAlbumData->getGenres()[$indexGenre])["idG"];
+        $stmt->execute([$idGenre,
+                        $albumId,
+                        $genre]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     /**
@@ -67,7 +93,7 @@ class CrudEtre {
      * @return array Un tableau contenant les genres associés à la musique.
      */
     public function obtenirGenresParMusique(int $idMusique) {
-        $query = "SELECT * FROM ETRE WHERE idM = ?";
+        $query = "SELECT * FROM ETRE WHERE idAl = ?";
         $stmt = $this->db->prepare($query);
         $stmt->execute([$idMusique]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);

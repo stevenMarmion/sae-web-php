@@ -5,6 +5,9 @@ body {
     align-items: center;
     justify-content: center;
     height: 100vh;
+}
+
+section {
     margin-top: 20vh;
 }
 
@@ -54,13 +57,16 @@ input[type="submit"]:hover {
 }
 
 #login-link {
-    display: block;
     text-align: center;
     margin-top: 15px;
-    color: #1DB954;
-    text-decoration: none;
+    color: #ffffff;
 }
 
-#login-link:hover {
-    text-decoration: underline;
+#account {
+    color: #9e9e9e;
+}
+
+.erreur-register {
+    color: darkred;
+    font-style: italic;
 }

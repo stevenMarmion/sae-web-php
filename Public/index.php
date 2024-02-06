@@ -1,6 +1,8 @@
 <?php
 
-header('Location: /../App/Views/Profil/UserProfil.php');
+header('Location: /../App/Views/Auth/UserLogin.php');
+//header('Location: /../App/Views/Admin/PanelAdmin.php');
+//header('Location: /../App/Views/Home/accueil.php');
 exit();
 
 ?>

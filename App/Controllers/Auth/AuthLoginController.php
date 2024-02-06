@@ -1,10 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controllers;
 
 require_once __DIR__ . '/../../Autoloader/autoloader.php';
-require_once __DIR__ .'/../../../Database/DatabaseConnection/ConnexionBDD.php';
-require_once __DIR__ .'/../../Models/EntityOperations/CrudUser.php';
 
 use \App\Autoloader\Autoloader;
 use \Database\DatabaseConnection\ConnexionBDD;
@@ -14,12 +14,11 @@ Autoloader::register();
 
 $instance = new ConnexionBDD();
 
+session_start();
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['pseudo']) && isset($_POST['mdp'])) {
         authentifaction($instance);
-    } else {
-        header('Location: ' . __DIR__ . '/../Views/Auth/UserLogin.php?error=1');
-        exit();
     }
 }
 
@@ -28,16 +27,23 @@ function authentifaction($instance) {
     $mdp = $_POST['mdp'];
 
     $crudUser = new CrudUser($instance::obtenir_connexion());
-    $estAutentifie = $crudUser->isAuth($pseudo, $mdp);
+    $datas = $crudUser->obtenirUtilisateurParPseudo($pseudo);
 
-    if ($estAutentifie) {
-        echo "Connexion réussie ! Bienvenue, $pseudo.";
-        //header('Location: ' . __DIR__ . '/../Views/Home/home.php'); // redirection vers le home
+    if ($datas == false) { // cela signifie que nous trouvons personne avec le pseudo actuel
+        header('Location: /App/Views/Auth/UserLogin.php?error=No-account');
         exit();
-    } else {
-        echo "Identifiants incorrects. Veuillez réessayer.";
-        //header('Location: ' . __DIR__ . '/../Views/Auth/UserRegister.php?error=1'); // indique l'utilisateur n'existe pas
-        exit();
+    }
+    else {
+        if ($crudUser->isAuth($pseudo, $mdp)) { // on vérifie que le pseudo colle au mot de passe
+            $_SESSION["id"] = $datas["idU"];
+            $_SESSION["pseudo"] = $datas["pseudo"];
+            header('Location: /App/Views/Home/Accueil.php');
+            exit();
+        } else { // la personne s'est trompée de mot de passe
+            echo "Identifiants incorrects. Veuillez réessayer.";
+            header('Location: /App/Views/Auth/UserLogin.php?error=BadPassword');
+            exit();
+        }   
     }
 }
 

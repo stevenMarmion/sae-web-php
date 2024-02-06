@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models\EntityOperations;
 
 require_once __DIR__ . '/../../Autoloader/autoloader.php';
@@ -58,6 +60,31 @@ class CrudNote
             $query = "DELETE FROM NOTE WHERE idAl = ? AND idU = ?";
             $stmt = $this->db->prepare($query);
             $stmt->execute([$idAlbum, $idUser]);
+            return true;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    public function supprimerToutesNotesFromIdU(int $idUser)
+    {
+        try {
+            $query = "DELETE FROM NOTE WHERE idU = ?";
+            $stmt = $this->db->prepare($query);
+            $stmt->execute([$idUser]);
+            return true;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+
+    public function supprimerToutesNotesFromIdAlbum(int $idAlbum)
+    {
+        try {
+            $query = "DELETE FROM NOTE WHERE idAl = ?";
+            $stmt = $this->db->prepare($query);
+            $stmt->execute([$idAlbum]);
             return true;
         } catch (PDOException $e) {
             return false;

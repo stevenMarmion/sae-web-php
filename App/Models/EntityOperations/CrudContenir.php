@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models\EntityOperations;
 
 require_once __DIR__ . '/../../Autoloader/autoloader.php';
@@ -57,6 +59,18 @@ class CrudContenir
             $query = "DELETE FROM CONTENIR WHERE idPlaylist = ? AND idAl = ?";
             $stmt = $this->db->prepare($query);
             $stmt->execute([$idPlaylist, $idAlbum]);
+            return true;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    public function supprimerAllAlbum(int $idAlbum)
+    {
+        try {
+            $query = "DELETE FROM CONTENIR WHERE idAl = ?";
+            $stmt = $this->db->prepare($query);
+            $stmt->execute([$idAlbum]);
             return true;
         } catch (PDOException $e) {
             return false;

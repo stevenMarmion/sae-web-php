@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models\EntityOperations;
 
 require_once __DIR__ . '/../../Autoloader/autoloader.php';
@@ -20,8 +22,7 @@ class CrudPlaylist
      *
      * @param PDO $db La connexion à la base de données.
      */
-    public function __construct(PDO $db)
-    {
+    public function __construct(PDO $db){
         $this->db = $db;
     }
 
@@ -56,6 +57,18 @@ class CrudPlaylist
             $query = "DELETE FROM PLAYLIST WHERE idPlaylist = ?";
             $stmt = $this->db->prepare($query);
             $stmt->execute([$playlistId]);
+            return true;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    public function supprimerPlaylistByIdU(int $idU)
+    {
+        try {
+            $query = "DELETE FROM PLAYLIST WHERE idU = ?";
+            $stmt = $this->db->prepare($query);
+            $stmt->execute([$idU]);
             return true;
         } catch (PDOException $e) {
             return false;
