@@ -57,7 +57,7 @@ foreach ($listeAlbum as $album) {
     <div class="nav">
         <a href="#">Mes playlists</a>
         <a href="#">Recherche utilisateur</a>
-        <a href="#">Profil</a>
+        <a href="/App/Views/Profil/UserProfil.php">Profil</a>
     </div>
     <p class="message-user-accueil">Bonjour <strong><?= $_SESSION["pseudo"] ?>
         </strong>, nous espérons que tout va bien aujourd'hui...
