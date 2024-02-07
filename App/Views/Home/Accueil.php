@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace App\Views\Home;
+
 require_once __DIR__ . '/../../Autoloader/autoloader.php';
 
 use \App\Autoloader\Autoloader;
@@ -54,11 +56,9 @@ foreach ($listeAlbum as $album) {
     <?php 
         include __DIR__ . '/../Layout/Auth/NavBar.php';
     ?>
-    <div class="nav">
-        <a href="#">Mes playlists</a>
-        <a href="#">Recherche utilisateur</a>
-        <a href="#">Profil</a>
-    </div>
+    <?php
+        include __DIR__ . '/../Layout/Home/NavGenerique.php';
+    ?>
     <p class="message-user-accueil">Bonjour <strong><?= $_SESSION["pseudo"] ?>
         </strong>, nous espérons que tout va bien aujourd'hui...
     </p>
