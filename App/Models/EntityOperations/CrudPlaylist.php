@@ -135,6 +135,26 @@ class CrudPlaylist
         $stmt->execute([$idAlbum,$idU]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function PlaylistFavoris(int $idU)
+    {
+        $query = "SELECT * FROM PLAYLIST WHERE idCreateur = ? and nomPlaylist = 'Aimer'";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute([$idU]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function supprimerAlbumPlaylist(int $idPlaylist, int $idAlbum)
+    {
+        try {
+            $query = "DELETE FROM CONTENIR WHERE idPlaylist = ? and idAl = ?";
+            $stmt = $this->db->prepare($query);
+            $stmt->execute([$idPlaylist, $idAlbum]);
+            return true;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
 }
 
 ?>

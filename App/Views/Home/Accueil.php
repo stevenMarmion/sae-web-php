@@ -46,6 +46,9 @@ var_dump($_SESSION);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/Public/Css/Acceuil/like.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="/Public/JS/like.js"></script>
+    <script src="/Public/JS/verifLike.js"></script>
     <title>acceuil</title>
 </head>
 <body>
@@ -69,7 +72,7 @@ var_dump($_SESSION);
         
         <div id="main-content">
   <div>
-    <input type="checkbox" id="checkbox" onclick="header('Location: /App/Views/playlist/Playlists.php')"/>
+    <input type="checkbox" id="checkbox" name="checkbox<?=$album->getId()?>" onclick="like(<?=$album->getId()?>)">
     <label for="checkbox">
       <svg id="heart-svg" viewBox="467 392 58 57" xmlns="http://www.w3.org/2000/svg">
         <g id="Group" fill="none" fill-rule="evenodd" transform="translate(467 392)">
@@ -113,8 +116,9 @@ var_dump($_SESSION);
         </g>
       </svg>
     </label>
-  </div>
-</div>
+    </div>
+    </div>
+    <script>estLike(<?=$album->getId()?>)</script>
         
         <?php
         if($album->getCompositeur()["nomA"]==$album->getInterprete()["nomA"]){
