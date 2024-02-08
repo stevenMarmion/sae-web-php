@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace App\Views\Admin\Details\Add;
+
 require_once __DIR__ . '/../../../../Autoloader/autoloader.php';
 
 use \App\Autoloader\Autoloader;

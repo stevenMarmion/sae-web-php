@@ -90,13 +90,13 @@ class CrudEtre {
      * Récupère tous les genres associés à une musique en fonction de son ID.
      *
      * @param int $idMusique L'ID de la musique.
-     * @return array Un tableau contenant les genres associés à la musique.
+     * @return array|false Un tableau contenant les genres associés à la musique.
      */
     public function obtenirGenresParMusique(int $idMusique) {
         $query = "SELECT * FROM ETRE WHERE idAl = ?";
         $stmt = $this->db->prepare($query);
         $stmt->execute([$idMusique]);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC) ?: false;
     }
 
     /**

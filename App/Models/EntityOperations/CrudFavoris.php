@@ -97,6 +97,13 @@ class CrudFavoris {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function obtenirFavorisParAlbum(int $idAlbum) {
+        $query = "SELECT * FROM FAVORIS WHERE idAl = ?";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute([$idAlbum]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC) ?: false;
+    }
+
     /**
      * Vérifie si une musique est déjà dans les favoris d'un utilisateur.
      *

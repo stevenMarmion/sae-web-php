@@ -5,26 +5,6 @@ body {
     margin: 0;
 }
 
-.nav {
-    background-color: #282828;
-    padding: 10px;
-    text-align: center;
-}
-
-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #282828;
-    padding: 10px;
-}
-
-.nav a {
-    color: #fff;
-    text-decoration: none;
-    margin: 0 10px;
-}
-
 h1 {
     text-align: center;
     color: #1DB954;

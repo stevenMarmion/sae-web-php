@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Views\Admin\Details;
+namespace App\Views\Admin\Details\Update;
 
 require_once __DIR__ . '/../../../../Autoloader/autoloader.php';
 

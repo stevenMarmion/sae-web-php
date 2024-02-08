@@ -1,5 +1,6 @@
 <?php
 
+
 $errorDetected = null;
 
 if (isset($_GET['error'])) {
