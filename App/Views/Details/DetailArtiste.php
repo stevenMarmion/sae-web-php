@@ -152,7 +152,7 @@ function ajouteGenre($allGenresObject, $genreObject) {
     <h2>Nombre de like comptabilisés</h2>
     <div class="nombre-like">
         <p>
-            Sur CampusGroove, <?= $artiste->getNomArtiste() ?> à comptabilisé(e) <strong><?= $nbLikeComptabilises ?></strong> like !
+            Sur CampusGroove, <?= $artiste->getNomArtiste() ?> à comptabilisé <strong><?= $nbLikeComptabilises ?></strong> like !
         </p>
     </div>
 

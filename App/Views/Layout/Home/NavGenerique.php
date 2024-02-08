@@ -15,6 +15,7 @@
         <a href="#">Mes playlists</a>
         <a href="#">Recherche utilisateur</a>
         <a href="#">Profil</a>
+        <a href="/App/Views/Auth/UserLogin.php">Se déconnecter</a>
     </div>
 </body>
 </html>
