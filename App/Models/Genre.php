@@ -58,7 +58,7 @@ class Genre {
      */
     public function equals(Genre $other)
     {
-        return $this->idG === $other->idG;
+        return $this->idG == $other->idG && $this->nomG == $other->nomG;
     }
 
 }
