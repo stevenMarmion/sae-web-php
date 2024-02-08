@@ -102,7 +102,7 @@ foreach ($listeAlbum as $album) {
                     <?php
                 }
                 ?>
-                        <a href='/App/Views/Details/DetailAlbum.php?id= <?= $album->getId() ?>'>
+                        <a href='/App/Views/Details/DetailAlbum.php?id=<?= $album->getId() ?>'>
                             <button>voir plus</button>
                         </a>
                     </li>

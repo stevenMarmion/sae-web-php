@@ -10,6 +10,7 @@ use App\Autoloader\Autoloader;
 use App\Models\EntityOperations\CrudAlbum;
 use App\Models\EntityOperations\CrudUser;
 use App\Models\EntityOperations\CrudArtiste;
+use App\Models\EntityOperations\CrudNote;
 use Database\DatabaseConnection\ConnexionBDD;
 use App\Views\Base\head;
 use App\Views\Base\footer;
@@ -20,12 +21,14 @@ Autoloader::register();
 session_start();
 
 if (isset($_GET["id"]) && isset($_SESSION["id"])) {
-    $idUser = $_SESSION["id"];
-    $idAlbum = $_GET["id"];
+    $idUser = intval($_SESSION["id"]);
+    $idAlbum = intval($_GET["id"]);
+
     $instance = new ConnexionBDD();
     $crudAlbum = new CrudAlbum($instance::obtenir_connexion());
-    $crudUser = new CrudUser($instance::obtenir_connexion());
     $crudArtiste = new CrudArtiste($instance::obtenir_connexion());
+    $crudNote = new CrudNote($instance::obtenir_connexion());
+
     $album = $crudAlbum->obtenirAlbumParId(intval($idAlbum));
     $img = $album["img"] == "" ? "base.jpg" : $album["img"];
 
@@ -57,6 +60,23 @@ if (isset($_GET["id"]) && isset($_SESSION["id"])) {
 
     $compositeur = $crudArtiste->obtenirArtisteParId($crudAlbum->obtenirCompositeurId(intval($idAlbum))["idA"]);
     $interprete = $crudArtiste->obtenirArtisteParId($crudAlbum->obtenirInterpreteId(intval($idAlbum))["idA"]);
+
+    $estNote = $crudNote->obtenirNoteUtilisateurPourAlbum($idAlbum, $idUser);
+    if (is_array($estNote)) {
+         $currentNote = intval($estNote["note"]);
+    }
+    else {
+        $currentNote = 0;
+    }
+
+    $avgNotation = 0;
+    $allNotationsOnAlbum = $crudNote->obtenirToutesNotesAlbum($idAlbum);
+    if (is_array($allNotationsOnAlbum)) {
+        foreach ($allNotationsOnAlbum as $noteGiven) {
+            $avgNotation += intval($noteGiven["note"]);
+        }
+        $avgNotation /= sizeof($allNotationsOnAlbum);
+    }
 }
 
 ?>
@@ -69,12 +89,14 @@ if (isset($_GET["id"]) && isset($_SESSION["id"])) {
     <title>Details - Albums</title>
 </head>
 <body>
-    <?php 
-        include __DIR__ . '/../Layout/Auth/NavBar.php';
-    ?>
-    <?php
-        include __DIR__ . '/../Layout/Home/NavGenerique.php';
-    ?>
+    <header>
+        <?php 
+            include __DIR__ . '/../Layout/Auth/NavBar.php';
+        ?>
+        <?php
+            include __DIR__ . '/../Layout/Home/NavGenerique.php';
+        ?>
+    </header>
     <?php if (isset($_GET['id']) && $_GET['id']) : ?>
         <h1>
             <?=$album["titre"]?>
@@ -92,31 +114,41 @@ if (isset($_GET["id"]) && isset($_SESSION["id"])) {
         <p>
             Genre(s) : <?= $genres ?>
         </p>
-        <form action="/App/Controllers/Admin/AdminUpdateController.php?update=UTILISATEUR" method="post">
-            <input type="hidden" name="user_id" value="<?= $currentUser->getId() ?>">
-            <input type="hidden" name="mdp" value="<?= $currentUser->getMdp() ?>">
 
-            <div class="form-group">
-                <label for="note">Notation :</label>
-                <input type="text" id="note" name="note" value="<?= $currentUser->getPseudo() ?>" required>
-            </div>
+        <h2>
+            Notes
+        </h2>
+        <section class="notation-details">
+            <h3>
+                Note que vous donnez à : <strong><?= $album["titre"] ?></strong>
+            </h3>
+            <section class="action-noter">
+                <form action="/App/Controllers/Details/UserNoteAlbumController.php" method="post">
+                    <input type="hidden" name="album_id" value="<?= $idAlbum ?>">
 
-            <div class="rating">
-                <input type="radio" id="star5" name="rating" value="5">
-                <label for="star5">5 étoiles</label>
-                <input type="radio" id="star4" name="rating" value="4">
-                <label for="star4">4 étoiles</label>
-                <input type="radio" id="star3" name="rating" value="3">
-                <label for="star3">3 étoiles</label>
-                <input type="radio" id="star2" name="rating" value="2">
-                <label for="star2">2 étoiles</label>
-                <input type="radio" id="star1" name="rating" value="1">
-                <label for="star1">1 étoile</label>
-            </div>
+                    <div class="notation-album">
+                        <?php for ($i = 0 ; $i < $currentNote; ++$i) : ?>
+                            <button type="submit" name="rating" value="<?= $i+1 ?>">
+                                <img src="/Public/Icons/star_yellow.png" alt="star"/>
+                            </button>
+                        <?php endfor; ?>
+                        <?php for ($i = $currentNote ; $i < 5; ++$i) : ?>
+                            <button type="submit" name="rating" value="<?= $i+1 ?>">
+                                <img src="/Public/Icons/star_white.png" alt="star"/>
+                            </button>
+                        <?php endfor; ?>
+                    </div>
+                </form>
+            </section>
 
+            <h3>
+                Notation moyenne donnée par la communité : <strong><?= $album["titre"] ?></strong>
+            </h3>
+            <section class="avg-notation">
+                <p><?= $avgNotation ?> / 5</p>
+            </section>
+        </section>
 
-            <input type="submit" value="Mettre à jour">
-        </form>
     <?php endif; ?>
 </body>
 </html>
