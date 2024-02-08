@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\ModelsTest;
+namespace Test\ModelsTest;
 
 require_once __DIR__ . "/../../App/Autoloader/autoloader.php";
 
