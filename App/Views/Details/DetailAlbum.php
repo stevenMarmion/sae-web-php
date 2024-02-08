@@ -8,6 +8,7 @@ require_once __DIR__ . '/../../Autoloader/autoloader.php';
 
 use App\Autoloader\Autoloader;
 use App\Models\EntityOperations\CrudAlbum;
+use App\Models\EntityOperations\CrudUser;
 use App\Models\EntityOperations\CrudArtiste;
 use Database\DatabaseConnection\ConnexionBDD;
 use App\Views\Base\head;
@@ -18,15 +19,17 @@ Autoloader::register();
 
 session_start();
 
-if (isset($_GET["id"])) {
+if (isset($_GET["id"]) && isset($_SESSION["id"])) {
+    $idUser = $_SESSION["id"];
     $idAlbum = $_GET["id"];
     $instance = new ConnexionBDD();
     $crudAlbum = new CrudAlbum($instance::obtenir_connexion());
+    $crudUser = new CrudUser($instance::obtenir_connexion());
     $crudArtiste = new CrudArtiste($instance::obtenir_connexion());
     $album = $crudAlbum->obtenirAlbumParId(intval($idAlbum));
     $img = $album["img"] == "" ? "base.jpg" : $album["img"];
 
-    if(file_exists("../../../DataRessources/images/".$img) && (strstr($img,"%")===false)) {
+    if (file_exists("../../../DataRessources/images/".$img) && (strstr($img,"%")===false)) {
         $img = $album["img"] == "" ? "base.jpg" : $album["img"];
     }
     else {
@@ -89,6 +92,31 @@ if (isset($_GET["id"])) {
         <p>
             Genre(s) : <?= $genres ?>
         </p>
+        <form action="/App/Controllers/Admin/AdminUpdateController.php?update=UTILISATEUR" method="post">
+            <input type="hidden" name="user_id" value="<?= $currentUser->getId() ?>">
+            <input type="hidden" name="mdp" value="<?= $currentUser->getMdp() ?>">
+
+            <div class="form-group">
+                <label for="note">Notation :</label>
+                <input type="text" id="note" name="note" value="<?= $currentUser->getPseudo() ?>" required>
+            </div>
+
+            <div class="rating">
+                <input type="radio" id="star5" name="rating" value="5">
+                <label for="star5">5 étoiles</label>
+                <input type="radio" id="star4" name="rating" value="4">
+                <label for="star4">4 étoiles</label>
+                <input type="radio" id="star3" name="rating" value="3">
+                <label for="star3">3 étoiles</label>
+                <input type="radio" id="star2" name="rating" value="2">
+                <label for="star2">2 étoiles</label>
+                <input type="radio" id="star1" name="rating" value="1">
+                <label for="star1">1 étoile</label>
+            </div>
+
+
+            <input type="submit" value="Mettre à jour">
+        </form>
     <?php endif; ?>
 </body>
 </html>
