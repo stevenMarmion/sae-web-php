@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['idAlbum'])) {
         estLike();
     } else {
-        exit();
+        echo "erreur";
     }
 }
 
@@ -24,6 +24,6 @@ function estLike() {
     $instance = new ConnexionBDD();
     $crudAlbum = new CrudAlbum($instance::obtenir_connexion());
     $idAlbum = $_POST['idAlbum'];
-    return $crudAlbum->estLike($_SESSION["idU"], $idAlbum);
+    echo $crudAlbum->estLike($_SESSION["idU"], $idAlbum);
 }
 ?>

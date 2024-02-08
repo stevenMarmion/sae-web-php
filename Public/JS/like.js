@@ -1,7 +1,13 @@
 
 
 function like(idAlbum) {
-    if(document.getElementsByName('checkbox' + idAlbum)[0].checked == true){
+    console.log("test")
+    console.log(document.getElementsByName('like' + idAlbum)[0].getAttribute("activer")=="true")
+    console.log("test")
+
+    if(document.getElementsByName('like' + idAlbum)[0].getAttribute("activer")=="false"){
+        document.getElementsByName('like' + idAlbum)[0].setAttribute("activer","true")
+        document.getElementsByName('like' + idAlbum)[0].children[0].src="/DataRessources/like/coeur_remplie.jpg";
         $.ajax({
             url: '../../Controllers/Album/like.php',
             type: 'POST',
@@ -17,6 +23,8 @@ function like(idAlbum) {
         });
     }
     else{
+        document.getElementsByName('like' + idAlbum)[0].setAttribute("activer","false")
+        document.getElementsByName('like' + idAlbum)[0].children[0].src="/DataRessources/like/coeur_vide.jpg";
         $.ajax({
             url: '../../Controllers/Album/dislike.php',
             type: 'POST',
