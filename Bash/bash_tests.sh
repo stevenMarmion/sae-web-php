@@ -19,3 +19,13 @@ for file in *Test.php; do
     php "$file"
     echo "----------------------------------------"
 done
+
+# Se déplacer dans le répertoire contenant les tests du parser yml
+cd ../ParserTest
+
+# Boucler à travers tous les fichiers se terminant par "Test.php"
+for file in *Test.php; do
+    echo "Exécution de $file :"
+    php "$file"
+    echo "----------------------------------------"
+done

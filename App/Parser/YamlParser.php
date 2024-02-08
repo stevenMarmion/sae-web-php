@@ -8,7 +8,9 @@ require_once __DIR__ . '/../Autoloader/autoloader.php';
 require_once __DIR__. ' /../../Config/vendor/autoload.php';
 
 use App\Autoloader\Autoloader;
+use Exception;
 use Symfony\Component\Yaml\Yaml;
+use Throwable;
 
 Autoloader::register();
 
@@ -24,13 +26,12 @@ class YamlParser {
      * @return array Les données parsées du fichier YAML.
      */
     static function parser($file) {
-        // On vérifie si le fichier YAML existe
-        if (!file_exists(__DIR__ . '/../../DataRessources/' . $file)) {
-            die("Le fichier YAML spécifié n'existe pas.\n");
+        try {
+            $data = Yaml::parseFile(__DIR__ . '/../../DataRessources/' . $file);
+            return $data;
+        } catch (Throwable $th) {
+            throw new Exception("Le fichier YAML spécifié n'existe pas.\n");
         }
-        // On le charge
-        $data = Yaml::parseFile(__DIR__ . '/../../DataRessources/' . $file);
-        return $data;
     }
 }
 
