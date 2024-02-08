@@ -14,7 +14,7 @@
         </a>
         <a href="#">Mes playlists</a>
         <a href="#">Recherche utilisateur</a>
-        <a href="#">Profil</a>
+        <a href="/App/Views/Profil/UserProfil.php">Profil</a>
     </div>
 </body>
 </html>
