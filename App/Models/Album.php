@@ -27,9 +27,9 @@ class Album {
     private int $idAl;
 
     /**
-     * @var string L'identifiant de l'image associée à la musique.
+     * @var int L'identifiant de l'image associée à la musique.
      */
-    private string $img;
+    private int $img;
 
     /**
      * @var int L'année de sortie de la musique.

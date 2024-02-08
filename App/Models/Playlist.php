@@ -112,9 +112,9 @@ class Playlist
      */
     public function supprimerAlbum(int $idAlbum)
     {
-        foreach ($this->getAlbums() as $index => $album) {
+        foreach ($this->albums as $index => $album) {
             if ($album->getId() === $idAlbum) {
-                unset($this->getAlbums()[$index]);
+                unset($this->albums[$index]);
                 return true;
             }
         }
