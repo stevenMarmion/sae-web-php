@@ -39,7 +39,7 @@ class AlbumTest {
         $interprete = new Artiste(1, "Interprète");
         $genre = new Genre(1, "Genre");
 
-        $album = new Album(1, 1, 2023, "Titre", [$compositeur], [$interprete], [$genre]);
+        $album = new Album(1, "image.png", 2023, "Titre", [$compositeur], [$interprete], [$genre]);
 
         if ($album instanceof Album) {
             echo "<< [Test de construction : Success]\n";
@@ -56,10 +56,10 @@ class AlbumTest {
         $interprete = new Artiste(1, "Interprète");
         $genre = new Genre(1, "Genre");
 
-        $album = new Album(1, 1, 2023, "Titre", [$compositeur], [$interprete], [$genre]);
+        $album = new Album(1, "image.png", 2023, "Titre", [$compositeur], [$interprete], [$genre]);
 
         if ($album->getId() === 1 &&
-            $album->getImg() === 1 &&
+            $album->getImg() === "image.png" &&
             $album->getDateSortie() == 2023 &&
             $album->getTitre() === "Titre" &&
             $album->getCompositeurs() === [$compositeur] &&
@@ -75,13 +75,13 @@ class AlbumTest {
      * Teste les mutateurs de l'album.
      */
     public function testSetters() {
-        $album = new Album(1, 1, 2023, "Titre", [], [], []);
+        $album = new Album(1, "image.png", 2023, "Titre", [], [], []);
 
-        $album->setImg(2);
+        $album->setImg("image2.png");
         $album->setDateSortie(2002);
         $album->setTitre("Nouveau titre");
 
-        if ($album->getImg() === 2 &&
+        if ($album->getImg() === "image2.png" &&
             $album->getDateSortie() == 2002 &&
             $album->getTitre() === "Nouveau titre") {
             echo "<< [Test de mutateurs : Success]\n";
@@ -97,7 +97,7 @@ class AlbumTest {
         $compositeur1 = new Artiste(1, "Nom 1");
         $compositeur2 = new Artiste(1, "Nom 2");
 
-        $album = new Album(1, 1, 2023, "Titre", [], [], []);
+        $album = new Album(1, "image.png", 2023, "Titre", [], [], []);
 
         $album->ajouterCompositeur($compositeur1);
         $album->ajouterCompositeur($compositeur2);
@@ -116,7 +116,7 @@ class AlbumTest {
         $interprete1 = new Artiste(1, "Interprète 1");
         $interprete2 = new Artiste(1, "Interprète 2");
 
-        $album = new Album(1, 1, 2023, "Titre", [], [], []);
+        $album = new Album(1, "image.png", 2023, "Titre", [], [], []);
 
         $album->ajouterInterprete($interprete1);
         $album->ajouterInterprete($interprete2);
@@ -135,7 +135,7 @@ class AlbumTest {
         $genre1 = new Genre(1, "Genre 1");
         $genre2 = new Genre(2, "Genre 2");
 
-        $album = new Album(1, 1, 2023, "Titre", [], [], []);
+        $album = new Album(1, "image.png", 2023, "Titre", [], [], []);
 
         $album->ajouterGenre($genre1);
         $album->ajouterGenre($genre2);
@@ -151,9 +151,9 @@ class AlbumTest {
      * Teste l'égalité entre deux albums.
      */
     public function testEquals() {
-        $album1 = new Album(1, 1, 2023, "Titre", [], [], []);
-        $album2 = new Album(1, 1, 2023, "Titre", [], [], []);
-        $album3 = new Album(2, 2, 2024, "Titre 2", [], [], []);
+        $album1 = new Album(1, "image.png", 2023, "Titre", [], [], []);
+        $album2 = new Album(1, "image.png", 2023, "Titre", [], [], []);
+        $album3 = new Album(2, "image2.png", 2024, "Titre 2", [], [], []);
 
         if ($album1->equals($album2) && !$album1->equals($album3)) {
             echo "<< [Test Equals: Success]\n";

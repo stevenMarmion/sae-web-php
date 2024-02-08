@@ -68,7 +68,7 @@ class UserTest {
 
         $user->setPseudo("nouveau_pseudo");
         $user->setMail("nouveau@mail.com");
-        $user->setFavoris([new Album(1, 1, 2023, "Titre", [], [], [])]);
+        $user->setFavoris([new Album(1, "image.png", 2023, "Titre", [], [], [])]);
 
         if ($user->getPseudo() === "nouveau_pseudo" &&
             $user->getMail() === "nouveau@mail.com" &&
@@ -83,7 +83,7 @@ class UserTest {
      * Teste l'ajout d'un favori à l'utilisateur.
      */
     public function testAjouterFavori() {
-        $album = new Album(1, 1, 2023, "Titre", [], [], []);
+        $album = new Album(1, "image.png", 2023, "Titre", [], [], []);
         $user = new User(1, "utilisateur", "motdepasse", "utilisateur@example.com", false, []);
 
         $user->ajouterFavori($album);
@@ -99,7 +99,7 @@ class UserTest {
      * Teste la suppression d'un favori de l'utilisateur.
      */
     public function testSupprimerFavori() {
-        $album = new Album(1, 1, 2023, "Titre", [], [], []);
+        $album = new Album(1, "image.png", 2023, "Titre", [], [], []);
         $user = new User(1, "utilisateur", "motdepasse", "utilisateur@example.com", false, [$album]);
 
         $user->supprimeFavori(1);

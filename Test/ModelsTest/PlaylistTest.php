@@ -61,8 +61,8 @@ class PlaylistTest {
      * Teste l'ajout d'un album à la playlist.
      */
     public function testAjouterAlbum() {
-        $album1 = new Album(1, 1, 2023, "Titre 1", [], [], []);
-        $album2 = new Album(2, 2, 2024, "Titre 2", [], [], []);
+        $album1 = new Album(1, "image.png", 2023, "Titre 1", [], [], []);
+        $album2 = new Album(2, "image2.png", 2024, "Titre 2", [], [], []);
 
         $playlist = new Playlist(1, 2, "Ma Playlist");
         $playlist->ajouterAlbum($album1);
@@ -81,8 +81,8 @@ class PlaylistTest {
      * Teste la suppression d'un album de la playlist.
      */
     public function testSupprimerAlbum() {
-        $album1 = new Album(1, 1, 2023, "Titre 1", [], [], []);
-        $album2 = new Album(2, 2, 2024, "Titre 2", [], [], []);
+        $album1 = new Album(1, "image.png", 2023, "Titre 1", [], [], []);
+        $album2 = new Album(2, "image2.png", 2024, "Titre 2", [], [], []);
 
         $playlist = new Playlist(1, 2, "Ma Playlist");
         $playlist->ajouterAlbum($album1);
