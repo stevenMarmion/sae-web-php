@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 require_once __DIR__ . '/../Autoloader/autoloader.php';
@@ -110,9 +112,9 @@ class Playlist
      */
     public function supprimerAlbum(int $idAlbum)
     {
-        foreach ($this->getAlbums() as $index => $album) {
+        foreach ($this->albums as $index => $album) {
             if ($album->getId() === $idAlbum) {
-                unset($this->getAlbums()[$index]);
+                unset($this->albums[$index]);
                 return true;
             }
         }

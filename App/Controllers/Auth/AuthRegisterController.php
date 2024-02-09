@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
+namespace App\Controllers\Auth;
+
 require_once __DIR__ . '/../../Autoloader/autoloader.php';
-require_once __DIR__ .'/../../../Database/DatabaseConnection/ConnexionBDD.php';
-require_once __DIR__ .'/../../Models/EntityOperations/CrudUser.php';
-require_once __DIR__ .'/../../Models/User.php';
 
 use \App\Autoloader\Autoloader;
 use \Database\DatabaseConnection\ConnexionBDD;
@@ -13,6 +14,8 @@ use \App\Models\User;
 Autoloader::register();
 
 $instance = new ConnexionBDD();
+
+session_start();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['pseudo']) && isset($_POST['email']) &&
@@ -27,8 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             // Vérifier si les mots de passe correspondent
             if ($mdp !== $confirmer_mdp) {
-                echo "Mot de passe différent";
-                //header('Location: ' . __DIR__ . '/../Views/Auth/UserRegister.php?error=2');  // Mot de passe et confirmation ne correspondent pas
+                header('Location: /App/Views/Auth/UserRegister.php?error=BadPassword'); // Erreur lors de l'inscription
                 exit();
             }
 
@@ -36,22 +38,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $crudUser = new CrudUser($instance::obtenir_connexion());
             $user = new User(0, $pseudo, $mdp, $email, false, []); // nous mettons 0 car l'insertion est en AUTO INCREMENT dans tout les cas
             $inscriptionReussie = $crudUser->ajouterUtilisateurFromObject($user);
-            echo $inscriptionReussie;
 
             if ($inscriptionReussie) {
-                if (!isset($_SESSION)){
-                    session_start();
-                }
-                else {
-                    session_destroy();
-                    session_start();
-                }
-                $_SESSION['idU'] = $crudUser->obtenirUtilisateurParPseudo($pseudo)["idU"];
-                header('Location: /App/Views/Home/accueil.php');
+                $datas = $crudUser->obtenirUtilisateurParPseudo($user->getPseudo());
+                $_SESSION["id"] = $datas["idU"];
+                $_SESSION["pseudo"] = $datas["pseudo"];
+                header('Location: /App/Views/Home/Accueil.php');
                 exit();
             } else {
-                echo "Identifiants incorrects. Veuillez réessayer.";
-                //header('Location: ' . __DIR__ . '/../Views/Auth/UserRegister.php?error=3'); // Erreur lors de l'inscription
+                header('Location: /App/Views/Auth/UserRegister.php?error=AlreadyExists'); // Erreur lors de l'inscription
                 exit();
             }
     } else {

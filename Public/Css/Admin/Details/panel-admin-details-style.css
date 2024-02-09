@@ -1,0 +1,101 @@
+body {
+    background-color: #e8e8ea;
+    color: #fff;
+    font-family: 'Arial', sans-serif;
+    align-items: center;
+    justify-content: center;
+}
+
+h1 {
+    text-align: center;
+    color: #282828;
+}
+
+table {
+    background-color: #282828;
+    border-collapse: collapse;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto 20vh auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+th, td {
+    border: 1px solid #282828;
+    padding: 12px;
+    text-align: left;
+    color: black;
+}
+
+th {
+    background-color: #1DB954;
+    color: #121212;
+}
+
+td {
+    background-color: #f9f9fb;
+}
+
+.custom-update-submit-button {
+    background-image: url('/Public/Icons/pen.png');
+    background-size: cover; 
+    width: 18px; 
+    height: 18px;
+    background-size: contain;
+    background-repeat: no-repeat; 
+    border: none; 
+    cursor: pointer; 
+    text-indent: -9999px;
+    background-color: transparent;
+}
+
+.custom-delete-submit-button {
+    background-image: url('/Public/Icons/trash.png');
+    background-size: cover; 
+    width: 18px; 
+    height: 18px;
+    background-size: contain;
+    background-repeat: no-repeat; 
+    border: none; 
+    cursor: pointer; 
+    text-indent: -9999px;
+    background-color: transparent;
+}
+
+.form-inline {
+    display: flex;
+}
+
+.form-inline form {
+    margin-right: 10px;
+}
+
+.custom-add-button {
+    margin-left: 20%;
+    margin-top: 2em;
+    background-color: transparent;
+    border: none;
+}
+
+.add-paragraph {
+    display: flex;
+    align-items: center;
+    background-color: #1DB954;
+    color: #fff;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 15px;
+    transition: background-color 0.3s ease;
+}
+
+.custom-add-button .add-paragraph:hover {
+    background-color: #16843a;
+}
+
+.icon-ajouter {
+    width: 20px; 
+    height: 20px;
+    margin-left: 1em;
+}

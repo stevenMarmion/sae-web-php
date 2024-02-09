@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 require_once __DIR__ . '/../Autoloader/autoloader.php';
@@ -30,7 +32,7 @@ class Album {
     private string $img;
 
     /**
-     * @var DateTime La date de sortie de la musique.
+     * @var int L'année de sortie de la musique.
      */
     private int $dateDeSortie;
 
@@ -57,9 +59,9 @@ class Album {
     /**
      * Constructeur de la classe Musique.
      *
-     * @param int      $idAl           L'identifiant unique de la musique.
-     * @param int      $img         L'identifiant de l'image associée à la musique.
-     * @param int $dateDeSortie  La date de sortie de la musique.
+     * @param int      $idAl          L'identifiant unique de la musique.
+     * @param string   $img           L'identifiant de l'image associée à la musique.
+     * @param int      $dateDeSortie  La date de sortie de la musique.
      * @param string   $title         Le titre de la musique.
      * @param array    $compositeur   La liste de compositeurs de la musique.
      * @param array    $interprete    La liste d'interprète de la musique.
@@ -87,7 +89,7 @@ class Album {
     /**
      * Obtenir l'identifiant de l'image associée à la musique.
      *
-     * @return int L'identifiant de l'image.
+     * @return string L'identifiant de l'image.
      */
     public function getImg() {
         return $this->img;
@@ -116,7 +118,7 @@ class Album {
      *
      * @return array La liste des compositeurs.
      */
-    public function getCompositeur() {
+    public function getCompositeurs() {
         return $this->compositeur;
     }
 
@@ -125,7 +127,7 @@ class Album {
      *
      * @return array La liste d'interprètes.
      */
-    public function getInterprete() {
+    public function getInterpretes() {
         return $this->interprete;
     }
 
@@ -134,16 +136,16 @@ class Album {
      *
      * @return array La liste de genre de l'album.
      */
-    public function getGenre() {
+    public function getGenres() {
         return $this->genre;
     }
 
     /**
      * Définir l'identifiant de l'image associée à la musique.
      *
-     * @param int $img Le nouvel identifiant de l'image.
+     * @param string $img Le nouvel identifiant de l'image.
      */
-    public function setImg(int $img) {
+    public function setImg(string $img) {
         $this->img = $img;
     }
 
@@ -166,30 +168,30 @@ class Album {
     }
 
     /**
-     * Définir l'artiste compositeur de la musique.
+     * Ajoute  l'artiste compositeur de la musique.
      *
      * @param Artiste $newComp Le nouvel artiste compositeur.
      */
-    public function setCompositeur(Artiste $newComp) {
-        $this->compositeur = $newComp;
+    public function ajouterCompositeur(Artiste $newComp) {
+        $this->compositeur[] = $newComp;
     }
 
     /**
-     * Définir l'artiste interprète de la musique.
+     * Ajoute  l'artiste interprète de la musique.
      *
      * @param Artiste $newInt Le nouvel artiste interprète.
      */
-    public function setInterprete(Artiste $newInt) {
-        $this->interprete = $newInt;
+    public function ajouterInterprete(Artiste $newInt) {
+        $this->interprete[] = $newInt;
     }
 
     /**
-     * Définir le genre de la musique.
+     * Ajouter le genre de la musique.
      *
      * @param Genre $newGenre Le nouveau genre de la musique.
      */
-    public function setGenre(Genre $newGenre) {
-        $this->genre = $newGenre;
+    public function ajouterGenre(Genre $newGenre) {
+        $this->genre[] = $newGenre;
     }
 
     /**

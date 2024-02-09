@@ -1,9 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models\EntityOperations;
 
 require_once __DIR__ . '/../../Autoloader/autoloader.php';
 
+use \App\Models\EntityOperations\CrudComposer;
+use \App\Models\EntityOperations\CrudInterprete;
+use \App\Models\EntityOperations\CrudEtre;
+use \App\Models\EntityOperations\CrudContenir;
+use \App\Models\EntityOperations\CrudNote;
+use \App\Models\EntityOperations\CrudFavoris;
 use \App\Autoloader\Autoloader;
 use \App\Models\Album;
 use PDO;
@@ -50,9 +58,40 @@ class CrudAlbum {
      */
     public function ajouterAlbumFromObject(Album $albumData) {
         try {
-            $query = "INSERT INTO ALBUMS (img, dateDeSortie, titre) VALUES (?, ?, ?)";
+            $query = "SELECT * FROM ALBUMS WHERE id = ?";
             $stmt = $this->db->prepare($query);
-            $stmt->execute([$albumData->getImg(), $albumData->getDateSortie(), $albumData->getTitre()]);
+            $stmt->execute([$albumData->getId()]); 
+            $stmt->fetchAll(PDO::FETCH_ASSOC) ?: false;
+
+            if ($stmt != false) {
+                $crudComposer = new CrudComposer($this->db);
+                $crudInterpreter = new CrudInterprete($this->db);
+                $crudEtre = new CrudEtre($this->db);
+
+
+                $query = "INSERT INTO ALBUMS (id, img, dateDeSortie, titre) VALUES (?, ?, ?, ?)";
+                $stmt = $this->db->prepare($query);
+                $stmt->execute([$albumData->getId(), $albumData->getImg(), $albumData->getDateSortie(), $albumData->getTitre()]);
+
+                // Ajoute le(s) compositeur(s) de l'album
+                foreach ($albumData->getCompositeurs() as $compositeur) {
+                    $crudComposer->ajouterCompositeur($albumData->getId(), intval($compositeur));
+                }
+
+                // Ajoute les interprètes de l'album
+                foreach ($albumData->getInterpretes() as $interprete) {
+                    $crudInterpreter->ajouterInterprete($albumData->getId(), intval($interprete));
+                }
+
+                // Ajoute le(s) genre(s) de l'album
+                foreach ($albumData->getGenres() as $genre) {
+                    $crudEtre->ajouterRelation($albumData->getId(), intval($genre));
+                }
+            }
+            else {
+                return false;
+            }
+
             return true;
         } catch (PDOException $e) {
             return false;
@@ -67,6 +106,20 @@ class CrudAlbum {
      */
     public function supprimerAlbum(int $albumId) {
         try {
+            $crudComposer = new CrudComposer($this->db);
+            $crudInterpreter = new CrudInterprete($this->db);
+            $crudEtre = new CrudEtre($this->db);
+            $crudContenir = new CrudContenir($this->db);
+            $crudNote = new CrudNote($this->db);
+            $crudFavoris = new CrudFavoris($this->db);
+
+            $crudContenir->supprimerAllAlbum($albumId);
+            $crudNote->supprimerToutesNotesFromIdAlbum($albumId);
+            $crudFavoris->supprimerAlbumFromFavori($albumId);
+            $crudEtre->supprimerAllAlbum($albumId);
+            $crudInterpreter->supprimerAllAlbum($albumId);
+            $crudComposer->supprimerAllAlbum($albumId);
+
             $query = "DELETE FROM ALBUMS WHERE id = ?";
             $stmt = $this->db->prepare($query);
             $stmt->execute([$albumId]);
@@ -83,14 +136,34 @@ class CrudAlbum {
      * @param Album $newAlbumData Les nouvelles données de l'album.
      * @return bool True si la modification est réussie, False sinon.
      */
-    public function modifierAlbum(int $albumId, Album $newAlbumData) {
+    public function modifierAlbum(int $albumId, Album $newAlbumData, array $ancienComp, array $ancienInt, array $ancienGenres) {
         try {
+            $crudComposer = new CrudComposer($this->db);
+            $crudInterpreter = new CrudInterprete($this->db);
+            $crudEtre = new CrudEtre($this->db);
+
+            // Modifier les données de l'album
             $query = "UPDATE ALBUMS SET img = ?, dateDeSortie = ?, titre = ? WHERE id = ?";
             $stmt = $this->db->prepare($query);
             $stmt->execute([$newAlbumData->getImg(), 
                             $newAlbumData->getDateSortie(), 
                             $newAlbumData->getTitre(),
                             $albumId]);
+
+            // Modifier le(s) compositeur(s) de l'album
+            foreach ($ancienComp as $indexComp => $compositeur) {
+                $crudComposer->modifierCompositeur($albumId, $newAlbumData, $indexComp, intval($compositeur)); // compositeur = 3, indexComp = 1
+            }
+
+            // Modifier les interprètes de l'album
+            foreach ($ancienInt as $indexInt => $interprete) {
+                $crudInterpreter->modifierInterprete($albumId, $newAlbumData, $indexInt, intval($interprete));
+            }
+
+            // Modifier le(s) genre(s) de l'album
+            foreach ($ancienGenres as $indexGenre => $genre) {
+                $crudEtre->modifierRelation($albumId, $newAlbumData, $indexGenre, intval($genre));
+            }
             return true;
         } catch (PDOException $e) {
             return false;

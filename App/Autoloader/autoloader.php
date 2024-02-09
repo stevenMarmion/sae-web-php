@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Autoloader;
 
 /** 
@@ -8,20 +10,25 @@ namespace App\Autoloader;
 class Autoloader
 {
     /**
-     * Enregistre notre autoloader
+     * Enregistre l'autoloader pour charger automatiquement les classes.
+     * 
+     * @return void
      */
     public static function register()
     {
-        spl_autoload_register(function ($class) {
-            $file = str_replace('\\', DIRECTORY_SEPARATOR, $class).'.php';
-            if (file_exists($file)) {
-                require $file;
-                return true;
-            }
-            return false;
-        });
+        spl_autoload_register(array(__CLASS__, 'autoload'));
+    }
+
+    /**
+     * Fonction de chargement automatique des classes.
+     * 
+     * @param string $class Le nom de la classe à charger.
+     * @return void
+     */
+    static function autoload($class) {
+        $file = str_replace('\\', DIRECTORY_SEPARATOR, $class);
+        require __DIR__ . '/../../' . $file . '.php';
     }
 }
-Autoloader::register();
 
-
+?>

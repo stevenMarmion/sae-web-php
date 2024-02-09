@@ -1,10 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models\EntityOperations;
 
 require_once __DIR__ . '/../../Autoloader/autoloader.php';
 
 use \App\Autoloader\Autoloader;
+use \App\Models\EntityOperations\CrudFavoris;
+use \App\Models\EntityOperations\CrudPlaylist;
+use \App\Models\EntityOperations\CrudNote;
 use \App\Models\User;
 use PDO;
 use PDOException;
@@ -33,10 +38,20 @@ class CrudUser {
      */
     public function ajouterUtilisateurFromYml(array $userData) {
         try {
-            $query = "INSERT INTO UTILISATEUR (isAdmin, pseudo, mdp, adresseMail) VALUES (?, ?, ?, ?)";
+            $query = "SELECT * FROM UTILISATEUR WHERE pseudo = ?";
             $stmt = $this->db->prepare($query);
-            $stmt->execute([$userData['isAdmin'], $userData['pseudo'], $userData['mdp'], $userData['adresseMail']]);
-            return true;
+            $stmt->execute([$userData['pseudo']]); 
+            $stmt->fetchAll(PDO::FETCH_ASSOC) ?: false;
+
+            if ($stmt != false) {
+                $query = "INSERT INTO UTILISATEUR (isAdmin, pseudo, mdp, adresseMail) VALUES (?, ?, ?, ?)";
+                $stmt = $this->db->prepare($query);
+                $stmt->execute([$userData['isAdmin'], $userData['pseudo'], $userData['mdp'], $userData['adresseMail']]);
+                return true;
+            }
+            else {
+                return false;
+            }
         } catch (PDOException $e) {
             return false;
         }
@@ -50,13 +65,23 @@ class CrudUser {
      */
     public function ajouterUtilisateurFromObject(User $userData) {
         try {
-            $query = "INSERT INTO UTILISATEUR (isAdmin, pseudo, mdp, adresseMail) VALUES (?, ?, ?, ?)";
+            $query = "SELECT * FROM UTILISATEUR WHERE pseudo = ?";
             $stmt = $this->db->prepare($query);
-            $stmt->execute([0,
-                            $userData->getPseudo(), 
-                            $userData->getMdp(), 
-                            $userData->getMail()]);
-            return true;
+            $stmt->execute([$userData->getPseudo()]); 
+            $stmt->fetchAll(PDO::FETCH_ASSOC) ?: false;
+
+            if ($stmt != false) {
+                $query = "INSERT INTO UTILISATEUR (isAdmin, pseudo, mdp, adresseMail) VALUES (?, ?, ?, ?)";
+                $stmt = $this->db->prepare($query);
+                $stmt->execute([$userData->isAdmin() === true ? 1 : 0,
+                                $userData->getPseudo(), 
+                                $userData->getMdp(), 
+                                $userData->getMail()]);
+                return true;
+            }
+            else {
+                return false;
+            }
         } catch (PDOException $e) {
             return false;
         }
@@ -70,6 +95,14 @@ class CrudUser {
      */
     public function supprimerUtilisateur(int $userId) {
         try {
+            $crudFavoris = new CrudFavoris($this->db);
+            $crudNote = new CrudNote($this->db);
+            $crudPlaylist = new CrudPlaylist($this->db);
+
+            $crudFavoris->supprimerFavoriFromIdu($userId);
+            $crudNote->supprimerToutesNotesFromIdU($userId);
+            $crudPlaylist->supprimerPlaylistByIdU($userId);
+            
             $query = "DELETE FROM UTILISATEUR WHERE idU = ?";
             $stmt = $this->db->prepare($query);
             $stmt->execute([$userId]);
@@ -88,18 +121,28 @@ class CrudUser {
      */
     public function modifierUtilisateur(int $userId, User $newUserData) {
         try {
-            if ($newUserData->isAdmin()) {
-                $query = "UPDATE UTILISATEUR SET isAdmin = 1, pseudo = ?, mdp = ?, adresseMail = ? WHERE idU = ?";   
+            $query = "SELECT * FROM UTILISATEUR WHERE pseudo = ?";
+            $stmt = $this->db->prepare($query);
+            $stmt->execute([$newUserData->getPseudo()]); 
+            $stmt->fetchAll(PDO::FETCH_ASSOC) ?: false;
+
+            if ($stmt != false) {
+                if ($newUserData->isAdmin()) {
+                    $query = "UPDATE UTILISATEUR SET isAdmin = 1, pseudo = ?, mdp = ?, adresseMail = ? WHERE idU = ?";   
+                }
+                else {
+                    $query = "UPDATE UTILISATEUR SET isAdmin = 0, pseudo = ?, mdp = ?, adresseMail = ? WHERE idU = ?";
+                }
+                $stmt = $this->db->prepare($query);
+                $stmt->execute([$newUserData->getPseudo(),
+                                $newUserData->getMdp(),
+                                $newUserData->getMail(),
+                                $userId]);
+                return true;
             }
             else {
-                $query = "UPDATE UTILISATEUR SET isAdmin = 0, pseudo = ?, mdp = ?, adresseMail = ? WHERE idU = ?";
+                return false;
             }
-            $stmt = $this->db->prepare($query);
-            $stmt->execute([$newUserData->getPseudo(), 
-                            $newUserData->getMdp(), 
-                            $newUserData->getMail(), 
-                            $userId]);
-            return true;
         } catch (PDOException $e) {
             return false;
         }
@@ -129,6 +172,13 @@ class CrudUser {
         return $stmt->fetch(PDO::FETCH_ASSOC) ?: false;
     }
 
+    public function obtenirUtilisateurParPseudo(string $pseudo) {
+        $query = "SELECT * FROM UTILISATEUR WHERE pseudo = ?";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute([$pseudo]);
+        return $stmt->fetch(PDO::FETCH_ASSOC) ?: false;
+    }
+    
     /**
      * Récupère un utilisateur en fonction de son pseudo.
      *

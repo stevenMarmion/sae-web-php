@@ -1,3 +1,34 @@
+<?php
+
+session_start();
+
+$errorDetected = null;
+
+if (isset($_GET['error'])) {
+    $errorDetected = true;
+    $error = $_GET['error'];
+    switch ($error) {
+        case 'AlreadyExists':
+            $alreadyExists = true;
+            $badPwd = false;
+            break;
+        
+        case 'BadPassword':
+            $badPwd = true;
+            $alreadyExists = false;
+            break;
+        default:
+            $badPwd = false;
+            $alreadyExists = false;
+            break;
+    }
+}
+else {
+    $errorDetected = false;
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,6 +38,9 @@
     <title>Formulaire d'Inscription</title>
 </head>
 <body>
+    <?php 
+        include __DIR__ . '/../Layout/Auth/NavBar.php';
+    ?>
 
     <h2>Inscription</h2>
 
@@ -27,9 +61,21 @@
         <input type="password" id="confirmer_mdp" name="confirmer_mdp" required>
         <br>
 
-        <input type="submit" value="S'Inscrire">
+        <input type="submit" value="S'inscrire">
 
-        <a id="login-link" href="/App/Views/Auth/UserLogin.php">Déjà inscrit ? Se connecter</a>
+        <p id="account"> Déjà inscrit ? 
+            <a id="login-link" href="/App/Views/Auth/UserLogin.php">Se connecter</a>
+        </p>
+        <?php if ($errorDetected) : ?>
+            <p class="erreur-register">
+                <?php if ($alreadyExists) : ?>
+                    Le pseudo de cet utilisateur existe déjà, veuillez en choisir un autre...
+                <?php endif; ?>
+                <?php if ($badPwd) : ?>
+                    Les deux mots de passe sont différents...
+                <?php endif; ?>
+            </p>
+        <?php endif; ?>
     </form>
 
 </body>

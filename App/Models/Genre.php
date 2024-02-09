@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 /**
@@ -56,7 +58,7 @@ class Genre {
      */
     public function equals(Genre $other)
     {
-        return $this->idG === $other->idG;
+        return $this->idG == $other->idG && $this->nomG == $other->nomG;
     }
 
 }

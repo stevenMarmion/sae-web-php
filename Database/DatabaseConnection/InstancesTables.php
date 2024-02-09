@@ -1,15 +1,17 @@
 <?php
 
+declare(strict_types=1);
 
 namespace Database\DatabaseConnection;
 
 require_once __DIR__ . '/../../App/Autoloader/autoloader.php';
 
-use \App\Autoloader\Autoloader;
-use \App\Parser\YamlParser;
 use Throwable;
 use PDO;
 use PDOException;
+use App\Autoloader\Autoloader;
+use App\Parser\YamlParser;
+use Database\DatabaseConnection\ConnexionBDD;
 
 Autoloader::register();
 
@@ -24,22 +26,30 @@ class InstancesTables {
 
     private static $db;
 
+    /**
+     * Constructeur de la classe InstancesTables.
+     *
+     * Initialise une instance de la classe InstancesTables en assignant une instance de PDO à la propriété statique $db.
+     *
+     * @param PDO $instance L'instance PDO à utiliser pour la connexion à la base de données.
+     */
     public function __construct(PDO $instance) { 
         self::$db = $instance;
     }
 
 
     /**
-     * Crée les tables nécessaires dans la base de données en exécutant le contenu d'un fichier SQL.
+     * Créer les tables nécessaires dans la base de données en exécutant le contenu d'un fichier SQL.
      *
      * @param PDO $db L'instance PDO à utiliser.
      */
     public function create_tables(PDO $db, $argv) {
         // Chemin vers le fichier SQL
-        $fichierSQL = __DIR__ . '/../DatabaseScripts/creation.sql';
+        $fichierSQLCreate = __DIR__ . '/../DatabaseScripts/creation.sql';
+        $fichierSQLInsertAdmin = __DIR__ . '/../DatabaseScripts/insertion.sql';
 
         try {
-            if (file_exists($fichierSQL)) {
+            if (file_exists($fichierSQLCreate)) {
 
                 $query = "SELECT COUNT(name) AS tableCount FROM sqlite_master WHERE type='table'";
                 $statement = $db->query($query);
@@ -49,9 +59,13 @@ class InstancesTables {
                     $this->init_DB_insertion($argv);
                 }
                 else {
-                    $sqlScript = file_get_contents($fichierSQL);
+                    $sqlScript = file_get_contents($fichierSQLCreate);
                     $db->exec($sqlScript);
                     echo "\n>> [Tables créées avec succès]\n";
+
+                    $sqlScript = file_get_contents($fichierSQLInsertAdmin);
+                    $db->exec($sqlScript);
+                    echo "\n>> [Insert admin intégrée avec succès]\n";
     
                     $this->init_DB_insertion($argv);
                 }
@@ -61,8 +75,21 @@ class InstancesTables {
         }
     }
 
+    /**
+     * Récupère les données YAML à partir des arguments de la ligne de commande.
+     *
+     * Cette fonction récupère le chemin vers le fichier YAML à partir des arguments de la ligne de commande passés en paramètre.
+     * Si le nombre d'arguments est inférieur à 2, la fonction affiche un message d'erreur et arrête l'exécution du script.
+     * Ensuite, elle charge le fichier YAML à partir du chemin spécifié en utilisant la méthode parser de la classe YamlParser.
+     * Si le chargement échoue (la méthode parser renvoie false), la fonction affiche un message d'erreur et arrête l'exécution du script.
+     *
+     * @param array $argv Les arguments de la ligne de commande.
+     * @return array|false Les données YAML chargées depuis le fichier, ou false en cas d'erreur.
+     */
     function recup_argv($argv) {
-        echo "\n>> [Instanciation de la BDD avec les paramètres d'exécution suivant...\n", print_r($argv), "]\n" ;
+        echo "\n>> [Instanciation de la BDD avec les paramètres d'exécution suivant...\n";
+        print_r($argv);
+        echo "]\n";
         if (count($argv) < 2) {
             die("Veuillez fournir le chemin vers le fichier YAML en argument !\n");
         }
@@ -75,6 +102,21 @@ class InstancesTables {
     }
 
 
+    /**
+     * Initialise l'insertion des données dans la base de données à partir des données YAML.
+     *
+     * Cette fonction récupère les données YAML à partir des arguments de la ligne de commande et les insère dans les tables correspondantes de la base de données.
+     * Pour chaque album dans les données YAML, cette fonction effectue les opérations suivantes :
+     *  - Insère l'album dans la table ALBUMS avec les valeurs de l'ID, de l'image, de la date de sortie et du titre.
+     *  - Insère l'artiste dans la table ARTISTES avec le nom de l'artiste.
+     *  - Récupère l'ID de l'artiste fraîchement inséré.
+     *  - Pour chaque genre de l'album, insère le genre dans la table GENRE et insère une relation entre l'album et le genre dans la table ETRE.
+     *  - Insère une relation entre l'album et l'artiste dans la table COMPOSER et une autre relation dans la table INTERPRETER.
+     * En cas d'échec lors de l'insertion dans une table, la fonction affiche un message indiquant qu'il n'y a pas eu d'insertion en raison d'une duplication dans cette table.
+     * Une fois toutes les opérations terminées, la fonction affiche un message indiquant que l'importation des données est terminée.
+     *
+     * @param array $argv Les arguments de la ligne de commande.
+     */
     function init_DB_insertion($argv) {
         $datas = $this->recup_argv($argv);
 
