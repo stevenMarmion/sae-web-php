@@ -155,9 +155,9 @@ class User {
      * @return bool Retourne true si l'élément a été supprimé avec succès, sinon false.
      */
     public function supprimeFavori(int $idFavori) {
-        foreach ($this->getFavoris() as $index => $favori) {
+        foreach ($this->favoris as $index => $favori) {
             if ($favori->getId() === $idFavori) {
-                unset($this->getFavoris()[$index]);
+                unset($this->favoris[$index]);
                 return true;
             }
         }
@@ -170,7 +170,7 @@ class User {
      * @param Album $favori L'objet Album à ajouter aux favoris.
      */
     public function ajouterFavori(Album $favori) {
-        array_push($favoris, $favori);
+        array_push($this->favoris, $favori);
     }
 
     /**

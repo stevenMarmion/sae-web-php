@@ -26,7 +26,7 @@ class Artiste {
      * @param int    $idA  L'identifiant unique de l'artiste musical.
      * @param string $nomA Le nom de l'artiste musical.
      */
-    public function __construct($idA, $nomA) {
+    public function __construct(int $idA, string $nomA) {
         $this->idA = $idA;
         $this->nomA = $nomA;
     }
@@ -36,7 +36,7 @@ class Artiste {
      *
      * @return int L'identifiant unique.
      */
-    public function getId() {
+    public function getId(): int {
         return $this->idA;
     }
 
@@ -45,8 +45,26 @@ class Artiste {
      *
      * @return string Le nom de l'artiste musical.
      */
-    public function getNomArtiste() {
+    public function getNomArtiste(): string {
         return $this->nomA;
+    }
+
+    /**
+     * Définir l'identifiant unique de l'artiste musical.
+     *
+     * @param int $idA L'identifiant unique à définir.
+     */
+    public function setId(int $idA): void {
+        $this->idA = $idA;
+    }
+
+    /**
+     * Définir le nom de l'artiste musical.
+     *
+     * @param string $nomA Le nom à définir.
+     */
+    public function setNomArtiste(string $nomA): void {
+        $this->nomA = $nomA;
     }
 
     /**
@@ -56,11 +74,10 @@ class Artiste {
      *
      * @return bool Retourne true si les artistes sont égaux, sinon false.
      */
-    public function equals(Artiste $other)
+    public function equals(Artiste $other): bool
     {
         return $this->idA === $other->idA;
     }
-
 }
 
 ?>
