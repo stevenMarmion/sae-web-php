@@ -50,25 +50,10 @@ foreach ($listeAlbum as $album) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-
-
     <link rel="stylesheet" href="/Public/Css/Acceuil/like.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="/Public/JS/like.js"></script>
     <script src="/Public/JS/verifLike.js"></script>
-
-    <!-- <?php
-    // foreach($listeAlbumObjet as $album){
-    //     $img = $album->getImg();
-    //     if(file_exists("../../../DataRessources/images/".$img) && (strstr($img,"%")===false)){
-    //         $img = $album->getImg() == "" ? "base.jpg" : $album->getImg();
-    //     }
-    //     else{
-    //         $img = "base.jpg";
-    //     }
-        ?> -->
-
     <link rel="stylesheet" href="/Public/Css/Home/home-style.css">
     <title>Accueil - Consultation</title>
 </head>
@@ -99,11 +84,18 @@ foreach ($listeAlbum as $album) {
                     ?>
                     <li class="album">
                         <img src="<?= '../../../DataRessources/images/'.$img?>"alt="image album" class="imageAlbum">
-                        <button activer="false" onclick="like(<?=$album->getId()?>)" name="like<?=$album->getId()?>"><img src="/DataRessources/like/coeur_vide.jpg" alt=""></button>
-                        <script>estLike(<?=$album->getId()?>)</script>
+
+                        <button class="like" activer="false" onclick="like(<?=$album->getId()?>)" name="like<?=$album->getId()?>">
+                            <img src="/DataRessources/like/coeur_vide.jpg" alt="">
+                        </button>
+                        <script>
+                            estLike(<?=$album->getId()?>)
+                        </script>
+
                         <h4 class="titreAlbum">
                             <?= $album->getTitre()?>
                         </h4> 
+
                         <div class='interpreteAndcompositeur'>
                             Interprete(s) et Compositeur(s) : <?= $album->getCompositeurs()["nomA"]?>
                         </div>
@@ -111,12 +103,15 @@ foreach ($listeAlbum as $album) {
                 } else {
                     ?>
                     <li class="album">
-
-                        <img src="<?= '../../../DataRessources/images/'.$img?>"alt="image album" class="imageAlbum">
-
-                        <button activer="false" onclick="like(<?=$album->getId()?>)" name="like<?=$album->getId()?>"><img src="/DataRessources/like/coeur_vide.jpg" alt=""></button>
-                        <script>estLike(<?=$album->getId()?>)</script>
-
+                        <div class="image-container">
+                            <img src="<?= '../../../DataRessources/images/'.$img?>" alt="image album" class="imageAlbum">
+                            <button class="like" activer="false" onclick="like(<?=$album->getId()?>)" name="like<?=$album->getId()?>">
+                                <img src="/DataRessources/like/coeur_vide.jpg" alt="">
+                            </button>
+                        </div>
+                        <script>
+                            estLike(<?=$album->getId()?>)
+                        </script>
                         <h4 class="titreAlbum">
                             <?= $album->getTitre()?>
                         </h4> 

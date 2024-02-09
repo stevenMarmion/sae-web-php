@@ -12,7 +12,7 @@
             <img id="home" src="/Public/Icons/home.png">
             Home
         </a>
-        <a href="/App/Views/playlist/Playlists.php">Mes playlists</a>
+        <a href="/App/Views/Playlist/Playlists.php">Mes playlists</a>
         <a href="#">Recherche utilisateur</a>
         <a href="#">Profil</a>
         <a href="/App/Views/Auth/UserLogin.php">Se déconnecter</a>

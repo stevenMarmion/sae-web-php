@@ -1,0 +1,75 @@
+body {
+    background-color: #e8e8ea;
+    color: #282828;
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+}
+
+li > img{
+    width: 100px;
+    height: 100px;
+}
+
+h1 {
+    text-align: center;
+    color: #1DB954;
+}
+
+form {
+    margin: 20px auto;
+    text-align: center;
+}
+
+form input[type="text"],
+form input[type="file"],
+form input[type="submit"] {
+    display: block;
+    margin: 10px auto;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #1DB954;
+    font-size: 16px;
+    color: #282828;
+    background-color: #fff;
+    transition: border-color 0.3s ease;
+}
+
+form input[type="text"]:focus,
+form input[type="file"]:focus,
+form input[type="submit"]:focus {
+    outline: none;
+    border-color: #16843a;
+}
+
+.playlists {
+    display: flex;
+    justify-content: center;
+}
+
+.playlists ul {
+    list-style: none;
+    padding: 0;
+}
+
+.playlists ul li {
+    text-align: center;
+    margin: 20px;
+}
+
+.playlists ul li img {
+    width: 150px;
+    height: 150px;
+    border-radius: 5px;
+}
+
+.playlists ul li a {
+    display: block;
+    color: #1DB954;
+    text-decoration: none;
+    margin-top: 10px;
+    transition: color 0.3s ease;
+}
+
+.playlists ul li a:hover {
+    color: #16843a;
+}

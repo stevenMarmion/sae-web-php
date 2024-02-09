@@ -1,11 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
+namespace App\Controllers\Playlist;
+
+require_once __DIR__ . "/../../Autoloader/autoloader.php";
+
 use App\Autoloader\Autoloader;
 use Database\DatabaseConnection\ConnexionBDD;
 use App\Models\EntityOperations\CrudPlaylist;
-
-require_once '../../../Database/DatabaseConnection/ConnexionBDD.php';
-require_once '../../Models/EntityOperations/CrudPlaylist.php';
 
 Autoloader::register();
 
@@ -25,9 +28,9 @@ function creationPlaylist() {
     $crudPlaylist = new CrudPlaylist($instance::obtenir_connexion());
     $nomPlaylist = $_POST['nomPlaylist'];
     $imgPlaylist = ($_POST['imgPlaylist']== "" ? "base.jpg" : $_POST['imgPlaylist']);
-    $idCreateur = $_SESSION['id'];
-    echo $crudPlaylist->ajouterPlaylist($idCreateur, $nomPlaylist, $imgPlaylist);
-    header('Location: /App/Views/playlist/Playlists.php');
+    $idCreateur = intval($_SESSION['id']);
+    $crudPlaylist->ajouterPlaylist($idCreateur, $nomPlaylist, $imgPlaylist);
+    header('Location: /App/Views/Playlist/Playlists.php');
     exit();
 }
 

@@ -1,17 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
+namespace App\Views\Playlist;
+
+require_once __DIR__ . "/../../Autoloader/autoloader.php";
+
 use App\Autoloader\Autoloader;
 use Database\DatabaseConnection\ConnexionBDD;
 use App\Models\EntityOperations\CrudPlaylist;
 use App\Models\EntityOperations\CrudUser;
-
-require_once '../../../Database/DatabaseConnection/ConnexionBDD.php';
-require_once '../../Models/EntityOperations/CrudAlbum.php';
-require_once '../../Models/EntityOperations/CrudArtiste.php';
-require_once '../../Models/EntityOperations/CrudPlaylist.php';
-require_once '../../Models/EntityOperations/CrudUser.php';
-require_once '../../Models/Album.php';
-require_once '../../Models/User.php';
 
 Autoloader::register();
 
@@ -28,10 +26,18 @@ $listePlaylist = $crudUser->obtenirPlaylistsUtilisateur($_SESSION["id"]);
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/Public/Css/Playlist/playlist-style.css">
     <title>Playlists</title>
 </head>
 <body>
-    <h1> Creer une playlist </h1>
+    <?php 
+        include __DIR__ . '/../Layout/Auth/NavBar.php';
+    ?>
+    <?php
+        include __DIR__ . '/../Layout/Home/NavGenerique.php';
+    ?>
+    <h1> Créer une playlist </h1>
     <form action="/App/Controllers/Playlist/CreationPlaylist.php" method="post">
         <input type="text" name="nomPlaylist" placeholder="Nom de la playlist">
         <input type="file" name="imgPlaylist" accept="image/*">
@@ -46,19 +52,15 @@ $listePlaylist = $crudUser->obtenirPlaylistsUtilisateur($_SESSION["id"]);
 
             <li>
                 <img src="../../../DataRessources/imagePlaylist/<?= $playlist['imgPlaylist'] ?>" alt="image de la playlist">
-                <a href="playlist.php?idP=<?= $playlist['idPlaylist'] ?>"><?= $playlist['nomPlaylist'] ?></a>
+                <a href="Playlist.php?idP=<?= $playlist['idPlaylist'] ?>">
+                    <?= $playlist['nomPlaylist'] ?>
+                </a>
             </li>
         
         <?php
         }
         ?>
         </ul>
-        <style>
-            img{
-                width: 100px;
-                height: 100px;
-            }
-        </style>
     </div>
     </body>
 </html>

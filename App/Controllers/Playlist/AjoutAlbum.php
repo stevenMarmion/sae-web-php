@@ -15,11 +15,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['idAlbum']) && isset($_POST['idPlaylist'])) {
         ajoutAlbum();
     } else {
-        header('Location: /App/Views/playlist/Playlists.php?error=2');
+        header('Location: /App/Views/Playlist/Playlists.php?error=2');
         exit();
     }
 }
-header('Location: /App/Views/playlist/Playlists.php?error=2');
+header('Location: /App/Views/Playlist/Playlists.php?error=2');
 exit();
 
 function ajoutAlbum() {
@@ -28,7 +28,7 @@ function ajoutAlbum() {
     $idAlbum = $_POST['idAlbum'];
     $idPlaylist = $_POST['idPlaylist'];
     echo $crudPlaylist->ajouterAlbumPlaylist($idPlaylist, $idAlbum);
-    header('Location: /App/Views/playlist/Playlists.php');
+    header('Location: /App/Views/Playlist/Playlists.php');
     exit();
 }
 
