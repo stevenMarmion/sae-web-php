@@ -147,7 +147,7 @@ foreach ($listeAlbum as $album) {
                                 ?>
                             </select>
                             <input type="hidden" name="idAlbum" value="<?= $album->getId()?>">
-                            <input type="submit" value="ajouter à une playlist">
+                            <input type="submit" value="Ajouter à une playlist">
                         </form>
 
                         <?php

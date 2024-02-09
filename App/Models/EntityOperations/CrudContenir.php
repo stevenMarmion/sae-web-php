@@ -88,7 +88,7 @@ class CrudContenir
         $query = "SELECT * FROM CONTENIR WHERE idPlaylist = ?";
         $stmt = $this->db->prepare($query);
         $stmt->execute([$idPlaylist]);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC) ?: false;
     }
 
     /**
