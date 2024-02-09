@@ -20,7 +20,7 @@ session_start();
 $instance = new ConnexionBDD();
 $crudPlaylist = new CrudPlaylist($instance::obtenir_connexion());
 $crudUser = new CrudUser($instance::obtenir_connexion());
-$listePlaylist = $crudUser->obtenirPlaylistsUtilisateur($_SESSION["idU"]);
+$listePlaylist = $crudUser->obtenirPlaylistsUtilisateur($_SESSION["id"]);
 
 
 ?>
@@ -46,7 +46,6 @@ $listePlaylist = $crudUser->obtenirPlaylistsUtilisateur($_SESSION["idU"]);
 
             <li>
                 <img src="../../../DataRessources/imagePlaylist/<?= $playlist['imgPlaylist'] ?>" alt="image de la playlist">
-                <p>test</p>
                 <a href="playlist.php?idP=<?= $playlist['idPlaylist'] ?>"><?= $playlist['nomPlaylist'] ?></a>
             </li>
         

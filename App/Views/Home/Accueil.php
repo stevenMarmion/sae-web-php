@@ -68,7 +68,7 @@ foreach ($listeAlbum as $album) {
     //         $img = "base.jpg";
     //     }
         ?> -->
-        
+
     <link rel="stylesheet" href="/Public/Css/Home/home-style.css">
     <title>Accueil - Consultation</title>
 </head>
@@ -99,6 +99,8 @@ foreach ($listeAlbum as $album) {
                     ?>
                     <li class="album">
                         <img src="<?= '../../../DataRessources/images/'.$img?>"alt="image album" class="imageAlbum">
+                        <button activer="false" onclick="like(<?=$album->getId()?>)" name="like<?=$album->getId()?>"><img src="/DataRessources/like/coeur_vide.jpg" alt=""></button>
+                        <script>estLike(<?=$album->getId()?>)</script>
                         <h4 class="titreAlbum">
                             <?= $album->getTitre()?>
                         </h4> 
@@ -109,9 +111,12 @@ foreach ($listeAlbum as $album) {
                 } else {
                     ?>
                     <li class="album">
+
                         <img src="<?= '../../../DataRessources/images/'.$img?>"alt="image album" class="imageAlbum">
+
                         <button activer="false" onclick="like(<?=$album->getId()?>)" name="like<?=$album->getId()?>"><img src="/DataRessources/like/coeur_vide.jpg" alt=""></button>
                         <script>estLike(<?=$album->getId()?>)</script>
+
                         <h4 class="titreAlbum">
                             <?= $album->getTitre()?>
                         </h4> 
@@ -129,7 +134,7 @@ foreach ($listeAlbum as $album) {
                         </a>
 
                         <?php
-                        $playlistSansAlbumId = $crudPlaylist->obtenirPlaylistSansIdAlbum($album->getId(),$_SESSION["idU"]);
+                        $playlistSansAlbumId = $crudPlaylist->obtenirPlaylistSansIdAlbum($album->getId(),$_SESSION["id"]);
                         if(sizeof($playlistSansAlbumId)==0){
                             echo "<h4>aucune playlist disponible</h4>";        
                         }
@@ -141,7 +146,7 @@ foreach ($listeAlbum as $album) {
                         <form action="/App/Controllers/Playlist/AjoutAlbum.php" method="post">
                             <select name="idPlaylist">
                                 <?php
-                                foreach($crudPlaylist->obtenirPlaylistSansIdAlbum($album->getId(),$_SESSION["idU"]) as $playlist){
+                                foreach($crudPlaylist->obtenirPlaylistSansIdAlbum($album->getId(),$_SESSION["id"]) as $playlist){
                                     echo "<option value=".$playlist["idPlaylist"].">".$playlist["nomPlaylist"]."</option>";
                                 }
                                 ?>

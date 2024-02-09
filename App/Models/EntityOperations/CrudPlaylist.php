@@ -44,7 +44,7 @@ class CrudPlaylist
             $query = "INSERT INTO PLAYLIST (idCreateur, nomPlaylist, imgPlaylist) VALUES (?, ?, ?)";
             $stmt = $this->db->prepare($query);
             $stmt->execute([$idCreateur, $nomPlaylist, $imgPlaylist]);
-            $this->crudPosseder->ajouterRelation($idCreateur, $this->db->lastInsertId());
+            $this->crudPosseder->ajouterRelation($idCreateur, intval($this->db->lastInsertId()));
             return true;
         } catch (PDOException $e) {
             return false;
@@ -154,7 +154,7 @@ class CrudPlaylist
         $query = "SELECT * FROM PLAYLIST WHERE idCreateur = ? and nomPlaylist = 'Aimer'";
         $stmt = $this->db->prepare($query);
         $stmt->execute([$idU]);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC) ?: array();
     }
 
     public function supprimerAlbumPlaylist(int $idPlaylist, int $idAlbum)

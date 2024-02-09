@@ -25,7 +25,7 @@ function creationPlaylist() {
     $crudPlaylist = new CrudPlaylist($instance::obtenir_connexion());
     $nomPlaylist = $_POST['nomPlaylist'];
     $imgPlaylist = ($_POST['imgPlaylist']== "" ? "base.jpg" : $_POST['imgPlaylist']);
-    $idCreateur = $_SESSION['idU'];
+    $idCreateur = $_SESSION['id'];
     echo $crudPlaylist->ajouterPlaylist($idCreateur, $nomPlaylist, $imgPlaylist);
     header('Location: /App/Views/playlist/Playlists.php');
     exit();

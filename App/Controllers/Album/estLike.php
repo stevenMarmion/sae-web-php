@@ -24,6 +24,6 @@ function estLike() {
     $instance = new ConnexionBDD();
     $crudAlbum = new CrudAlbum($instance::obtenir_connexion());
     $idAlbum = $_POST['idAlbum'];
-    echo $crudAlbum->estLike($_SESSION["idU"], $idAlbum);
+    echo $crudAlbum->estLike($_SESSION["id"], $idAlbum);
 }
 ?>

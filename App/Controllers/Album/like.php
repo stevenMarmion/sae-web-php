@@ -1,14 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
+namespace App\Controllers\Album;
+
 use App\Autoloader\Autoloader;
 use Database\DatabaseConnection\ConnexionBDD;
 use App\Models\EntityOperations\CrudAlbum;
 use App\Models\EntityOperations\CrudPlaylist;
+use App\Models\EntityOperations\CrudPosseder;
 
-require_once '../../../Database/DatabaseConnection/ConnexionBDD.php';
-require_once '../../Models/EntityOperations/CrudAlbum.php';
-require_once '../../Models/EntityOperations/CrudPlaylist.php';
-
+require_once __DIR__ . '/../../Autoloader/autoloader.php';
 
 Autoloader::register();
 
@@ -26,16 +28,18 @@ function liker() {
 
     $instance = new ConnexionBDD();
     $crudAlbum = new CrudAlbum($instance::obtenir_connexion());
-    $idAlbum = $_POST['idAlbum'];
-    $crudAlbum->ajouterLike($_SESSION["idU"], $idAlbum);
+    $idAlbum = intval($_POST['idAlbum']);
+    $crudAlbum->ajouterLike($_SESSION["id"], $idAlbum);
     $crudPlaylist = new CrudPlaylist($instance::obtenir_connexion());
-    if(count($crudPlaylist->PlaylistFavoris($_SESSION["idU"])) == 0){
+    $crudPosseder = new CrudPosseder($instance::obtenir_connexion());
+    if(count($crudPlaylist->PlaylistFavoris($_SESSION["id"])) == 0){
         $nomPlaylist = "Aimer";
         $imgPlaylist = "like.jpg";
-        $idCreateur = $_SESSION['idU'];
+        $idCreateur = $_SESSION['id'];
         $crudPlaylist->ajouterPlaylist($idCreateur, $nomPlaylist, $imgPlaylist);
+        $crudPosseder->ajouterRelation($idCreateur,$idAlbum);
     }
-    echo $crudPlaylist->ajouterAlbumPlaylist($crudPlaylist->PlaylistFavoris($_SESSION["idU"])[0]["idPlaylist"], $idAlbum);
+    echo $crudPlaylist->ajouterAlbumPlaylist($crudPlaylist->PlaylistFavoris($_SESSION["id"])[0]["idPlaylist"], $idAlbum);
     exit();
 }
 ?>

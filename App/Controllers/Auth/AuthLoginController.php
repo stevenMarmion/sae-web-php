@@ -29,22 +29,6 @@ function authentifaction($instance) {
     $crudUser = new CrudUser($instance::obtenir_connexion());
     $datas = $crudUser->obtenirUtilisateurParPseudo($pseudo);
 
-    if ($estAutentifie) {
-        if (!isset($_SESSION)){
-            echo "session";
-            session_start();
-        }
-        else {
-            session_destroy();
-            session_start();
-        }
-        $_SESSION['idU'] = $crudUser->obtenirUtilisateurParPseudo($pseudo)["idU"];
-        var_dump($_SESSION);
-        header('Location: /App/Views/Home/accueil.php');
-        exit();
-    } else {
-        echo "Identifiants incorrects. Veuillez réessayer.";
-        //header('Location: ' . __DIR__ . '/../Views/Auth/UserRegister.php?error=1'); // indique l'utilisateur n'existe pas
     if ($datas == false) { // cela signifie que nous trouvons personne avec le pseudo actuel
         header('Location: /App/Views/Auth/UserLogin.php?error=No-account');
         exit();

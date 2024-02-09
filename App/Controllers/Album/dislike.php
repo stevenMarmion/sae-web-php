@@ -28,8 +28,8 @@ function disliker() {
     $crudAlbum = new CrudAlbum($instance::obtenir_connexion());
     $crudPlaylist = new CrudPlaylist($instance::obtenir_connexion());
     $idAlbum = $_POST['idAlbum'];
-    $crudAlbum->supprimerlike($_SESSION["idU"], $idAlbum);
-    $crudPlaylist->supprimerAlbumPlaylist($crudPlaylist->PlaylistFavoris($_SESSION["idU"])[0]["idPlaylist"], $idAlbum);
+    $crudAlbum->supprimerlike($_SESSION["id"], $idAlbum);
+    $crudPlaylist->supprimerAlbumPlaylist($crudPlaylist->PlaylistFavoris($_SESSION["id"])[0]["idPlaylist"], $idAlbum);
     exit();
 }
 ?>
