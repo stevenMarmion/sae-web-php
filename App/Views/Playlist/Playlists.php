@@ -20,6 +20,24 @@ $crudPlaylist = new CrudPlaylist($instance::obtenir_connexion());
 $crudUser = new CrudUser($instance::obtenir_connexion());
 $listePlaylist = $crudUser->obtenirPlaylistsUtilisateur($_SESSION["id"]);
 
+$errorDetected = null;
+
+if (isset($_GET['error'])) {
+    $errorDetected = true;
+    $error = $_GET['error'];
+    switch ($error) {
+        case 'AlreadyExists':
+            $alreadyExists = true;
+            break;
+
+        default:
+            $alreadyExists = true;
+            break;
+    }
+}
+else {
+    $errorDetected = false;
+}
 
 ?>
 <!DOCTYPE html>
@@ -39,21 +57,30 @@ $listePlaylist = $crudUser->obtenirPlaylistsUtilisateur($_SESSION["id"]);
     ?>
     <h1> Créer une playlist </h1>
     <form action="/App/Controllers/Playlist/CreationPlaylist.php" method="post">
-        <input type="text" name="nomPlaylist" placeholder="Nom de la playlist">
-        <input type="file" name="imgPlaylist" accept="image/*">
-        <input type="submit" value="Creer">
+        <input type="text" name="nomPlaylist" placeholder="Nom de la playlist" required>
+        <input type="file" name="imgPlaylist" accept="image/*" required>
+        <input type="submit" value="Créer ma nouvelle playlist">
     </form>
     <h1> Mes playlists </h1>
+    <?php if ($errorDetected) : ?>
+        <div class="erreur-container">
+            <p class="erreur-creation-playlist">
+                <?php if ($alreadyExists) : ?>
+                    Cette playlist existe déjà, veuillez changer de nom....
+                <?php endif; ?>
+            </p>
+        </div>
+    <?php endif; ?>
     <div class="playlists">
         <ul>
         <?php
-        foreach($listePlaylist as $playlist){
+        foreach($listePlaylist as $playlist) {
         ?>
 
             <li>
                 <img src="../../../DataRessources/imagePlaylist/<?= $playlist['imgPlaylist'] ?>" alt="image de la playlist">
                 <a href="/App/Views/Details/DetailPlaylist.php?idP=<?= intval($playlist['idPlaylist']) ?>">
-                    <?= $playlist['nomPlaylist'] ?>
+                    Voir : <strong><?= $playlist['nomPlaylist'] ?></strong>
                 </a>
             </li>
         

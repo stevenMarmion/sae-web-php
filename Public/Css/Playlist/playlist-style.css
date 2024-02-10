@@ -2,7 +2,7 @@ body {
     background-color: #e8e8ea;
     color: #282828;
     font-family: 'Arial', sans-serif;
-    margin: 0;
+    margin: 0 0 20em 0;
 }
 
 li > img{
@@ -41,7 +41,15 @@ form input[type="submit"]:focus {
     border-color: #16843a;
 }
 
+form input[type="submit"]:hover,
+form input[type="file"]:hover {
+    cursor: pointer;
+}
+
 .playlists {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 800px;
     display: flex;
     justify-content: center;
 }
@@ -49,6 +57,9 @@ form input[type="submit"]:focus {
 .playlists ul {
     list-style: none;
     padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .playlists ul li {
@@ -60,16 +71,40 @@ form input[type="submit"]:focus {
     width: 150px;
     height: 150px;
     border-radius: 5px;
+    display: block;
+    margin: 0 auto 10px;
 }
 
 .playlists ul li a {
     display: block;
-    color: #1DB954;
+    color: black;
     text-decoration: none;
+    font-weight: bold;
     margin-top: 10px;
     transition: color 0.3s ease;
+}
+
+.playlists ul li a strong {
+    color: #1DB954;
+    text-decoration: underline;
 }
 
 .playlists ul li a:hover {
     color: #16843a;
 }
+
+.erreur-creation-playlist {
+    color: darkred;
+    font-style: italic;
+}
+
+.erreur-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.erreur-creation-playlist {
+    text-align: center;
+}
+

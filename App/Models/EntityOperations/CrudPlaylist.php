@@ -40,6 +40,13 @@ class CrudPlaylist
      */
     public function ajouterPlaylist(int $idCreateur, string $nomPlaylist, string $imgPlaylist = "imageBase.jpg")
     {
+        $query = "SELECT * FROM PLAYLIST WHERE idCreateur = ? and nomPlaylist = ?";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute([$idCreateur, $nomPlaylist]);
+        $row = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        if(count($row) > 0){
+            return false; // l'utilisateur a deja une playlist avec ce nom
+        }
         try {
             $query = "INSERT INTO PLAYLIST (idCreateur, nomPlaylist, imgPlaylist) VALUES (?, ?, ?)";
             $stmt = $this->db->prepare($query);
