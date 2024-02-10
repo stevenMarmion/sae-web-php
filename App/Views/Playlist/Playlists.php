@@ -52,7 +52,7 @@ $listePlaylist = $crudUser->obtenirPlaylistsUtilisateur($_SESSION["id"]);
 
             <li>
                 <img src="../../../DataRessources/imagePlaylist/<?= $playlist['imgPlaylist'] ?>" alt="image de la playlist">
-                <a href="Playlist.php?idP=<?= $playlist['idPlaylist'] ?>">
+                <a href="/App/Views/Details/DetailPlaylist.php?idP=<?= intval($playlist['idPlaylist']) ?>">
                     <?= $playlist['nomPlaylist'] ?>
                 </a>
             </li>

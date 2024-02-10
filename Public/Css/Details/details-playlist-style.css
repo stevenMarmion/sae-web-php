@@ -1,0 +1,81 @@
+body {
+    background-color: #e8e8ea;
+    color: #282828;
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+}
+
+h1 {
+    text-align: center;
+    color: #1DB954;
+}
+
+h2 {
+    text-align: center;
+    color: #1DB954;
+}
+
+.album p {
+    padding-bottom: 0.5em;
+    padding-top: 0.5em;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+button {
+    background-color: #1DB954;
+    color: #fff;
+    border: none;
+    font-weight: bold;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #16843a;
+}
+
+.album {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 15px;
+    padding: 10px;
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+
+.album:hover {
+    background-color: #f1f1f1;
+    cursor: pointer;
+}
+
+.imageAlbum {
+    display: block;
+    margin: 0 auto 10px;
+    width: 200px;
+    height: 200px;
+    border-radius: 5px;
+}
+
+.album h3 {
+    color: #1DB954;
+    margin-bottom: 5px;
+}
+
+.album p {
+    margin: 0;
+}
+
+.playlist {
+    max-width: 800px;
+    margin: 0 auto;
+}
