@@ -60,17 +60,17 @@ else {
         <input type="text" name="nomPlaylist" placeholder="Nom de la playlist" required>
         <input type="file" name="imgPlaylist" accept="image/*" required>
         <input type="submit" value="Créer ma nouvelle playlist">
+        <?php if ($errorDetected) : ?>
+            <div class="erreur-container">
+                <p class="erreur-creation-playlist">
+                    <?php if ($alreadyExists) : ?>
+                        Cette playlist existe déjà, veuillez changer de nom....
+                    <?php endif; ?>
+                </p>
+            </div>
+        <?php endif; ?>
     </form>
     <h1> Mes playlists </h1>
-    <?php if ($errorDetected) : ?>
-        <div class="erreur-container">
-            <p class="erreur-creation-playlist">
-                <?php if ($alreadyExists) : ?>
-                    Cette playlist existe déjà, veuillez changer de nom....
-                <?php endif; ?>
-            </p>
-        </div>
-    <?php endif; ?>
     <div class="playlists">
         <ul>
         <?php
@@ -82,6 +82,10 @@ else {
                 <a href="/App/Views/Details/DetailPlaylist.php?idP=<?= intval($playlist['idPlaylist']) ?>">
                     Voir : <strong><?= $playlist['nomPlaylist'] ?></strong>
                 </a>
+                <div class="form-inline">
+                    <a href="/App/Views/Playlist/Update/UpdatePlaylist.php?update=PLAYLIST&idP=<?= intval($playlist["idPlaylist"]) ?>" class="custom-update-submit-button"></a>
+                    <a href="/App/Views/Playlist/Delete/DeletePlaylist.php?delete=PLAYLIST&idP=<?= intval($playlist["idPlaylist"]) ?>" class="custom-delete-submit-button"></a>
+                </div>
             </li>
         
         <?php

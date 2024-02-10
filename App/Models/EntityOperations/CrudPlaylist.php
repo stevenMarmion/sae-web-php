@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Models\EntityOperations;
 
+require_once __DIR__ . '/../../Autoloader/autoloader.php';
+
 use \App\Autoloader\Autoloader;
 use \App\Models\EntityOperations\CrudPosseder;
+use App\Models\Playlist;
 use PDO;
 use PDOException;
-
-require_once __DIR__ . '/../../Autoloader/autoloader.php';
-require_once __DIR__ . '/CrudPosseder.php';
 
 Autoloader::register();
 
@@ -64,13 +64,13 @@ class CrudPlaylist
      * @param int $playlistId L'ID de la playlist à supprimer.
      * @return bool True si la suppression est réussie, False sinon.
      */
-    public function supprimerPlaylist(int $playlistId)
+    public function supprimerPlaylist(int $idUser, int $playlistId)
     {
         try {
             $query = "DELETE FROM PLAYLIST WHERE idPlaylist = ?";
             $stmt = $this->db->prepare($query);
             $stmt->execute([$playlistId]);
-            $this->crudPosseder->supprimerRelation($_SESSION['idU'], $playlistId);
+            $this->crudPosseder->supprimerRelation($idUser, $playlistId);
             return true;
         } catch (PDOException $e) {
             return false;
@@ -105,6 +105,46 @@ class CrudPlaylist
             return true;
         } catch (PDOException $e) {
             return false;
+        }
+    }
+
+    public function modifierPlaylist(int $playlistId, int $idCreateur,Playlist $newPlaylistsDatas)
+    {
+        try {
+            $query = "UPDATE PLAYLIST SET nomPlaylist = ?, imgPlaylist = ? WHERE idPlaylist = ? and idCreateur = ?";
+            $stmt = $this->db->prepare($query);
+            $stmt->execute([$newPlaylistsDatas->getNomPlaylist(), 
+                            $newPlaylistsDatas->getImg(), 
+                            $newPlaylistsDatas->getIdPlaylist(),
+                            $idCreateur]);
+            return true;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    public function modifierPlaylistAvecVerfiDupliNom(int $playlistId, int $idCreateur,Playlist $newPlaylistsDatas)
+    {
+        $query = "SELECT * FROM PLAYLIST WHERE idCreateur = ? AND nomPlaylist = ?";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute([$idCreateur, $newPlaylistsDatas->getNomPlaylist()]);
+        $response = $stmt->fetchAll(PDO::FETCH_ASSOC) ?: false;
+        if (is_array($response) && count($response) > 0) {
+            return false;
+        }
+
+        else if ($stmt != false ) {
+            try {
+                $query = "UPDATE PLAYLIST SET nomPlaylist = ?, imgPlaylist = ? WHERE idPlaylist = ? and idCreateur = ?";
+                $stmt = $this->db->prepare($query);
+                $stmt->execute([$newPlaylistsDatas->getNomPlaylist(), 
+                                $newPlaylistsDatas->getImg(), 
+                                $newPlaylistsDatas->getIdPlaylist(),
+                                $idCreateur]);
+                return true;
+            } catch (PDOException $e) {
+                return false;
+            }
         }
     }
 

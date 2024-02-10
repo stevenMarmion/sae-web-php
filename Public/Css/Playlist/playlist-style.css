@@ -22,7 +22,7 @@ form {
 
 form input[type="text"],
 form input[type="file"],
-form input[type="submit"] {
+body > form input[type="submit"] {
     display: block;
     margin: 10px auto;
     padding: 8px;
@@ -36,7 +36,7 @@ form input[type="submit"] {
 
 form input[type="text"]:focus,
 form input[type="file"]:focus,
-form input[type="submit"]:focus {
+body > form input[type="submit"]:focus {
     outline: none;
     border-color: #16843a;
 }
@@ -63,8 +63,12 @@ form input[type="file"]:hover {
 }
 
 .playlists ul li {
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
     text-align: center;
     margin: 20px;
+    padding: 20px;
 }
 
 .playlists ul li img {
@@ -108,3 +112,43 @@ form input[type="file"]:hover {
     text-align: center;
 }
 
+.form-inline {
+    display: flex;
+    align-items: center;
+}
+
+.form-inline a:nth-child(1) {
+    margin-left: auto;
+    margin-right: 0.2em;
+}
+
+.form-inline a:nth-child(2) {
+    margin-right: auto;
+    margin-left: 0.2em;
+}
+
+.custom-delete-submit-button {
+    background-image: url('/Public/Icons/trash.png');
+    background-size: cover; 
+    width: 20px; 
+    height: 20px;
+    background-size: contain;
+    background-repeat: no-repeat; 
+    border: none; 
+    cursor: pointer; 
+    text-indent: -9999px;
+    background-color: transparent;
+}
+
+.custom-update-submit-button {
+    background-image: url('/Public/Icons/pen.png');
+    background-size: cover; 
+    width: 20px; 
+    height: 20px;
+    background-size: contain;
+    background-repeat: no-repeat; 
+    border: none; 
+    cursor: pointer; 
+    text-indent: -9999px;
+    background-color: transparent;
+}
