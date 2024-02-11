@@ -86,10 +86,9 @@ $userDatas = $crudUser->obtenirUtilisateurParId($idCurrentUser);
                 <input type="password" id="mdp" name="mdp" value="<?= $currentUser->getMdp() ?>" required>
             </div>
             <input type="submit" value="Mettre à jour">
+            <a href="/App/Views/Auth/UserLogin.php">Se déconnecter</a>
         </form>
     </section>
-    <a href="/App/Views/Auth/UserLogin.php">Se déconnecter</a>
-
 </body>
 </html>
 
