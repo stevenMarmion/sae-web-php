@@ -91,7 +91,16 @@ if (isset($_SESSION['id']) && isset($_GET['idP'])) {
                     <h3><?= $album->getTitre() ?></h3>
                     <p>Compositeur(s) : <?= $album->getCompositeurs()["nomA"] ?></p>
                     <p>Interprète(s) : <?= $album->getInterpretes()["nomA"] ?></p>
-                    <p>Genres : <?= $album->getGenres() ?></p>
+                    <p>
+                        Genres : 
+                        <?php foreach($album->getGenres() as $indexGenre => $genre) : ?>
+                            <?php if ($indexGenre == sizeof($album->getGenres()) -1) : ?>
+                                <?= $genre["nomG"] ?> !
+                            <?php else : ?>
+                                <?= $genre["nomG"] ?>, 
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                    </p>
                     <a href='/App/Views/Details/DetailAlbum.php?id=<?= $album->getId() ?>'>
                         <button>voir plus</button>
                     </a>

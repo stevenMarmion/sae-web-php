@@ -39,17 +39,24 @@ class Playlist
     private array $albums;
 
     /**
+     * @var string l'image de la plylist.
+     */
+    private string $img;
+
+    /**
      * Constructeur de la classe Playlist.
      *
-     * @param int    $idPlaylist L'identifiant unique de la playlist.
-     * @param int    $idU        L'identifiant de l'utilisateur auquel la playlist est associée.
+     * @param int    $idPlaylist  L'identifiant unique de la playlist.
+     * @param int    $idU         L'identifiant de l'utilisateur auquel la playlist est associée.
      * @param string $nomPlaylist Le nom de la playlist.
+     * @param string $img         L'image de la playlist.
      */
-    public function __construct($idPlaylist, $idU, $nomPlaylist)
+    public function __construct($idPlaylist, $idU, $img, $nomPlaylist)
     {
         $this->idPlaylist = $idPlaylist;
         $this->idCreateur = $idU;
         $this->nomPlaylist = $nomPlaylist;
+        $this->img = $img;
         $this->albums = [];
     }
 
@@ -81,6 +88,16 @@ class Playlist
     public function getNomPlaylist()
     {
         return $this->nomPlaylist;
+    }
+
+    /**
+     * Obtenir l'image de la playlist.
+     *
+     * @return string L'image de la playlist.
+     */
+    public function getImg()
+    {
+        return $this->img;
     }
 
     /**

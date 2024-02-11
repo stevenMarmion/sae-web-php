@@ -46,6 +46,7 @@ button:hover {
 .album {
     background-color: #fff;
     border-radius: 10px;
+    max-width: 300px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     margin: 15px;
     padding: 10px;

@@ -32,7 +32,7 @@ class PlaylistTest {
      * Teste la construction d'une playlist.
      */
     public function testConstruct() {
-        $playlist = new Playlist(1, 2, "Ma Playlist");
+        $playlist = new Playlist(1, 2, "image.png", "Ma Playlist");
 
         if ($playlist instanceof Playlist) {
             echo "<< [Test de construction : Success]\n";
@@ -45,10 +45,11 @@ class PlaylistTest {
      * Teste les accesseurs de la playlist.
      */
     public function testGetters() {
-        $playlist = new Playlist(1, 2, "Ma Playlist");
+        $playlist = new Playlist(1, 2, "image.png", "Ma Playlist");
 
         if ($playlist->getIdPlaylist() === 1 &&
-            $playlist->getIdU() === 2 &&
+            $playlist->getIdCreateur() === 2 &&
+            $playlist->getImg() === "image.png" &&
             $playlist->getNomPlaylist() === "Ma Playlist" &&
             empty($playlist->getAlbums())) {
             echo "<< [Test d'accesseurs : Success]\n";
@@ -64,7 +65,7 @@ class PlaylistTest {
         $album1 = new Album(1, "image.png", 2023, "Titre 1", [], [], []);
         $album2 = new Album(2, "image2.png", 2024, "Titre 2", [], [], []);
 
-        $playlist = new Playlist(1, 2, "Ma Playlist");
+        $playlist = new Playlist(1, 2, "image.png", "Ma Playlist");
         $playlist->ajouterAlbum($album1);
         $playlist->ajouterAlbum($album2);
 
@@ -84,7 +85,7 @@ class PlaylistTest {
         $album1 = new Album(1, "image.png", 2023, "Titre 1", [], [], []);
         $album2 = new Album(2, "image2.png", 2024, "Titre 2", [], [], []);
 
-        $playlist = new Playlist(1, 2, "Ma Playlist");
+        $playlist = new Playlist(1, 2, "image.png", "Ma Playlist");
         $playlist->ajouterAlbum($album1);
         $playlist->ajouterAlbum($album2);
 
@@ -101,9 +102,9 @@ class PlaylistTest {
      * Teste l'égalité entre deux playlists.
      */
     public function testEquals() {
-        $playlist1 = new Playlist(1, 2, "Ma Playlist");
-        $playlist2 = new Playlist(1, 2, "Ma Playlist");
-        $playlist3 = new Playlist(2, 2, "Autre Playlist");
+        $playlist1 = new Playlist(1, 2, "image.png", "Ma Playlist");
+        $playlist2 = new Playlist(1, 2, "image.png", "Ma Playlist");
+        $playlist3 = new Playlist(2, 2, "image2.png", "Autre Playlist");
 
         if ($playlist1->equals($playlist2) && !$playlist1->equals($playlist3)) {
             echo "<< [Test Equals : Success]\n";

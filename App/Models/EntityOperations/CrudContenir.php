@@ -65,6 +65,18 @@ class CrudContenir
         }
     }
 
+    public function supprimerPlaylist(int $idPlaylist)
+    {
+        try {
+            $query = "DELETE FROM CONTENIR WHERE idPlaylist = ?";
+            $stmt = $this->db->prepare($query);
+            $stmt->execute([$idPlaylist]);
+            return true;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
     public function supprimerAllAlbum(int $idAlbum)
     {
         try {

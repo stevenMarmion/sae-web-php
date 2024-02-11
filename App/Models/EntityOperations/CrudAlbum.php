@@ -213,7 +213,6 @@ class CrudAlbum {
         $stmt = $this->db->prepare($query);
         $stmt->execute([$albumId]);
         return $stmt->fetch(PDO::FETCH_ASSOC) ?: false;
-        
     }
 
     public function obtenirAlbumsParDerniereSortie() {

@@ -29,9 +29,14 @@ function creationPlaylist() {
     $nomPlaylist = $_POST['nomPlaylist'];
     $imgPlaylist = ($_POST['imgPlaylist']== "" ? "base.jpg" : $_POST['imgPlaylist']);
     $idCreateur = intval($_SESSION['id']);
-    $crudPlaylist->ajouterPlaylist($idCreateur, $nomPlaylist, $imgPlaylist);
-    header('Location: /App/Views/Playlist/Playlists.php');
-    exit();
+    $actionValid = $crudPlaylist->ajouterPlaylist($idCreateur, $nomPlaylist, $imgPlaylist);
+    if ($actionValid) {
+        header('Location: /App/Views/Playlist/Playlists.php');
+        exit();
+    } else {
+        header('Location: /App/Views/Playlist/Playlists.php?error=AlreayExists');
+        exit();
+    }
 }
 
 ?>
