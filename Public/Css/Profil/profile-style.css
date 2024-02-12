@@ -1,0 +1,101 @@
+body {
+    background-color: #e8e8ea;
+    color: #282828;
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+}
+.nav {
+    background-color: #282828;
+    padding: 10px;
+    text-align: center;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #282828;
+    padding: 10px;
+}
+
+h2 {
+    text-align: center;
+    color: #1ed760;
+}
+
+
+p {
+    text-align: center;
+    color: #1ed760;
+}
+
+a {
+    text-decoration: none;
+    color: #1ed760;
+
+}
+
+.profile-info {
+    background-color: #282828;
+    padding: 20px;
+    margin: auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+label {
+    color: #fff;
+    margin-bottom: 5px;
+}
+
+input {
+    padding: 8px;
+    border: 1px solid #1DB954;
+    border-radius: 5px;
+}
+
+input[type="submit"] {
+    background-color: #1DB954;
+    color: #fff;
+    cursor: pointer;
+}
+
+.custom-update-submit-button {
+    background-image: url('/Public/Icons/pen.png');
+    background-size: cover;
+    width: 18px;
+    height: 18px;
+    background-repeat: no-repeat;
+    border: none;
+    cursor: pointer;
+    text-indent: -9999px;
+    background-color: transparent;
+}
+
+
+section {
+    background-color: #282828;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    max-width: 600px;
+    padding: 20px;
+    width: 100%;
+    margin: 10vh auto;
+}
+
+
