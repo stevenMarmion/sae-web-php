@@ -126,3 +126,7 @@ button:hover {
     color: white;
 }
 
+.erreur-update {
+    color: darkred;
+    font-style: italic;
+}

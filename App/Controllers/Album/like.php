@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Controllers\Album;
 
+require_once __DIR__ . '/../../Autoloader/autoloader.php';
+
 use App\Autoloader\Autoloader;
 use Database\DatabaseConnection\ConnexionBDD;
 use App\Models\EntityOperations\CrudAlbum;
 use App\Models\EntityOperations\CrudPlaylist;
 use App\Models\EntityOperations\CrudPosseder;
-
-require_once __DIR__ . '/../../Autoloader/autoloader.php';
 
 Autoloader::register();
 
@@ -33,7 +33,7 @@ function liker() {
     $crudPlaylist = new CrudPlaylist($instance::obtenir_connexion());
     $crudPosseder = new CrudPosseder($instance::obtenir_connexion());
     if(count($crudPlaylist->PlaylistFavoris($_SESSION["id"])) == 0){
-        $nomPlaylist = "Aimer";
+        $nomPlaylist = "Aimé";
         $imgPlaylist = "like.jpg";
         $idCreateur = $_SESSION['id'];
         $crudPlaylist->ajouterPlaylist($idCreateur, $nomPlaylist, $imgPlaylist);

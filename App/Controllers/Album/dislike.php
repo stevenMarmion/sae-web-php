@@ -1,13 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
+namespace App\Controllers\Album;
+
+require_once __DIR__ . '/../../Autoloader/autoloader.php';
+
 use App\Autoloader\Autoloader;
 use Database\DatabaseConnection\ConnexionBDD;
 use App\Models\EntityOperations\CrudAlbum;
 use App\Models\EntityOperations\CrudPlaylist;
-
-require_once '../../../Database/DatabaseConnection/ConnexionBDD.php';
-require_once '../../Models/EntityOperations/CrudAlbum.php';
-require_once '../../Models/EntityOperations/CrudPlaylist.php';
 
 Autoloader::register();
 

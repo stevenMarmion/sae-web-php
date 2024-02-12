@@ -30,7 +30,7 @@ if (isset($_SERVER["REQUEST_METHOD"])&& $_SERVER["REQUEST_METHOD"] == "POST") {
         exit();
     }
     else {
-        header('Location: /App/Views/Profil/UserProfil.php?error=cacaerror'); // redirection vers la page actuelle actualisée
+        header('Location: /App/Views/Profil/UserProfil.php?error=AlreadyExists'); // redirection vers la page actuelle actualisée
         exit();
     }
     }

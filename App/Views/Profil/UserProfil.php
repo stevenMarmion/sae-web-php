@@ -47,6 +47,24 @@ if (!empty($userId)) {
     $allUsersObject[] = $currentUser;
 }
 
+$errorDetected = null;
+
+if (isset($_GET['error'])) {
+    $errorDetected = true;
+    $error = $_GET['error'];
+    switch ($error) {
+        case 'AlreadyExists':
+            $alreadyExists = true;
+            break;
+        default:
+            $alreadyExists = true;
+            break;
+    }
+}
+else {
+    $errorDetected = false;
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -87,6 +105,13 @@ if (!empty($userId)) {
             </div>
             <input type="submit" value="Mettre à jour">
             <a href="/App/Views/Auth/UserLogin.php">Se déconnecter</a>
+            <?php if ($errorDetected) : ?>
+                <p class="erreur-update">
+                    <?php if ($alreadyExists) : ?>
+                        Ce pseudo existe déjà, veuillez en choisir un autre...
+                    <?php endif; ?>
+                </p>
+            <?php endif; ?>
         </form>
     </section>
     <?php if ($currentUser->isAdmin() == true) : ?>
