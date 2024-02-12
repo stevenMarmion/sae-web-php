@@ -8,6 +8,7 @@ require_once __DIR__ . '/../../Autoloader/autoloader.php';
 use \App\Autoloader\Autoloader;
 use App\Models\EntityOperations\CrudUser;
 use App\Models\EntityOperations\CrudFavoris;
+use App\Models\Favori;
 use Database\DatabaseConnection\ConnexionBDD;
 use App\Models\User;
 
@@ -21,15 +22,21 @@ session_start();
 
 // Vérifier si l'utilisateur est connecté
 if (!isset($_SESSION['id'])) {
-    header("Location: /login.php"); // Rediriger vers la page de connexion si l'utilisateur n'est pas connecté
+    header("Location: /App/Views/Auth/UserLogin.php"); // Rediriger vers la page de connexion si l'utilisateur n'est pas connecté
     exit();
 }
+
 $userId = intval($_SESSION["id"]) ?? null;
 if (!empty($userId)) {
     $currentUser = $crudUser->obtenirUtilisateurParId($userId);
     $allUsersObject = [];
     $isAdmin = $currentUser["isAdmin"] == "1" ? true : false;
-    $currentUser = new User($currentUser["idU"],$currentUser["pseudo"],$currentUser["mdp"],$currentUser["adresseMail"],$isAdmin,[]);
+    $currentUser = new User($currentUser["idU"],
+                            $currentUser["pseudo"],
+                            $currentUser["mdp"],
+                            $currentUser["adresseMail"],
+                            $isAdmin,
+                            []);
     $allFavoris = $crudFavoris->obtenirFavorisParUtilisateur($currentUser->getId());
 
     foreach ($allFavoris as $favori) {
@@ -39,13 +46,6 @@ if (!empty($userId)) {
     }
     $allUsersObject[] = $currentUser;
 }
-
-$idCurrentUser = $_SESSION['id'];
-
-$db = new ConnexionBDD();
-$crudUser = new CrudUser($db::obtenir_connexion());
-
-$userDatas = $crudUser->obtenirUtilisateurParId($idCurrentUser);
 
 ?>
 
@@ -65,11 +65,11 @@ $userDatas = $crudUser->obtenirUtilisateurParId($idCurrentUser);
         include __DIR__ . '/../Layout/Home/NavGenerique.php';
     ?>
 
-    <h2>Profil de <?= $userDatas['pseudo'] ?></h2>
+    <h2>Profil de <?= $currentUser->getPseudo() ?></h2>
     <section>
         <form action="/App/Controllers/Profil/UserUpdateController.php" method="post">
             <input type="hidden" name="user_id" value="<?= $currentUser->getId() ?>">
-            <input type="hidden" name="mdp" value="<?= $currentUser->getMdp() ?>">
+            <input type="hidden" name="isAdmin" value="<?= $currentUser->isAdmin() == true ? "true" : "false" ?>">
 
             <div class="form-group">
                 <label for="pseudo">Pseudo :</label>
@@ -89,6 +89,14 @@ $userDatas = $crudUser->obtenirUtilisateurParId($idCurrentUser);
             <a href="/App/Views/Auth/UserLogin.php">Se déconnecter</a>
         </form>
     </section>
+    <?php if ($currentUser->isAdmin() == true) : ?>
+        <section>
+            <h2 class="panel-button">Accéder au panel admin</h2>
+            <a href='/App/Views/Admin/PanelAdmin.php' class="button-link">
+                <button>Gérer la plateforme</button>
+            </a>
+        </section>
+    <?php endif; ?>
 </body>
 </html>
 

@@ -45,6 +45,10 @@ $listeGenres = $crudGenre->obtenirTousGenres();
             <a id="panel-admin-link" href="Details/PanelDetails.php?table=ALBUMS">Gérer les albums</a>
             <a id="panel-admin-link" href="Details/PanelDetails.php?table=ARTISTES">Gérer les artistes</a>
             <a id="panel-admin-link" href="Details/PanelDetails.php?table=GENRES">Gérer les genres</a>
+            <a id="panel-admin-link" href="/App/Views/Profil/UserProfil.php">
+                <img id="icon-retour" src="/Public/Icons/back.png">    
+                Revenir sur la plateforme
+            </a>
         </nav>
     </div>
     <section>
