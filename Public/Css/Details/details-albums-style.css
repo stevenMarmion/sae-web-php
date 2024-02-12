@@ -18,6 +18,15 @@ h1 {
     color: #1DB954;
 }
 
+h2 {
+    margin-left: 27%;
+    text-decoration: underline;
+}
+
+h3 {
+    margin-left: 29%;
+}
+
 .imageAlbum {
     width: 200px;
     height: 200px;
@@ -36,4 +45,122 @@ p {
 .imageAlbum{
     width: 200px;
     height: 200px;
+}
+
+body p > a {
+    color: #007bff; 
+    text-decoration: none; 
+    cursor: pointer; 
+    position: relative;
+}
+
+body p > a::before {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: #007bff;
+    transition: width 0.3s ease;
+}
+
+body p > a:hover::before {
+    width: 100%;
+}
+
+.action-noter, .avg-notation {
+    background-color: #282828;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    padding: 20px;
+    width: 100%;
+    margin: auto;
+}
+
+.avg-notation p {
+    color: white;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+label {
+    color: #fff;
+    margin-bottom: 5px;
+}
+
+input {
+    padding: 8px;
+    border: 1px solid #1DB954;
+    border-radius: 5px;
+}
+
+input[type="submit"] {
+    background-color: #1DB954;
+    color: #fff;
+    cursor: pointer;
+}
+
+.notation-album button img {
+    width: 20px;
+    height: 20px;
+}
+
+.notes-container {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #f4f4f4;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.notes-container h2 {
+    font-size: 24px;
+    color: #1db954;
+    margin-bottom: 10px;
+}
+
+.notation-details {
+    margin-top: 20px;
+}
+
+.notation-details h3 {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.notation-details h3 strong {
+    font-size: 18px;
+    color: #1db954;
+    margin-bottom: 10px;
+}
+
+.action-noter {
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.notation-album button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    margin: 0 5px;
+}
+
+.notation-album button img {
+    width: 20px;
+    height: 20px;
+}
+
+.avg-notation p {
+    font-size: 20px;
+    color: white;
+    margin: 0;
 }

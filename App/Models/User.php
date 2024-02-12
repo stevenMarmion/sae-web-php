@@ -48,6 +48,11 @@ class User {
     private array $favoris;
 
     /**
+     * @var array Un tableau contenant les playlists de l'utilisateur.
+     */
+    private array $playlists;
+
+    /**
      * Constructeur de la classe User.
      *
      * @param int    $idU         L'identifiant unique de l'utilisateur.
@@ -64,6 +69,7 @@ class User {
         $this->adresseMail = $adresseMail;
         $this->isAdmin = $isAdmin;
         $this->favoris = $favoris;
+        $this->playlists = [];
     }
 
     /**
@@ -121,6 +127,15 @@ class User {
     }
 
     /**
+     * Obtenir les playlists de l'utilisateur.
+     *
+     * @return array Un tableau contenant les playlists de l'utilisateur.
+     */
+    public function getPlaylists() {
+        return $this->playlists;
+    }
+
+    /**
      * Définir le nom d'utilisateur de l'utilisateur.
      *
      * @param string $p Le nouveau nom d'utilisateur.
@@ -155,9 +170,9 @@ class User {
      * @return bool Retourne true si l'élément a été supprimé avec succès, sinon false.
      */
     public function supprimeFavori(int $idFavori) {
-        foreach ($this->getFavoris() as $index => $favori) {
+        foreach ($this->favoris as $index => $favori) {
             if ($favori->getId() === $idFavori) {
-                unset($this->getFavoris()[$index]);
+                unset($this->favoris[$index]);
                 return true;
             }
         }
@@ -170,7 +185,33 @@ class User {
      * @param Album $favori L'objet Album à ajouter aux favoris.
      */
     public function ajouterFavori(Album $favori) {
-        array_push($favoris, $favori);
+        array_push($this->favoris, $favori);
+    }
+
+    /**
+     * Ajouter une playlist à la liste de l'utilisateur.
+     *
+     * @param Playlist $playlist L'objet Playlist à ajouter à la liste.
+     */
+    public function ajouterPlaylist(Playlist $playlist) {
+        array_push($playlists, $playlist);
+    }
+
+    /**
+     * Supprimer une playlist de la liste de l'utilisateur.
+     *
+     * @param int $idPlaylist L'identifiant de la playlist à supprimer.
+     *
+     * @return bool Retourne true si la playlist a été supprimée avec succès, sinon false.
+     */
+    public function supprimerPlaylist(int $idPlaylist) {
+        foreach ($this->getPlaylists() as $index => $playlist) {
+            if ($playlist->getId() === $idPlaylist) {
+                unset($this->getPlaylists()[$index]);
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

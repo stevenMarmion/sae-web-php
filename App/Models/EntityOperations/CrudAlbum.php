@@ -213,7 +213,6 @@ class CrudAlbum {
         $stmt = $this->db->prepare($query);
         $stmt->execute([$albumId]);
         return $stmt->fetch(PDO::FETCH_ASSOC) ?: false;
-        
     }
 
     public function obtenirAlbumsParDerniereSortie() {
@@ -221,6 +220,36 @@ class CrudAlbum {
         $stmt = $this->db->query($query);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function ajouterLike(int $idU, int $idAlbum) {
+        try {
+            $query = "INSERT INTO FAVORIS (idU, idAl) VALUES (?, ?)";
+            $stmt = $this->db->prepare($query);
+            $stmt->execute([$idU, $idAlbum]);
+            return true;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    public function supprimerLike(int $idU, int $idAlbum) {
+        try {
+            $query = "DELETE FROM FAVORIS WHERE idU = ? AND idAl = ?";
+            $stmt = $this->db->prepare($query);
+            $stmt->execute([$idU, $idAlbum]);
+            return true;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    public function estLike(int $idU, int $idAlbum) {
+        $query = "SELECT * FROM FAVORIS WHERE idU = ? AND idAl = ?";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute([$idU, $idAlbum]);
+        return $stmt->fetch(PDO::FETCH_ASSOC) ? true : false;
+    }
+
 }
 
 ?>

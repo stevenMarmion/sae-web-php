@@ -115,14 +115,14 @@ class CrudNote
      * Récupère toutes les notes associées à un album en fonction de son ID.
      *
      * @param int $idAlbum L'ID de l'album.
-     * @return array Un tableau contenant toutes les notes associées à l'album.
+     * @return array|false Un tableau contenant toutes les notes associées à l'album.
      */
     public function obtenirToutesNotesAlbum(int $idAlbum)
     {
         $query = "SELECT * FROM NOTE WHERE idAl = ?";
         $stmt = $this->db->prepare($query);
         $stmt->execute([$idAlbum]);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC) ?: false;
     }
 
     /**
