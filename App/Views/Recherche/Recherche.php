@@ -28,17 +28,19 @@ session_start();
     <title>Recherche</title>
 </head>
 <body>
-
     <form action="/App/Views/Recherche/Recherche.php" method="post">
         <input type="text" id="recherche" name="recherche" placeholder="recherche" required><br>
         Recherche par : <br>
         <select name="filtre">
-            <option value="nomArtiste">nom d'artiste</option>
-            <option value="nomAlbum">nom d'album</option>
+            <option value="nomAlbum">Nom d'album</option>
+            <option value="nomCompositeur">Nom du compositeur</option>
+            <option value="nomInterprete">Nom de l'interprete</option>
+            <option value="genre">Genre</option>
             <option value="Annee">Année</option>
         </select><br>
         <input type="submit" value="rechercher">
     </form>
+    <script src="/Public/JS/recherche.js"></script>
 <?php
 
 function AlbumToAlbumObjet(array $listeAlbum, ConnexionBDD $instance,CrudAlbum $crudAlbum, CrudArtiste $crudArtiste){
@@ -70,6 +72,11 @@ function rechercheNomCompositeur(string $nomArtiste, CrudAlbum $crudAlbum, Conne
     return AlbumToAlbumObjet($listeAlbum, $instance, $crudAlbum, $crudArtiste);
 }
 
+function rechercheNomInterprete(string $nomArtiste, CrudAlbum $crudAlbum, ConnexionBDD $instance, CrudArtiste $crudArtiste){
+    $listeAlbum = $crudAlbum->obtenirAlbumParInterprete($nomArtiste);
+    return AlbumToAlbumObjet($listeAlbum, $instance, $crudAlbum, $crudArtiste);
+}
+
 function rechercheAnnee(string $annee, CrudAlbum $crudAlbum, ConnexionBDD $instance, CrudArtiste $crudArtiste){
     $listeAlbum = $crudAlbum->obtenirAlbumParAnnee($annee);
     return AlbumToAlbumObjet($listeAlbum, $instance, $crudAlbum, $crudArtiste);
@@ -85,8 +92,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if($_POST["filtre"]=="nomAlbum"){
             $listeAlbumObjet = rechercheNomAlbum($_POST['recherche'],$crudAlbum,$instance,$crudArtiste);
         }
-        else if($_POST["filtre"]=="nomArtiste"){
+        else if($_POST["filtre"]=="nomCompositeur"){
             $listeAlbumObjet = rechercheNomCompositeur($_POST['recherche'],$crudAlbum,$instance,$crudArtiste);
+        }
+        else if($_POST["filtre"]=="nomInterprete"){
+            $listeAlbumObjet = rechercheNomInterprete($_POST['recherche'],$crudAlbum,$instance,$crudArtiste);
         }
         else if($_POST["filtre"]=="Annee"){
             $listeAlbumObjet = rechercheAnnee($_POST['recherche'],$crudAlbum,$instance,$crudArtiste);
