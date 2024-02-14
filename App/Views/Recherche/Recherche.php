@@ -8,11 +8,14 @@ use \App\Autoloader\Autoloader;
 use App\Models\EntityOperations\CrudAlbum;
 use App\Models\EntityOperations\CrudArtiste;
 use App\Models\EntityOperations\CrudPlaylist;
+use App\Models\EntityOperations\CrudGenre;
 use App\Models\Album;
 use Database\DatabaseConnection\ConnexionBDD;
 
 Autoloader::register();
-
+$instance = new ConnexionBDD();
+$crudGenre = new CrudGenre($instance::obtenir_connexion());
+$listeGenre = $crudGenre->obtenirTousGenres();
 session_start();
 ?>
 <!DOCTYPE html>
@@ -28,10 +31,22 @@ session_start();
     <title>Recherche</title>
 </head>
 <body>
-    <form action="/App/Views/Recherche/Recherche.php" method="post">
+    <form action="/App/Views/Recherche/Recherche.php" method="get" id="form-recherche">
         <input type="text" id="recherche" name="recherche" placeholder="recherche" required><br>
+        <select name="genres" id="recherche-genre" hidden>
+            <option value=""></option>
+            <?php
+
+            foreach ($listeGenre as $genre) {
+                ?>
+                <option value="<?=$genre["nomG"]?>"><?=$genre["nomG"]?></option>
+                <?php
+            }
+
+            ?>
+        </select>
         Recherche par : <br>
-        <select name="filtre">
+        <select name="filtre" onchange="changement()" id="type-recherche">
             <option value="nomAlbum">Nom d'album</option>
             <option value="nomCompositeur">Nom du compositeur</option>
             <option value="nomInterprete">Nom de l'interprete</option>
@@ -81,25 +96,33 @@ function rechercheAnnee(string $annee, CrudAlbum $crudAlbum, ConnexionBDD $insta
     $listeAlbum = $crudAlbum->obtenirAlbumParAnnee($annee);
     return AlbumToAlbumObjet($listeAlbum, $instance, $crudAlbum, $crudArtiste);
 }
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+function rechercheGenre(string $genre, CrudAlbum $crudAlbum, ConnexionBDD $instance, CrudArtiste $crudArtiste){
+    $listeAlbum = $crudAlbum->obtenirAlbumParGenre($genre);
+    return AlbumToAlbumObjet($listeAlbum, $instance, $crudAlbum, $crudArtiste);
+}
+if ($_SERVER["REQUEST_METHOD"] == "GET") {
     
-    $instance = new ConnexionBDD();
     $crudAlbum = new CrudAlbum($instance::obtenir_connexion());
     $crudArtiste = new CrudArtiste($instance::obtenir_connexion());
     $crudPlaylist = new CrudPlaylist($instance::obtenir_connexion());
     $listeAlbumObjet=[];
-    if (isset($_POST['filtre']) && isset($_POST['recherche']) && $_POST['recherche']!="") {
-        if($_POST["filtre"]=="nomAlbum"){
-            $listeAlbumObjet = rechercheNomAlbum($_POST['recherche'],$crudAlbum,$instance,$crudArtiste);
+    if (isset($_GET['filtre']) && isset($_GET['recherche']) && ($_GET['recherche']!="" || $_GET['genres']!="")) {
+        if($_GET["filtre"]=="nomAlbum"){
+            $listeAlbumObjet = rechercheNomAlbum($_GET['recherche'],$crudAlbum,$instance,$crudArtiste);
         }
-        else if($_POST["filtre"]=="nomCompositeur"){
-            $listeAlbumObjet = rechercheNomCompositeur($_POST['recherche'],$crudAlbum,$instance,$crudArtiste);
+        else if($_GET["filtre"]=="nomCompositeur"){
+            $listeAlbumObjet = rechercheNomCompositeur($_GET['recherche'],$crudAlbum,$instance,$crudArtiste);
         }
-        else if($_POST["filtre"]=="nomInterprete"){
-            $listeAlbumObjet = rechercheNomInterprete($_POST['recherche'],$crudAlbum,$instance,$crudArtiste);
+        else if($_GET["filtre"]=="nomInterprete"){
+            $listeAlbumObjet = rechercheNomInterprete($_GET['recherche'],$crudAlbum,$instance,$crudArtiste);
         }
-        else if($_POST["filtre"]=="Annee"){
-            $listeAlbumObjet = rechercheAnnee($_POST['recherche'],$crudAlbum,$instance,$crudArtiste);
+        else if($_GET["filtre"]=="Annee"){
+            $listeAlbumObjet = rechercheAnnee($_GET['recherche'],$crudAlbum,$instance,$crudArtiste);
+        }
+        else if($_GET["filtre"]=="genre"){
+            var_dump($_GET);
+            $listeAlbumObjet = rechercheGenre($_GET['genres'],$crudAlbum,$instance,$crudArtiste);
         }
 
     }
@@ -196,6 +219,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         ?>
     </ul>
     <?php
-}?>
+}
+
+?>
 
 </body>

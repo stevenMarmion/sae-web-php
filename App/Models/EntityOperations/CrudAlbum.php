@@ -278,6 +278,13 @@ class CrudAlbum {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function obtenirAlbumParGenre(string $genre){
+        $query = "SELECT * FROM ALBUMS WHERE id in (SELECT idAl FROM ETRE natural join GENRE where nomG=?)";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute([$genre]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
 }
 
 ?>
