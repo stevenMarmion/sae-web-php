@@ -29,9 +29,9 @@ function disliker() {
     $instance = new ConnexionBDD();
     $crudAlbum = new CrudAlbum($instance::obtenir_connexion());
     $crudPlaylist = new CrudPlaylist($instance::obtenir_connexion());
-    $idAlbum = $_POST['idAlbum'];
-    $crudAlbum->supprimerlike($_SESSION["id"], $idAlbum);
-    $crudPlaylist->supprimerAlbumPlaylist($crudPlaylist->PlaylistFavoris($_SESSION["id"])[0]["idPlaylist"], $idAlbum);
+    $idAlbum = intval($_POST['idAlbum']);
+    $crudAlbum->supprimerlike(intval($_SESSION["id"]), $idAlbum);
+    $crudPlaylist->supprimerAlbumPlaylist($crudPlaylist->PlaylistFavoris(intval($_SESSION["id"]))[0]["idPlaylist"], $idAlbum);
     exit();
 }
 ?>

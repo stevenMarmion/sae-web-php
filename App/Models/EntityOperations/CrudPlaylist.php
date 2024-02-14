@@ -198,7 +198,7 @@ class CrudPlaylist
 
     public function PlaylistFavoris(int $idU)
     {
-        $query = "SELECT * FROM PLAYLIST WHERE idCreateur = ? and nomPlaylist = 'Aimer'";
+        $query = "SELECT * FROM PLAYLIST WHERE idCreateur = ? and nomPlaylist = 'Like'";
         $stmt = $this->db->prepare($query);
         $stmt->execute([$idU]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC) ?: array();
