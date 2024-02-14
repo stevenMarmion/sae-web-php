@@ -104,6 +104,13 @@ if (isset($_SESSION['id']) && isset($_GET['idP'])) {
                     <a href='/App/Views/Details/DetailAlbum.php?id=<?= $album->getId() ?>'>
                         <button>voir plus</button>
                     </a>
+                    <div class="retirer-album">
+                        <form action="/App/Controllers/Playlist/DeleteAlbumFromPlaylistController.php" method="post">
+                            <input type="hidden" id="idAl" name="idAl" value="<?= $album->getId() ?>">
+                            <input type="hidden" id="idP" name="idP" value="<?= $idP ?>">
+                            <button type="submit">Retirer</button>
+                        </form>
+                    </div>
                 </li>
             <?php endforeach; ?>
         </ul>

@@ -28,8 +28,8 @@ exit();
 function ajoutAlbum() {
     $instance = new ConnexionBDD();
     $crudPlaylist = new CrudPlaylist($instance::obtenir_connexion());
-    $idAlbum = $_POST['idAlbum'];
-    $idPlaylist = $_POST['idPlaylist'];
+    $idAlbum = intval($_POST['idAlbum']);
+    $idPlaylist = intval($_POST['idPlaylist']);
     echo $crudPlaylist->ajouterAlbumPlaylist($idPlaylist, $idAlbum);
     header('Location: /App/Views/Playlist/Playlists.php');
     exit();
