@@ -23,16 +23,21 @@ session_start();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/Public/Css/Acceuil/like.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="/Public/JS/like.js"></script>
     <script src="/Public/JS/verifLike.js"></script>
-    <link rel="stylesheet" href="/Public/Css/Home/home-style.css">
+    <link rel="stylesheet" href="/Public/Css/Recherche/recherche-style.css">
     <title>Recherche</title>
 </head>
 <body>
+    <?php 
+        include __DIR__ . '/../Layout/Auth/NavBar.php'; // Inclure le menu de navigation
+    ?>
+    <?php
+        include __DIR__ . '/../Layout/Home/NavGenerique.php';
+    ?>
     <form action="/App/Views/Recherche/Recherche.php" method="get" id="form-recherche">
-        <input type="text" id="recherche" name="recherche" placeholder="recherche" required><br>
+        <input type="text" id="recherche" name="recherche" placeholder="Rechercher" required><br>
         <select name="genres" id="recherche-genre" hidden>
             <option value=""></option>
             <?php
