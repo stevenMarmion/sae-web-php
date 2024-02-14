@@ -8,7 +8,7 @@ $.ajax({
     },
     success: function(response) {
         console.log("reponse sdjivhsuhvb "+response);
-        if(response == "1"){
+        if(response == "true"){
             document.getElementsByName('like' + idAlbum)[0].children[0].src="/DataRessources/like/coeur_remplie.jpg";
             document.getElementsByName('like' + idAlbum)[0].setAttribute("activer","true");
         }

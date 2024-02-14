@@ -8,6 +8,7 @@ require_once __DIR__ . '/../../Autoloader/autoloader.php';
 use \App\Autoloader\Autoloader;
 use App\Models\EntityOperations\CrudUser;
 use App\Models\EntityOperations\CrudFavoris;
+use App\Models\Favori;
 use Database\DatabaseConnection\ConnexionBDD;
 use App\Models\User;
 
@@ -21,31 +22,42 @@ session_start();
 
 // Vérifier si l'utilisateur est connecté
 if (!isset($_SESSION['id'])) {
-    header("Location: /login.php"); // Rediriger vers la page de connexion si l'utilisateur n'est pas connecté
+    header("Location: /App/Views/Auth/UserLogin.php"); // Rediriger vers la page de connexion si l'utilisateur n'est pas connecté
     exit();
 }
+
 $userId = intval($_SESSION["id"]) ?? null;
 if (!empty($userId)) {
     $currentUser = $crudUser->obtenirUtilisateurParId($userId);
     $allUsersObject = [];
     $isAdmin = $currentUser["isAdmin"] == "1" ? true : false;
-    $currentUser = new User($currentUser["idU"],$currentUser["pseudo"],$currentUser["mdp"],$currentUser["adresseMail"],$isAdmin,[]);
+    $currentUser = new User($currentUser["idU"],
+                            $currentUser["pseudo"],
+                            $currentUser["mdp"],
+                            $currentUser["adresseMail"],
+                            $isAdmin,
+                            []);
     $allFavoris = $crudFavoris->obtenirFavorisParUtilisateur($currentUser->getId());
-
-    foreach ($allFavoris as $favori) {
-        $currentFavori = new Favori($favori["idU"], $favori["idAl"]);
-        $currentAlbum = $crudAlbum->obtenirAlbumParId($currentFavori->getIdAlbum());
-        $currentUser->ajouterFavori($currentAlbum["id"]);
-    }
     $allUsersObject[] = $currentUser;
 }
 
-$idCurrentUser = $_SESSION['id'];
+$errorDetected = null;
 
-$db = new ConnexionBDD();
-$crudUser = new CrudUser($db::obtenir_connexion());
-
-$userDatas = $crudUser->obtenirUtilisateurParId($idCurrentUser);
+if (isset($_GET['error'])) {
+    $errorDetected = true;
+    $error = $_GET['error'];
+    switch ($error) {
+        case 'AlreadyExists':
+            $alreadyExists = true;
+            break;
+        default:
+            $alreadyExists = true;
+            break;
+    }
+}
+else {
+    $errorDetected = false;
+}
 
 ?>
 
@@ -65,11 +77,11 @@ $userDatas = $crudUser->obtenirUtilisateurParId($idCurrentUser);
         include __DIR__ . '/../Layout/Home/NavGenerique.php';
     ?>
 
-    <h2>Profil de <?= $userDatas['pseudo'] ?></h2>
+    <h2>Profil de <?= $currentUser->getPseudo() ?></h2>
     <section>
         <form action="/App/Controllers/Profil/UserUpdateController.php" method="post">
             <input type="hidden" name="user_id" value="<?= $currentUser->getId() ?>">
-            <input type="hidden" name="mdp" value="<?= $currentUser->getMdp() ?>">
+            <input type="hidden" name="isAdmin" value="<?= $currentUser->isAdmin() == true ? "true" : "false" ?>">
 
             <div class="form-group">
                 <label for="pseudo">Pseudo :</label>
@@ -87,8 +99,23 @@ $userDatas = $crudUser->obtenirUtilisateurParId($idCurrentUser);
             </div>
             <input type="submit" value="Mettre à jour">
             <a href="/App/Views/Auth/UserLogin.php">Se déconnecter</a>
+            <?php if ($errorDetected) : ?>
+                <p class="erreur-update">
+                    <?php if ($alreadyExists) : ?>
+                        Ce pseudo existe déjà, veuillez en choisir un autre...
+                    <?php endif; ?>
+                </p>
+            <?php endif; ?>
         </form>
     </section>
+    <?php if ($currentUser->isAdmin() == true) : ?>
+        <section>
+            <h2 class="panel-button">Accéder au panel admin</h2>
+            <a href='/App/Views/Admin/PanelAdmin.php' class="button-link">
+                <button>Gérer la plateforme</button>
+            </a>
+        </section>
+    <?php endif; ?>
 </body>
 </html>
 

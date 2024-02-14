@@ -1,11 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
+namespace App\Controllers\Album;
+
+require_once __DIR__ . '/../../Autoloader/autoloader.php';
+
 use App\Autoloader\Autoloader;
 use Database\DatabaseConnection\ConnexionBDD;
 use App\Models\EntityOperations\CrudAlbum;
-
-require_once '../../../Database/DatabaseConnection/ConnexionBDD.php';
-require_once '../../Models/EntityOperations/CrudAlbum.php';
 
 Autoloader::register();
 
@@ -20,10 +23,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 function estLike() {
-
     $instance = new ConnexionBDD();
     $crudAlbum = new CrudAlbum($instance::obtenir_connexion());
-    $idAlbum = $_POST['idAlbum'];
-    echo $crudAlbum->estLike($_SESSION["id"], $idAlbum);
+    $idAlbum = intval($_POST['idAlbum']);
+    echo $crudAlbum->estLike(intval($_SESSION["id"]), $idAlbum) == true ? "true" : "false";
 }
 ?>

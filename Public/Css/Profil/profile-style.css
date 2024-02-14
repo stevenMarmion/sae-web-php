@@ -98,4 +98,35 @@ section {
     margin: 10vh auto;
 }
 
+button {
+    background-color: #1DB954;
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
 
+button:hover {
+    background-color: #16843a;
+}
+
+.button-link {
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+}
+
+.button-link button {
+    margin-top: 10px;
+}
+
+.panel-button {
+    color: white;
+}
+
+.erreur-update {
+    color: darkred;
+    font-style: italic;
+}
