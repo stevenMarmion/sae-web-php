@@ -121,7 +121,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
             $listeAlbumObjet = rechercheAnnee($_GET['recherche'],$crudAlbum,$instance,$crudArtiste);
         }
         else if($_GET["filtre"]=="genre"){
-            var_dump($_GET);
             $listeAlbumObjet = rechercheGenre($_GET['genres'],$crudAlbum,$instance,$crudArtiste);
         }
 
