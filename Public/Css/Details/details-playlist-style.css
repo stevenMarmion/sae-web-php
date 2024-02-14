@@ -80,3 +80,11 @@ button:hover {
     max-width: 800px;
     margin: 0 auto;
 }
+
+.retirer-album {
+    margin-top: 1em;
+}
+
+.retirer-album button {
+    background-color: red;
+}

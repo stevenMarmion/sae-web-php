@@ -94,7 +94,7 @@ class CrudFavoris {
         $query = "SELECT * FROM FAVORIS WHERE idU = ?";
         $stmt = $this->db->prepare($query);
         $stmt->execute([$idUtilisateur]);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
     }
 
     public function obtenirFavorisParAlbum(int $idAlbum) {

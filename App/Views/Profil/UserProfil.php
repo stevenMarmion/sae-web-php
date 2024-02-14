@@ -38,12 +38,6 @@ if (!empty($userId)) {
                             $isAdmin,
                             []);
     $allFavoris = $crudFavoris->obtenirFavorisParUtilisateur($currentUser->getId());
-
-    foreach ($allFavoris as $favori) {
-        $currentFavori = new Favori($favori["idU"], $favori["idAl"]);
-        $currentAlbum = $crudAlbum->obtenirAlbumParId($currentFavori->getIdAlbum());
-        $currentUser->ajouterFavori($currentAlbum["id"]);
-    }
     $allUsersObject[] = $currentUser;
 }
 
