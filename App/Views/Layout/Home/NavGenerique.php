@@ -13,7 +13,7 @@
             Home
         </a>
         <a href="/App/Views/Playlist/Playlists.php">Mes playlists</a>
-        <a href="#">Recherche utilisateur</a>
+        <a href="/App/Views/Recherche/Recherche.php">Recherche</a>
         <a href="/App/Views/Profil/UserProfil.php">Profil</a>
         <a href="/App/Views/Auth/UserLogin.php">Se déconnecter</a>
     </div>

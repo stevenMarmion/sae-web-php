@@ -250,6 +250,34 @@ class CrudAlbum {
         return $stmt->fetch(PDO::FETCH_ASSOC) ? true : false;
     }
 
+    public function obtenirAlbumParNom(string $nomAlbum){
+        $query = "SELECT * FROM ALBUMS WHERE titre like ?";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute(["%".$nomAlbum."%"]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function obtenirAlbumParCompositeur(string $nomCompositeur){
+        $query = "SELECT * FROM ALBUMS natural join COMPOSER where idAl=id and idA in (SELECT idA FROM ARTISTES WHERE nomA like ?)";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute(["%".$nomCompositeur."%"]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function obtenirAlbumParInterprete(string $nomInterprete){
+        $query = "SELECT * FROM ALBUMS natural join INTERPRETER where idAl=id and idA in (SELECT idA FROM ARTISTES WHERE nomA like ?)";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute(["%".$nomInterprete."%"]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function obtenirAlbumParAnnee(string $annee){
+        $query = "SELECT * FROM ALBUMS where dateDeSortie=?";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute([$annee]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
 }
 
 ?>
