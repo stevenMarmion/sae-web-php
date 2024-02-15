@@ -20,14 +20,28 @@ Autoloader::register();
 
 session_start();
 // id utilisateur stocké dans $_SESSION["id"]
-
+if (isset($_GET["index"]) && isset($_GET["index"])!=""){
+    $index = intval($_GET["index"]);
+}
+else{
+    $index = 0;
+}
 $instance = new ConnexionBDD();
 $crudAlbum = new CrudAlbum($instance::obtenir_connexion());
 $crudArtiste = new CrudArtiste($instance::obtenir_connexion());
 $crudPlaylist = new CrudPlaylist($instance::obtenir_connexion());
 $listeAlbum = $crudAlbum->obtenirAlbumsParDerniereSortie();
 $listeAlbumObjet = [];
+$i=0;
+$premier=false;
 foreach ($listeAlbum as $album) {
+    if($i%10==0){
+        if($premier){
+            array_push($listeAlbumObjet,$page);
+        }
+        $premier=true;
+        $page=[];
+    }
     $idC = $crudAlbum->obtenirCompositeurId(intval($album["id"]))["idA"];
     $idI = $crudAlbum->obtenirInterpreteId(intval($album["id"]))["idA"];
     $listeGenre = $crudAlbum->obtenirGenresAlbum(intval($album["id"]));
@@ -39,10 +53,98 @@ foreach ($listeAlbum as $album) {
                     $interprete=$crudArtiste->obtenirArtisteParId(intval($idI)) ?: [],
                     $genre = $listeGenre == false ? [] : $listeGenre,
                 );
-    array_push($listeAlbumObjet, $al);
+    array_push($page, $al);
+    $i++;
 }
+array_push($listeAlbumObjet,$page);
 
-//include_once '../Base/head.php';
+function afficheAlbum($index,$listeAlbumObjet,$crudAlbum,$crudPlaylist){
+    foreach($listeAlbumObjet[$index] as $album){
+        if($album->getCompositeurs()["nomA"]==$album->getInterpretes()["nomA"]){
+            $img = $album->getImg();
+            if(file_exists("../../../DataRessources/images/".$img) && (strstr($img,"%")===false)){
+                $img = $album->getImg() == "" ? "base.jpg" : $album->getImg();
+            }
+            else{
+                $img = "base.jpg";
+            }
+            ?>
+            <li class="album">
+                <img src="<?= '../../../DataRessources/images/'.$img?>"alt="image album" class="imageAlbum">
+
+                <button class="like" activer="false" onclick="like(<?=$album->getId()?>)" name="like<?=$album->getId()?>">
+                    <img src="/DataRessources/like/coeur_vide.jpg" alt="">
+                </button>
+                <script>
+                    estLike(<?=$album->getId()?>)
+                </script>
+
+                <h4 class="titreAlbum">
+                    <?= $album->getTitre()?>
+                </h4> 
+
+                <div class='interpreteAndcompositeur'>
+                    Interprete(s) et Compositeur(s) : <?= $album->getCompositeurs()["nomA"]?>
+                </div>
+            <?php 
+        } else {
+            ?>
+            <li class="album">
+                <div class="image-container">
+                    <img src="<?= '../../../DataRessources/images/'.$img?>" alt="image album" class="imageAlbum">
+                    <button class="like" activer="false" onclick="like(<?=$album->getId()?>)" name="like<?=$album->getId()?>">
+                        <img src="/DataRessources/like/coeur_vide.jpg" alt="">
+                    </button>
+                </div>
+                <script>
+                    estLike(<?=$album->getId()?>)
+                </script>
+                <h4 class="titreAlbum">
+                    <?= $album->getTitre()?>
+                </h4> 
+                <div class='interpreteAndcompositeur'>
+                    Compositeur(s) : <?= $album->getCompositeurs()["nomA"]?> 
+                </div>
+                <div class='interpreteAndcompositeur'>
+                    Interprete(s) : <?= $album->getInterpretes()["nomA"]?>
+                </div>
+            <?php
+        }
+        ?>
+                <a href='/App/Views/Details/DetailAlbum.php?id=<?= $album->getId() ?>'>
+                    <button>voir plus</button>
+                </a>
+
+                <?php
+                $playlistSansAlbumId = $crudPlaylist->obtenirPlaylistSansIdAlbum($album->getId(),$_SESSION["id"]);
+                if(sizeof($playlistSansAlbumId)==0){
+                    echo "<h4>aucune playlist disponible</h4>";        
+                }
+                else{
+                    echo "<h4>ajouter à une playlist</h4>";
+                
+                ?>
+
+                <form action="/App/Controllers/Playlist/AjoutAlbum.php" method="post">
+                    <select name="idPlaylist">
+                        <?php
+                        foreach($crudPlaylist->obtenirPlaylistSansIdAlbum($album->getId(),$_SESSION["id"]) as $playlist){
+                            echo "<option value=".$playlist["idPlaylist"].">".$playlist["nomPlaylist"]."</option>";
+                        }
+                        ?>
+                    </select>
+                    <input type="hidden" name="idAlbum" value="<?= $album->getId()?>">
+                    <input type="submit" value="Ajouter à une playlist">
+                </form>
+
+                <?php
+                }
+                ?>
+
+            </li>
+        <?php
+    }
+}
 
 ?>
 <!DOCTYPE html>
@@ -70,95 +172,20 @@ foreach ($listeAlbum as $album) {
     <h1>
         Voici les dernieres sorties !
     </h1>
+    <form action="/App/Views/Home/Accueil.php" method="get">
+        <input type="hidden" name="index" value="<?= $index-1<0 ? $index : $index-1?>">
+        <button type="submit">avant</button>
+    </form>
+    <form action="/App/Views/Home/Accueil.php" method="get">
+        <input type="hidden" name="index" value="<?= $index+1>count($listeAlbumObjet)-1 ? $index : $index+1?>">
+        <button type="submit">apres</button>
+    </form>
     <ul>
         <?php
-            foreach($listeAlbumObjet as $album){
-                if($album->getCompositeurs()["nomA"]==$album->getInterpretes()["nomA"]){
-                    $img = $album->getImg();
-                    if(file_exists("../../../DataRessources/images/".$img) && (strstr($img,"%")===false)){
-                        $img = $album->getImg() == "" ? "base.jpg" : $album->getImg();
-                    }
-                    else{
-                        $img = "base.jpg";
-                    }
-                    ?>
-                    <li class="album">
-                        <img src="<?= '../../../DataRessources/images/'.$img?>"alt="image album" class="imageAlbum">
-
-                        <button class="like" activer="false" onclick="like(<?=$album->getId()?>)" name="like<?=$album->getId()?>">
-                            <img src="/DataRessources/like/coeur_vide.jpg" alt="">
-                        </button>
-                        <script>
-                            estLike(<?=$album->getId()?>)
-                        </script>
-
-                        <h4 class="titreAlbum">
-                            <?= $album->getTitre()?>
-                        </h4> 
-
-                        <div class='interpreteAndcompositeur'>
-                            Interprete(s) et Compositeur(s) : <?= $album->getCompositeurs()["nomA"]?>
-                        </div>
-                    <?php 
-                } else {
-                    ?>
-                    <li class="album">
-                        <div class="image-container">
-                            <img src="<?= '../../../DataRessources/images/'.$img?>" alt="image album" class="imageAlbum">
-                            <button class="like" activer="false" onclick="like(<?=$album->getId()?>)" name="like<?=$album->getId()?>">
-                                <img src="/DataRessources/like/coeur_vide.jpg" alt="">
-                            </button>
-                        </div>
-                        <script>
-                            estLike(<?=$album->getId()?>)
-                        </script>
-                        <h4 class="titreAlbum">
-                            <?= $album->getTitre()?>
-                        </h4> 
-                        <div class='interpreteAndcompositeur'>
-                            Compositeur(s) : <?= $album->getCompositeurs()["nomA"]?> 
-                        </div>
-                        <div class='interpreteAndcompositeur'>
-                            Interprete(s) : <?= $album->getInterpretes()["nomA"]?>
-                        </div>
-                    <?php
-                }
-                ?>
-                        <a href='/App/Views/Details/DetailAlbum.php?id=<?= $album->getId() ?>'>
-                            <button>voir plus</button>
-                        </a>
-
-                        <?php
-                        $playlistSansAlbumId = $crudPlaylist->obtenirPlaylistSansIdAlbum($album->getId(),$_SESSION["id"]);
-                        if(sizeof($playlistSansAlbumId)==0){
-                            echo "<h4>aucune playlist disponible</h4>";        
-                        }
-                        else{
-                            echo "<h4>ajouter à une playlist</h4>";
-                        
-                        ?>
-
-                        <form action="/App/Controllers/Playlist/AjoutAlbum.php" method="post">
-                            <select name="idPlaylist">
-                                <?php
-                                foreach($crudPlaylist->obtenirPlaylistSansIdAlbum($album->getId(),$_SESSION["id"]) as $playlist){
-                                    echo "<option value=".$playlist["idPlaylist"].">".$playlist["nomPlaylist"]."</option>";
-                                }
-                                ?>
-                            </select>
-                            <input type="hidden" name="idAlbum" value="<?= $album->getId()?>">
-                            <input type="submit" value="Ajouter à une playlist">
-                        </form>
-
-                        <?php
-                        }
-                        ?>
-
-                    </li>
-                <?php
-            }
+        afficheAlbum($index,$listeAlbumObjet,$crudAlbum,$crudPlaylist);
         ?>
     </ul>
     <script src="../../../Public/JS/like.js"></script>
+    <script src="../../../Public/JS/acceuil.js"></script>
     </body>
 </html>
