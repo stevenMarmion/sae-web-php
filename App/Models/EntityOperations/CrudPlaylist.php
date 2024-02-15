@@ -190,7 +190,7 @@ class CrudPlaylist
 
     public function obtenirPlaylistSansIdAlbum(int $idAlbum, int $idU)
     {
-        $query = "SELECT * FROM PLAYLIST natural join POSSEDER WHERE idPlaylist NOT IN (SELECT idPlaylist FROM CONTENIR WHERE idAl = ?) and idU = ?";
+        $query = "SELECT * FROM PLAYLIST natural join POSSEDER WHERE idPlaylist NOT IN (SELECT idPlaylist FROM CONTENIR WHERE idAl = ?) and idU = ? and nomPlaylist<>'Like'";
         $stmt = $this->db->prepare($query);
         $stmt->execute([$idAlbum,$idU]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);

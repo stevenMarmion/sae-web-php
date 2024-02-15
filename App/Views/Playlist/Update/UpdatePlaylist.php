@@ -71,7 +71,11 @@ else {
         <h1>Modification de la playlist <strong><?= $playlist->getNomPlaylist() ?></strong> </h1>
         <form action="/App/Controllers/Playlist/UpdatePlaylistController.php?update=PLAYLIST" method="post" class="styled-form">
             <label for="nomPlaylist">Nom de la playlist :</label>
-            <input type="text" id="nomPlaylist" name="nomPlaylist" value="<?= $playlist->getNomPlaylist() ?>" required>
+            <?php if ($playlist->getNomPlaylist() == "Like") : ?>
+                <input type="text" id="nomPlaylist" name="nomPlaylist" value="<?= $playlist->getNomPlaylist() ?>" required disabled>
+            <?php else : ?>
+                <input type="text" id="nomPlaylist" name="nomPlaylist" value="<?= $playlist->getNomPlaylist() ?>" required>
+            <?php endif; ?>
             <?php if ($errorDetected) : ?>
                 <div class="erreur-container">
                     <p class="erreur-creation-playlist">

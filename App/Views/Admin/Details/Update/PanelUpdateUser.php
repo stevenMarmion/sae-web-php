@@ -7,6 +7,7 @@ namespace App\Views\Admin\Details\Update;
 require_once __DIR__ . '/../../../../Autoloader/autoloader.php';
 
 use \App\Autoloader\Autoloader;
+use App\Models\Album;
 use \Database\DatabaseConnection\ConnexionBDD;
 use \App\Models\EntityOperations\CrudAlbum;
 use \App\Models\EntityOperations\CrudUser;
@@ -36,7 +37,8 @@ if (isset($_SERVER["REQUEST_METHOD"]) && isset($_GET["update"])) {
                 foreach ($allFavoris as $favori) {
                     $currentFavori = new Favori($favori["idU"], $favori["idAl"]);
                     $currentAlbum = $crudAlbum->obtenirAlbumParId($currentFavori->getIdAlbum());
-                    $currentUser->ajouterFavori($currentAlbum["id"]);
+                    $album = new Album(intval($currentAlbum["id"]), $currentAlbum["img"], $currentAlbum["dateDeSortie"], $currentAlbum["titre"], [], [], []);
+                    $currentUser->ajouterFavori($album);
                 }
                 $allUsersObject[] = $currentUser;
             }

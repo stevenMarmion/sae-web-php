@@ -84,7 +84,11 @@ else {
                 </a>
                 <div class="form-inline">
                     <a href="/App/Views/Playlist/Update/UpdatePlaylist.php?update=PLAYLIST&idP=<?= intval($playlist["idPlaylist"]) ?>" class="custom-update-submit-button"></a>
-                    <a href="/App/Views/Playlist/Delete/DeletePlaylist.php?delete=PLAYLIST&idP=<?= intval($playlist["idPlaylist"]) ?>" class="custom-delete-submit-button"></a>
+                    <?php if ($playlist['nomPlaylist'] == "Like") : ?>
+                        <a href="/App/Views/Playlist/Delete/DeletePlaylist.php?delete=PLAYLIST&idP=<?= intval($playlist["idPlaylist"]) ?>" class="custom-delete-submit-button hidden"></a>
+                    <?php else : ?>
+                        <a href="/App/Views/Playlist/Delete/DeletePlaylist.php?delete=PLAYLIST&idP=<?= intval($playlist["idPlaylist"]) ?>" class="custom-delete-submit-button visible"></a>
+                    <?php endif; ?>
                 </div>
             </li>
         

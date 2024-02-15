@@ -152,3 +152,11 @@ form input[type="file"]:hover {
     text-indent: -9999px;
     background-color: transparent;
 }
+
+.visible {
+    visibility: visible;
+}
+
+.hidden {
+    visibility: hidden;
+}

@@ -16,52 +16,8 @@ Autoloader::register();
 $instance = new ConnexionBDD();
 $crudGenre = new CrudGenre($instance::obtenir_connexion());
 $listeGenre = $crudGenre->obtenirTousGenres();
+
 session_start();
-?>
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="/Public/JS/like.js"></script>
-    <script src="/Public/JS/verifLike.js"></script>
-    <link rel="stylesheet" href="/Public/Css/Recherche/recherche-style.css">
-    <title>Recherche</title>
-</head>
-<body>
-    <?php 
-        include __DIR__ . '/../Layout/Auth/NavBar.php'; // Inclure le menu de navigation
-    ?>
-    <?php
-        include __DIR__ . '/../Layout/Home/NavGenerique.php';
-    ?>
-    <form action="/App/Views/Recherche/Recherche.php" method="get" id="form-recherche">
-        <input type="text" id="recherche" name="recherche" placeholder="Rechercher" required><br>
-        <select name="genres" id="recherche-genre" hidden>
-            <option value=""></option>
-            <?php
-
-            foreach ($listeGenre as $genre) {
-                ?>
-                <option value="<?=$genre["nomG"]?>"><?=$genre["nomG"]?></option>
-                <?php
-            }
-
-            ?>
-        </select>
-        Recherche par : <br>
-        <select name="filtre" onchange="changement()" id="type-recherche">
-            <option value="nomAlbum">Nom d'album</option>
-            <option value="nomCompositeur">Nom du compositeur</option>
-            <option value="nomInterprete">Nom de l'interprete</option>
-            <option value="genre">Genre</option>
-            <option value="Annee">Année</option>
-        </select><br>
-        <input type="submit" value="rechercher">
-    </form>
-    <script src="/Public/JS/recherche.js"></script>
-<?php
 
 function AlbumToAlbumObjet(array $listeAlbum, ConnexionBDD $instance,CrudAlbum $crudAlbum, CrudArtiste $crudArtiste){
     $listeAlbumObjet=[];
@@ -133,6 +89,49 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
 ?>
 
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="/Public/JS/like.js"></script>
+    <script src="/Public/JS/verifLike.js"></script>
+    <link rel="stylesheet" href="/Public/Css/Recherche/recherche-style.css">
+    <title>Recherche</title>
+</head>
+<body>
+    <?php 
+        include __DIR__ . '/../Layout/Auth/NavBar.php'; // Inclure le menu de navigation
+    ?>
+    <?php
+        include __DIR__ . '/../Layout/Home/NavGenerique.php';
+    ?>
+    <form action="/App/Views/Recherche/Recherche.php" method="get" id="form-recherche">
+        <input type="text" id="recherche" name="recherche" placeholder="Rechercher" required><br>
+        <select name="genres" id="recherche-genre" hidden>
+            <option value=""></option>
+            <?php
+
+            foreach ($listeGenre as $genre) {
+                ?>
+                <option value="<?=$genre["nomG"]?>"><?=$genre["nomG"]?></option>
+                <?php
+            }
+
+            ?>
+        </select>
+        Recherche par : <br>
+        <select name="filtre" onchange="changement()" id="type-recherche">
+            <option value="nomAlbum">Nom d'album</option>
+            <option value="nomCompositeur">Nom du compositeur</option>
+            <option value="nomInterprete">Nom de l'interprete</option>
+            <option value="genre">Genre</option>
+            <option value="Annee">Année</option>
+        </select><br>
+        <input type="submit" value="rechercher">
+    </form>
+    <script src="/Public/JS/recherche.js"></script>
     <ul>
         <?php
             foreach($listeAlbumObjet as $album){
