@@ -52,24 +52,37 @@ Edition/Suppression/Update Albums
 
 ---
 
-## Execution
+## Déploiement
 
-Pour exécuter le fichier d'initialisation de la BDD, merci de suivre la commande suivante :
+Pour déployer l'application, merci de suivre les instructions suivantes :
 
-```bash
-bash Bash/bash_insertion.sh
-```
+- cloner le projet sur votre machine en local
+- Si PHP n'est pas sur votre machine. Merci de vous en assurer avant de suivre les instructions :
 
-Et pour lancer le serveur :
+- ```php
+  php --version
+  ```
 
-```bash
-bash Bash/serveur.sh
-```
+Si aucune version de PHP n'est trouvable, merci de l'installer en suivant le guide ici : <https://www.php.net/manual/fr/install.php>
 
-Une fois arrivé dans l'URL, veuillez tapez : '/Public' à la suite. Ce qui donne une URL comme ceci :
+Dans le cas où une version est trouvée, continuez l'avancement des commandes ci-dessous :
 
-```text
-localhost:8000/Public
-```
+- Vérifier l'existence d'un fichier **.sqlite3** dans le chemin : *Database/DatabaseScripts/*
 
-**SI et SEULEMENT SI le fichier SQL/BD_app_Musique.sqlite3 n'est pas existant**. Si il l'est, c'est que la BDD est déjà instanciée.
+Si il n'y aucun fichier :
+
+- ```bash
+  bash Bash/bash_insertion.sh
+  ```
+
+- Poursuivez en écrivant un ou plusieurs des fichiers proposées
+- Lancer le serveur avec la commande suivante :
+
+- ```bash
+  bash Bash/serveur.php
+  ```
+
+- Ouvrez l'URL qui vous ai proposé
+- Complétez l'URL par */Public*
+
+Bonne découvert :)
