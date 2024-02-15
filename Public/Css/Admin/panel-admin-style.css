@@ -105,3 +105,28 @@ nav a:hover {
     width: 20px;
     height: 20px;
 }
+
+.avertissement {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.error-avertissement {
+    text-align: center;
+}
+
+.retour a{
+    background-color: #1DB954;
+    color: #fff;
+    border: none;
+    width: 200px;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 15px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.3s ease;
+}
+
