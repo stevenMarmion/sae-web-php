@@ -87,7 +87,9 @@ class InstancesTables {
      * @return array|false Les données YAML chargées depuis le fichier, ou false en cas d'erreur.
      */
     function recup_argv($argv) {
-        echo "\n>> [Instanciation de la BDD avec les paramètres d'exécution suivant...\n", print_r($argv), "]\n" ;
+        echo "\n>> [Instanciation de la BDD avec les paramètres d'exécution suivant...\n";
+        print_r($argv);
+        echo "]\n";
         if (count($argv) < 2) {
             die("Veuillez fournir le chemin vers le fichier YAML en argument !\n");
         }

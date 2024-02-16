@@ -45,7 +45,8 @@ if (isset($_GET['table'])) {
                 foreach ($allFavoris as $favori) {
                     $currentFavori = new Favori($favori["idU"], $favori["idAl"]);
                     $currentAlbum = $crudAlbum->obtenirAlbumParId($currentFavori->getIdAlbum());
-                    $currentUser->ajouterFavori($currentAlbum["id"]);
+                    $currentAlbum = new Album($currentAlbum["id"],$currentAlbum["img"] ?? "",$currentAlbum["dateDeSortie"],$currentAlbum["titre"],[],[],[]);
+                    $currentUser->ajouterFavori($currentAlbum);
                 }
                 $allUsersObject[] = $currentUser;
             }
@@ -94,15 +95,17 @@ if (isset($_GET['table'])) {
 
                 // Récupérer les genres
                 $genres = $crudEtre->obtenirGenresParMusique($album["id"]);
-                if (sizeof($genres) == 0) {
-                    $currentGenre = new Genre(-1, "Inconnu");
-                    $currentAlbum->ajouterGenre($currentGenre);
-                }
-                else {
-                    foreach ($genres as $genre) {
-                        $currentGenre = $crudGenre->obtenirGenreParId($genre["idG"]);
-                        $currentGenre = new Genre($genre["idG"],$currentGenre['nomG']);
+                if (is_array($genres)) {
+                    if (sizeof($genres) == 0) {
+                        $currentGenre = new Genre(-1, "Inconnu");
                         $currentAlbum->ajouterGenre($currentGenre);
+                    }
+                    else {
+                        foreach ($genres as $genre) {
+                            $currentGenre = $crudGenre->obtenirGenreParId($genre["idG"]);
+                            $currentGenre = new Genre($genre["idG"],$currentGenre['nomG']);
+                            $currentAlbum->ajouterGenre($currentGenre);
+                        }
                     }
                 }
 
@@ -180,9 +183,7 @@ if (isset($_GET['table'])) {
                     <td><?= $user->getMail() ?></td>
                     <td><?= $user->isAdmin() ? "Oui" : "Non" ?></td>
                     <td>
-                        <?php foreach ($user->getFavoris() as $favori): ?>
-                            ID Album: <?= $favori->getId() ?>, Titre: <?= $favori->getTitre() ?><br>
-                        <?php endforeach; ?>
+                        <?= sizeof($user->getFavoris()) ?>
                     </td>
                     <td>
                         <div class="form-inline">

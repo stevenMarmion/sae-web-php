@@ -60,7 +60,7 @@ class Album {
      * Constructeur de la classe Musique.
      *
      * @param int      $idAl          L'identifiant unique de la musique.
-     * @param int      $img           L'identifiant de l'image associée à la musique.
+     * @param string   $img           L'identifiant de l'image associée à la musique.
      * @param int      $dateDeSortie  La date de sortie de la musique.
      * @param string   $title         Le titre de la musique.
      * @param array    $compositeur   La liste de compositeurs de la musique.
@@ -89,7 +89,7 @@ class Album {
     /**
      * Obtenir l'identifiant de l'image associée à la musique.
      *
-     * @return int L'identifiant de l'image.
+     * @return string L'identifiant de l'image.
      */
     public function getImg() {
         return $this->img;
@@ -143,9 +143,9 @@ class Album {
     /**
      * Définir l'identifiant de l'image associée à la musique.
      *
-     * @param int $img Le nouvel identifiant de l'image.
+     * @param string $img Le nouvel identifiant de l'image.
      */
-    public function setImg(int $img) {
+    public function setImg(string $img) {
         $this->img = $img;
     }
 

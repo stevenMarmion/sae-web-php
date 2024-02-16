@@ -26,7 +26,7 @@ class Playlist
     /**
      * @var int L'identifiant de l'utilisateur auquel la playlist est associée.
      */
-    private int $idU;
+    private int $idCreateur;
 
     /**
      * @var string Le nom de la playlist.
@@ -39,17 +39,24 @@ class Playlist
     private array $albums;
 
     /**
+     * @var string l'image de la plylist.
+     */
+    private string $img;
+
+    /**
      * Constructeur de la classe Playlist.
      *
-     * @param int    $idPlaylist L'identifiant unique de la playlist.
-     * @param int    $idU        L'identifiant de l'utilisateur auquel la playlist est associée.
+     * @param int    $idPlaylist  L'identifiant unique de la playlist.
+     * @param int    $idU         L'identifiant de l'utilisateur auquel la playlist est associée.
      * @param string $nomPlaylist Le nom de la playlist.
+     * @param string $img         L'image de la playlist.
      */
-    public function __construct($idPlaylist, $idU, $nomPlaylist)
+    public function __construct($idPlaylist, $idU, $img, $nomPlaylist)
     {
         $this->idPlaylist = $idPlaylist;
-        $this->idU = $idU;
+        $this->idCreateur = $idU;
         $this->nomPlaylist = $nomPlaylist;
+        $this->img = $img;
         $this->albums = [];
     }
 
@@ -64,13 +71,13 @@ class Playlist
     }
 
     /**
-     * Obtenir l'identifiant de l'utilisateur associé à la playlist.
+     * Obtenir l'identifiant de l'utilisateur qui a créer la playlist.
      *
-     * @return int L'identifiant de l'utilisateur.
+     * @return int L'identifiant de l'utilisateur qui a créer cette playlist.
      */
-    public function getIdU()
+    public function getIdCreateur()
     {
-        return $this->idU;
+        return $this->idCreateur;
     }
 
     /**
@@ -81,6 +88,16 @@ class Playlist
     public function getNomPlaylist()
     {
         return $this->nomPlaylist;
+    }
+
+    /**
+     * Obtenir l'image de la playlist.
+     *
+     * @return string L'image de la playlist.
+     */
+    public function getImg()
+    {
+        return $this->img;
     }
 
     /**
@@ -112,9 +129,9 @@ class Playlist
      */
     public function supprimerAlbum(int $idAlbum)
     {
-        foreach ($this->getAlbums() as $index => $album) {
+        foreach ($this->albums as $index => $album) {
             if ($album->getId() === $idAlbum) {
-                unset($this->getAlbums()[$index]);
+                unset($this->albums[$index]);
                 return true;
             }
         }
@@ -130,7 +147,7 @@ class Playlist
      */
     public function equals(Playlist $other)
     {
-        return $this->idPlaylist === $other->idPlaylist && $this->idU === $other->idU;
+        return $this->idPlaylist === $other->idPlaylist && $this->idCreateur === $other->idCreateur;
     }
 
 }

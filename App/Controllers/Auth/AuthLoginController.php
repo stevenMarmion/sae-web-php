@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controllers;
+namespace App\Controllers\Auth;
 
 require_once __DIR__ . '/../../Autoloader/autoloader.php';
 
