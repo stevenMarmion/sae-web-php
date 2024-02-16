@@ -159,3 +159,24 @@ select:focus {
     border-color: #16843a;
 }
 
+
+.flex-button-pagination {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.flex-button-pagination form button{
+    width: auto;
+}
+
+.flex-button-pagination form:nth-child(1){
+    margin-left: 40%;
+    margin-right: auto;
+}
+
+.flex-button-pagination form:nth-child(2){
+    margin-left: auto;
+    margin-right: 40%;
+}
