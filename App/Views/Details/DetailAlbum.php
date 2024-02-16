@@ -72,10 +72,16 @@ if (isset($_GET["id"]) && isset($_SESSION["id"])) {
     $avgNotation = 0;
     $allNotationsOnAlbum = $crudNote->obtenirToutesNotesAlbum($idAlbum);
     if (is_array($allNotationsOnAlbum)) {
+        $nbNotation = sizeof($allNotationsOnAlbum); // permet de savoir combien de personnes ont noté l'album en question. 
         foreach ($allNotationsOnAlbum as $noteGiven) {
             $avgNotation += intval($noteGiven["note"]);
         }
         $avgNotation /= sizeof($allNotationsOnAlbum);
+    }
+    else {
+        // en cas d'erreurs, on affiche quand meme des données de sorte à éviter l'erreur de chargement ==> gestion d'erreurs
+        $nbNotation = 0;
+        $avgNotation + 0;
     }
 }
 
@@ -144,6 +150,9 @@ if (isset($_GET["id"]) && isset($_SESSION["id"])) {
             <h3>
                 Notation moyenne donnée par la communité : <strong><?= $album["titre"] ?></strong>
             </h3>
+            <h4>
+                Personnes qui ont noté l'album : <strong><?= $nbNotation ?></strong>
+            </h4>
             <section class="avg-notation">
                 <p><?= $avgNotation ?> / 5</p>
             </section>

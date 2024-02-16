@@ -23,8 +23,12 @@ h2 {
     text-decoration: underline;
 }
 
-h3 {
+h3, h4 {
     margin-left: 29%;
+}
+
+h4 {
+    font-style: italic;
 }
 
 .imageAlbum {
@@ -135,7 +139,7 @@ input[type="submit"] {
     margin-bottom: 10px;
 }
 
-.notation-details h3 strong {
+.notation-details h3 strong, .notation-details h4 strong {
     font-size: 18px;
     color: #1db954;
     margin-bottom: 10px;
