@@ -2,6 +2,7 @@
 PRAGMA foreign_keys = OFF;
 
 -- Supprimer les tables avec contraintes de clé étrangère
+DROP TABLE IF EXISTS "POSSEDER";
 DROP TABLE IF EXISTS "INTERPRETER";
 DROP TABLE IF EXISTS "CONTENIR";
 DROP TABLE IF EXISTS "COMPOSER";

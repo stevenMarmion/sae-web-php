@@ -213,7 +213,6 @@ class CrudAlbum {
         $stmt = $this->db->prepare($query);
         $stmt->execute([$albumId]);
         return $stmt->fetch(PDO::FETCH_ASSOC) ?: false;
-        
     }
 
     public function obtenirAlbumsParDerniereSortie() {
@@ -221,6 +220,71 @@ class CrudAlbum {
         $stmt = $this->db->query($query);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function ajouterLike(int $idU, int $idAlbum) {
+        try {
+            $query = "INSERT INTO FAVORIS (idU, idAl) VALUES (?, ?)";
+            $stmt = $this->db->prepare($query);
+            $stmt->execute([$idU, $idAlbum]);
+            return true;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    public function supprimerLike(int $idU, int $idAlbum) {
+        try {
+            $query = "DELETE FROM FAVORIS WHERE idU = ? AND idAl = ?";
+            $stmt = $this->db->prepare($query);
+            $stmt->execute([$idU, $idAlbum]);
+            return true;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    public function estLike(int $idU, int $idAlbum) {
+        $query = "SELECT * FROM FAVORIS WHERE idU = ? AND idAl = ?";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute([$idU, $idAlbum]);
+        return $stmt->fetch(PDO::FETCH_ASSOC) ? true : false;
+    }
+
+    public function obtenirAlbumParNom(string $nomAlbum){
+        $query = "SELECT * FROM ALBUMS WHERE titre like ?";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute(["%".$nomAlbum."%"]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function obtenirAlbumParCompositeur(string $nomCompositeur){
+        $query = "SELECT * FROM ALBUMS natural join COMPOSER where idAl=id and idA in (SELECT idA FROM ARTISTES WHERE nomA like ?)";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute(["%".$nomCompositeur."%"]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function obtenirAlbumParInterprete(string $nomInterprete){
+        $query = "SELECT * FROM ALBUMS natural join INTERPRETER where idAl=id and idA in (SELECT idA FROM ARTISTES WHERE nomA like ?)";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute(["%".$nomInterprete."%"]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function obtenirAlbumParAnnee(string $annee){
+        $query = "SELECT * FROM ALBUMS where dateDeSortie=?";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute([$annee]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function obtenirAlbumParGenre(string $genre){
+        $query = "SELECT * FROM ALBUMS WHERE id in (SELECT idAl FROM ETRE natural join GENRE where nomG=?)";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute([$genre]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
 }
 
 ?>

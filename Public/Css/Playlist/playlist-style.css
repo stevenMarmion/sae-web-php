@@ -1,0 +1,162 @@
+body {
+    background-color: #e8e8ea;
+    color: #282828;
+    font-family: 'Arial', sans-serif;
+    margin: 0 0 20em 0;
+}
+
+li > img{
+    width: 100px;
+    height: 100px;
+}
+
+h1 {
+    text-align: center;
+    color: #1DB954;
+}
+
+form {
+    margin: 20px auto;
+    text-align: center;
+}
+
+form input[type="text"],
+form input[type="file"],
+body > form input[type="submit"] {
+    display: block;
+    margin: 10px auto;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #1DB954;
+    font-size: 16px;
+    color: #282828;
+    background-color: #fff;
+    transition: border-color 0.3s ease;
+}
+
+form input[type="text"]:focus,
+form input[type="file"]:focus,
+body > form input[type="submit"]:focus {
+    outline: none;
+    border-color: #16843a;
+}
+
+form input[type="submit"]:hover,
+form input[type="file"]:hover {
+    cursor: pointer;
+}
+
+.playlists {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 800px;
+    display: flex;
+    justify-content: center;
+}
+
+.playlists ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.playlists ul li {
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    text-align: center;
+    margin: 20px;
+    padding: 20px;
+}
+
+.playlists ul li img {
+    width: 150px;
+    height: 150px;
+    border-radius: 5px;
+    display: block;
+    margin: 0 auto 10px;
+}
+
+.playlists ul li a {
+    display: block;
+    color: black;
+    text-decoration: none;
+    font-weight: bold;
+    margin-top: 10px;
+    transition: color 0.3s ease;
+}
+
+.playlists ul li a strong {
+    color: #1DB954;
+    text-decoration: underline;
+}
+
+.playlists ul li a:hover {
+    color: #16843a;
+}
+
+.erreur-creation-playlist {
+    color: darkred;
+    font-style: italic;
+}
+
+.erreur-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.erreur-creation-playlist {
+    text-align: center;
+}
+
+.form-inline {
+    display: flex;
+    align-items: center;
+}
+
+.form-inline a:nth-child(1) {
+    margin-left: auto;
+    margin-right: 0.2em;
+}
+
+.form-inline a:nth-child(2) {
+    margin-right: auto;
+    margin-left: 0.2em;
+}
+
+.custom-delete-submit-button {
+    background-image: url('/Public/Icons/trash.png');
+    background-size: cover; 
+    width: 20px; 
+    height: 20px;
+    background-size: contain;
+    background-repeat: no-repeat; 
+    border: none; 
+    cursor: pointer; 
+    text-indent: -9999px;
+    background-color: transparent;
+}
+
+.custom-update-submit-button {
+    background-image: url('/Public/Icons/pen.png');
+    background-size: cover; 
+    width: 20px; 
+    height: 20px;
+    background-size: contain;
+    background-repeat: no-repeat; 
+    border: none; 
+    cursor: pointer; 
+    text-indent: -9999px;
+    background-color: transparent;
+}
+
+.visible {
+    visibility: visible;
+}
+
+.hidden {
+    visibility: hidden;
+}

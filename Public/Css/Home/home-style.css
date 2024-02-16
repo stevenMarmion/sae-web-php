@@ -63,6 +63,9 @@ ul {
 
 
 .imageAlbum {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
     width: 200px;
     height: 200px;
     border-radius: 5px;
@@ -96,3 +99,63 @@ button {
 button:hover {
     background-color: #16843a;
 }
+
+.like { 
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+}
+
+.like:hover {
+    background-color: transparent;
+}
+
+.like img {
+    width: 30px;
+    height: auto;
+    transition: transform 0.3s ease;
+}
+
+.like:hover img {
+    transform: scale(1.1);
+}
+
+form {
+    text-align: center;
+}
+
+input[type="submit"] {
+    background-color: #1DB954;
+    color: #fff;
+    border: none;
+    font-weight: bold;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+}
+
+input[type="submit"]:hover {
+    background-color: #16843a;
+}
+
+select {
+    padding: 8px 12px;
+    border: 1px solid #1DB954;
+    border-radius: 5px;
+    font-size: 10px;
+    color: #282828;
+    background-color: #fff;
+    cursor: pointer;
+    transition: border-color 0.3s ease;
+    margin-top: 10px;
+}
+
+select:hover,
+select:focus {
+    border-color: #16843a;
+}
+
