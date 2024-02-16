@@ -172,14 +172,16 @@ function afficheAlbum($index,$listeAlbumObjet,$crudAlbum,$crudPlaylist){
     <h1>
         Voici les dernieres sorties !
     </h1>
-    <form action="/App/Views/Home/Accueil.php" method="get">
-        <input type="hidden" name="index" value="<?= $index-1<0 ? $index : $index-1?>">
-        <button type="submit">avant</button>
-    </form>
-    <form action="/App/Views/Home/Accueil.php" method="get">
-        <input type="hidden" name="index" value="<?= $index+1>count($listeAlbumObjet)-1 ? $index : $index+1?>">
-        <button type="submit">apres</button>
-    </form>
+    <section class="flex-button-pagination">
+        <form action="/App/Views/Home/Accueil.php" method="get">
+            <input type="hidden" name="index" value="<?= $index-1<0 ? $index : $index-1?>">
+            <button type="submit">Page précédente</button>
+        </form>
+        <form action="/App/Views/Home/Accueil.php" method="get">
+            <input type="hidden" name="index" value="<?= $index+1>count($listeAlbumObjet)-1 ? $index : $index+1?>">
+            <button type="submit">Page suivante</button>
+        </form>
+    </section>
     <ul>
         <?php
         afficheAlbum($index,$listeAlbumObjet,$crudAlbum,$crudPlaylist);
