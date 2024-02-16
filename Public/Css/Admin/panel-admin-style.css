@@ -1,0 +1,132 @@
+body {
+    background-color: #121212;
+    color: #fff;
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    height: 100vh;
+    margin: 0;
+}
+
+.navigation-gauche {
+    width: 300px;
+    background-color: #333;
+    padding: 20px;
+}
+
+body > section > div > h1 {
+    font-size: 200%;
+    margin: 6vh;
+    color: #fff;
+}
+
+body > section > div {
+    text-align: center;
+}
+
+nav a {
+    display: block;
+    margin: 10px 0;
+    padding: 15px;
+    background-color: #1DB954;
+    color: #fff;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+}
+
+nav a:hover {
+    background-color: #16843a;
+}
+
+#panel-admin-link {
+    background-color: #1DB954;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+#panel-admin-link:hover {
+    background-color: #16843a;
+}
+
+#logo {
+    display: block;
+    margin: auto;
+}
+
+.datas-flexed {
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+.info-appli {
+    margin-left: 2em;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.info-card {
+    background-color: #f7f7f7;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin: 10px;
+    padding: 15px;
+    text-align: center;
+    width: 200px;
+    flex: 1;
+    transition: background-color 0.3s ease, flex 0.3s ease;
+}
+
+.info-card:hover {
+    background-color: #e0e0e0;
+    cursor: pointer;
+    flex: 2;
+}
+
+.info-label {
+    color: #555;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.info {
+    font-size: 24px;
+    color: #333;
+    font-weight: bold;
+    margin-left: 0.5em;
+}
+
+#icon-retour {
+    margin-right: 10px;
+    width: 20px;
+    height: 20px;
+}
+
+.avertissement {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.error-avertissement {
+    text-align: center;
+}
+
+.retour a{
+    background-color: #1DB954;
+    color: #fff;
+    border: none;
+    width: 200px;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 15px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.3s ease;
+}
+

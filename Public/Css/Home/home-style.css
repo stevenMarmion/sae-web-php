@@ -1,0 +1,161 @@
+body {
+    background-color: #e8e8ea;
+    color: #282828;
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+}
+
+h1 {
+    text-align: center;
+    color: #1DB954;
+}
+
+h2 {
+    text-align: center;
+    color: #1DB954;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.album {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 15px;
+    padding: 10px;
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+
+.album:hover {
+    background-color: #f1f1f1;
+    cursor: pointer;
+}
+
+.message-user-accueil {
+    text-align: center;
+    font-weight: bold;
+    color: #282828;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 10px 0;
+}
+
+.message-user-accueil:hover {
+    cursor: pointer;
+}
+
+.message-user-accueil strong {
+    font-weight: bold;
+    color: #1DB954;
+    transition: color 0.3s ease;
+}
+
+.message-user-accueil strong:hover {
+    color: #16843a;
+}
+
+
+.imageAlbum {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 200px;
+    height: 200px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.titreAlbum {
+    color: #1DB954;
+}
+
+.interpreteAndcompositeur {
+    color: #282828;
+    text-align: center;
+    margin-bottom: 1em;
+    max-width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+button {
+    background-color: #1DB954;
+    color: #fff;
+    border: none;
+    font-weight: bold;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #16843a;
+}
+
+.like { 
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+}
+
+.like:hover {
+    background-color: transparent;
+}
+
+.like img {
+    width: 30px;
+    height: auto;
+    transition: transform 0.3s ease;
+}
+
+.like:hover img {
+    transform: scale(1.1);
+}
+
+form {
+    text-align: center;
+}
+
+input[type="submit"] {
+    background-color: #1DB954;
+    color: #fff;
+    border: none;
+    font-weight: bold;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+}
+
+input[type="submit"]:hover {
+    background-color: #16843a;
+}
+
+select {
+    padding: 8px 12px;
+    border: 1px solid #1DB954;
+    border-radius: 5px;
+    font-size: 10px;
+    color: #282828;
+    background-color: #fff;
+    cursor: pointer;
+    transition: border-color 0.3s ease;
+    margin-top: 10px;
+}
+
+select:hover,
+select:focus {
+    border-color: #16843a;
+}
+
