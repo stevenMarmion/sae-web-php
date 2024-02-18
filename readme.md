@@ -52,6 +52,54 @@ Edition/Suppression/Update Albums
 
 ---
 
+## Fonctionnalités implémentées
+
+- Affichage des albums
+- Détail des albums
+- Détail d'un artiste avec ses albums
+- Recherche avancée dans les albums :
+  - Par nom d'album
+  - Par nom de compositeur
+  - Par nom d'interprète
+  - Par genre
+  - Par année
+- Panel admin avec :
+  - CRUD utilisateur
+  - CRUD album
+  - CRUD artiste
+  - CRUD genre
+- Inscription / Connexion utilisateur
+- CRUD playlist pour un utilisateur ( ajout d'autant de playlist qu'il souhaite, modification et suppression de ces playlists )
+- Système de notation des albums
+- Pagination de l'accueil
+
+## Mise en place sur le projet
+
+- Module de test
+- Utilisation d'une arborescence de projet type PRO
+- Utilisation des namespaces
+- Utilisation d'un provider YML, utilisable même pendant que le serveur tourne
+- Utilisation d'un autoloader
+- SGBD - Driver sous sqlite ( PDO )
+- Utilisation des sessions pour la gestion utilisateur dans toute l'application
+- Mise en place CSS
+- Mise en place bash : *L'utilisation des fichiers bash seront décrit dans la partie ***Déploiement***.*
+  - Mise en place d'un bash de configuration qui vous installe les librairies utiles pour vous faire toourner l'applciation, on recence les librairies suivantes :
+    - PHP
+    - php_pdo
+    - pdo_sqlite
+  - Mise en place d'un bash de lancement de serveur
+  - Mise en place d'un bash pour le provider  et la base de données
+  - Mise en place d'un bash pour le lancement des tests
+- Mise en place d'une partie UML :
+  - Diagramme de classe sur le modèle
+  - Diagramme de séquence sur différentes fonctionnalités décrites ci-dessus
+  - Diagramme d'activité sur différentes fonctionnalités décrites ci-dessus
+  - MCD de la base de données
+- Documentation des fichiers ( modèle BDD, CRUD, autoloader, provider YML, etc ... )
+
+---
+
 ## Déploiement
 
 ***Pré-requis : merci de faire tourner l'application sur un OS Linux*.**
@@ -86,7 +134,7 @@ Dans le cas où une version est trouvée, continuez dans l'avancement des comman
 
 ### BDD CONFIG
 
-- Vérifier l'existence d'un fichier **.sqlite3** dans le chemin : *Database/DatabaseScripts/*
+- Vérifier l'existence d'un fichier **.sqlite3** dans le chemin : *Database/DatabaseScripts/* ( par défaut la BDD est reset, vous n'avez pas besoin de lire cette partie )
 
 Soit vous pouvez reset la BDD avec la commande :
 
