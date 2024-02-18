@@ -174,12 +174,20 @@ function afficheAlbum($index,$listeAlbumObjet,$crudAlbum,$crudPlaylist){
     <section class="flex-button-pagination">
         <form action="/App/Views/Home/Accueil.php" method="get">
             <input type="hidden" name="index" value="<?= $index-1<0 ? $index : $index-1?>">
-            <button type="submit">Page précédente</button>
+            <?php if ($index-1<0) : ?>
+                <button type="submit" class="disabled-button-style" disabled>Page précédente</button>
+            <?php else : ?>
+                <button type="submit">Page précédente</button>
+            <?php endif; ?>
         </form>
         <p>Page : <?= $index+1 ?></p>
         <form action="/App/Views/Home/Accueil.php" method="get">
             <input type="hidden" name="index" value="<?= $index+1>count($listeAlbumObjet)-1 ? $index : $index+1?>">
-            <button type="submit">Page suivante</button>
+            <?php if ($index+1>count($listeAlbumObjet)-1) : ?>
+                <button type="submit" class="disabled-button-style" disabled>Page suivante</button>
+            <?php else : ?>
+                <button type="submit">Page suivante</button>
+            <?php endif; ?>
         </form>
     </section>
     <ul>
@@ -190,12 +198,20 @@ function afficheAlbum($index,$listeAlbumObjet,$crudAlbum,$crudPlaylist){
     <section class="flex-button-pagination">
         <form action="/App/Views/Home/Accueil.php" method="get">
             <input type="hidden" name="index" value="<?= $index-1<0 ? $index : $index-1?>">
-            <button type="submit">Page précédente</button>
+            <?php if ($index-1<0) : ?>
+                <button type="submit" disabled>Page précédente</button>
+            <?php else : ?>
+                <button type="submit">Page précédente</button>
+            <?php endif; ?>
         </form>
         <p>Page : <?= $index+1 ?></p>
         <form action="/App/Views/Home/Accueil.php" method="get">
             <input type="hidden" name="index" value="<?= $index+1>count($listeAlbumObjet)-1 ? $index : $index+1?>">
-            <button type="submit">Page suivante</button>
+            <?php if ($index+1>count($listeAlbumObjet)-1) : ?>
+                <button type="submit" class="disabled-button-style" disabled>Page suivante</button>
+            <?php else : ?>
+                <button type="submit">Page suivante</button>
+            <?php endif; ?>
         </form>
     </section>
     <script src="../../../Public/JS/like.js"></script>

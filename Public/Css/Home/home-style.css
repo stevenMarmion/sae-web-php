@@ -177,3 +177,11 @@ select:focus {
 .flex-button-pagination form:nth-child(3){
     margin-right: 30%;
 }
+
+.disabled-button-style {
+    background-color: green;
+}
+
+.disabled-button-style:hover {
+    cursor: not-allowed;
+}
