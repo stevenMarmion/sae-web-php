@@ -2,7 +2,7 @@ body {
     background-color: #e8e8ea;
     color: #282828;
     font-family: 'Arial', sans-serif;
-    margin: 0;
+    margin: 0 0 10em 0;
 }
 
 h1 {
@@ -159,3 +159,29 @@ select:focus {
     border-color: #16843a;
 }
 
+.flex-button-pagination {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.flex-button-pagination form button{
+    width: auto;
+}
+
+.flex-button-pagination form:nth-child(1){
+    margin-left: 30%;
+}
+
+.flex-button-pagination form:nth-child(3){
+    margin-right: 30%;
+}
+
+.disabled-button-style {
+    background-color: green;
+}
+
+.disabled-button-style:hover {
+    cursor: not-allowed;
+}

@@ -183,9 +183,7 @@ if (isset($_GET['table'])) {
                     <td><?= $user->getMail() ?></td>
                     <td><?= $user->isAdmin() ? "Oui" : "Non" ?></td>
                     <td>
-                        <?php foreach ($user->getFavoris() as $favori): ?>
-                            ID Album: <?= $favori->getId() ?>, Titre: <?= $favori->getTitre() ?><br>
-                        <?php endforeach; ?>
+                        <?= sizeof($user->getFavoris()) ?>
                     </td>
                     <td>
                         <div class="form-inline">
