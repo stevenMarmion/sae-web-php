@@ -199,7 +199,7 @@ function afficheAlbum($index,$listeAlbumObjet,$crudAlbum,$crudPlaylist){
         <form action="/App/Views/Home/Accueil.php" method="get">
             <input type="hidden" name="index" value="<?= $index-1<0 ? $index : $index-1?>">
             <?php if ($index-1<0) : ?>
-                <button type="submit" disabled>Page précédente</button>
+                <button type="submit" class="disabled-button-style" disabled>Page précédente</button>
             <?php else : ?>
                 <button type="submit">Page précédente</button>
             <?php endif; ?>
